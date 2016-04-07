@@ -12,7 +12,10 @@ HEADERS=include/bitpacking.h  include/portability.h include/util.h
 
 OBJECTS= bitpacking.o util.o
 
-all: $(OBJECTS)
+all: $(OBJECTS) unit
+
+unit : ./tests/unit.c  $(HEADERS) $(OBJECTS)
+	$(CC) $(CFLAGS) -o unit ./tests/unit.c -Iinclude  $(OBJECTS)
 
 bitpacking.o: ./src/bitpacking.c $(HEADERS)
 	$(CC) $(CFLAGS) -c ./src/bitpacking.c -Iinclude  
@@ -21,4 +24,4 @@ util.o: ./src/util.c $(HEADERS)
 	$(CC) $(CFLAGS) -c ./src/util.c -Iinclude  
 
 clean: 
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) unit

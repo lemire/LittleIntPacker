@@ -13,5 +13,8 @@ typedef signed char int8_t;
 #endif
 
 #include <stdbool.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #endif // PORTABILITY_H

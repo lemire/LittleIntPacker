@@ -19,19 +19,40 @@ of 128 integers are packed and unpacked very fast.
 However, what happens if you have small blocks having variable lengths,
 and lengths that are typically much smaller than 128 integers?
 
-The goal of this library is to explore this project in some depth.
 
-The work is motivated by the excellent engineering underlying TurboPFor
+The work is motivated by the  engineering underlying TurboPFor
 https://github.com/powturbo/TurboPFor
+That is, we write and load compressed bytes in 64-bit words as opposed
+to 32-bit words.
 
 ## Hardware requirements
 
-At least initially, this project will assume recent Intel processors (Haswell or better).
+This software makes little sense if you do not have a 64-bit processor.
 
+## Usage
+
+```bash
+make
+./unit 
+```
+
+## Code usage
+
+```C
+//#include "bitpacking.h
+
+// number of bytes required to compress l 32-bit integers using b bits each
+uint32_t c = byte_count(l, b);
+
+// packing an array of 32-bit unsigned ints from data to buffer
+pack32(data, l, b,buffer);
+// recovering data
+unpack32(buffer, l, b,backdata);
+```
 
 ## Current status
 
-Purely experimental.
+Tested.
 
 ## References
 

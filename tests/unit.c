@@ -29,6 +29,8 @@ int testshortpack() {
                 backdata[i] = 0;
             }
             pack32(data, length, bit,buffer);
+            uint32_t c = byte_count(length, bit);
+            buffer[c] = rand();// this value should not be needed during unpacking.
             unpack32(buffer, length, bit, backdata);
             for (i = 0; i < length; ++i) {
                 if (data[i] != backdata[i]) {

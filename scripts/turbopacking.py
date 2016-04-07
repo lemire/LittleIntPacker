@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
 def howmany(bit):
-    """ how many values are we going to pack? We always pack up to a 64-bit word, and then a bit more up """
-    number = (64+bit-1)/bit
-    while((number * bit) % 8 != 0):
-        number += 1
-    return number
+    """ how many values are we going to pack? """
+    return 32
+    #number = (64+bit-1)/bit
+    #while((number * bit) % 8 != 0):
+    #    number += 1
+    #return number
 
 def howmanywords(bit):
     return (howmany(bit) * bit + 63)/64
@@ -36,6 +37,12 @@ def plurial(number):
     else :
         return ""
 
+print("")
+print("static void packblock0(const uint32_t ** pin, uint8_t ** pw) {");
+print("  (void)pw;");
+print("  *pin += {0}; /* we consumed {0} 32-bit integer{1} */ ".format(howmany(0),plurial(howmany(0))));
+print("}");
+print("")
 
 for bit in range(1,33):
     print("")
@@ -66,6 +73,12 @@ for bit in range(1,33):
     print("}");
     print("")
 
+print("static void unpackblock0(const uint8_t ** pw, uint32_t ** pout) {");
+print("  (void) pw;");
+print("  memset(*pout,0,{0});".format(howmany(0)));
+print("  *pout += {0}; /* we wrote {0} 32-bit integer{1} */ ".format(howmany(0),plurial(howmany(0))));
+print("}");
+print("")
 
 for bit in range(1,33):
     print("")
@@ -79,6 +92,7 @@ for bit in range(1,33):
     print("  /* we are going to access  {0} 64-bit word{1} */ ".format(howmanywords(bit),plurial(howmanywords(bit))));
     for k in range(howmanywords(bit)) :
       print("  uint64_t w{0} = pw64[{0}];".format(k))
+    print("  *pw += {0}; /* we used up {0} input bytes */ ".format(howmanybytes(bit)));
     for j in range(howmany(bit)):
       firstword = j * bit / 64
       secondword = (j * bit + bit - 1)/64
@@ -95,20 +109,17 @@ for bit in range(1,33):
           secondshift = (64-firstshift)
           print("  out[{0}] = (uint32_t)  ( ( ( w{1} {2} ) | ( w{3} << {4} ) ) {5} );".format(j,firstword,firstshiftstr, firstword+1,secondshift,maskstr))
     print("  *pout += {0}; /* we wrote {0} 32-bit integer{1} */ ".format(howmany(bit),plurial(howmany(bit))));
-    print("  *pw += {0}; /* we used up {0} input bytes */ ".format(howmanybytes(bit)));
     print("}");
     print("")
 
 print("static packblockfnc funcPackArr[] = {")
-print("NULL,")
-for bit in range(1,32):
+for bit in range(0,32):
   print("&packblock{0},".format(bit))
 print("&packblock32")
 print("};")
 
 print("static unpackblockfnc funcUnpackArr[] = {")
-print("NULL,")
-for bit in range(1,32):
+for bit in range(0,32):
   print("&unpackblock{0},".format(bit))
 print("&unpackblock32")
 print("};")

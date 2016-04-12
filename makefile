@@ -10,7 +10,7 @@ endif # debug
 
 HEADERS=include/bitpacking.h  include/portability.h include/util.h
 
-OBJECTS= bmipacking32.o bitpacking32.o util.o turbobitpacking32.o
+OBJECTS= bmipacking32.o bitpacking32.o util.o turbobitpacking32.o scpacking32.o
 
 all: $(OBJECTS) unit bitpackingbenchmark
 
@@ -27,6 +27,9 @@ bmipacking32.o: ./src/bmipacking32.c $(HEADERS)
 
 turbobitpacking32.o: ./src/turbobitpacking32.c $(HEADERS)
 	$(CC) $(CFLAGS) -c ./src/turbobitpacking32.c -Iinclude
+scpacking32.o: ./src/scpacking32.c $(HEADERS)
+	$(CC) $(CFLAGS) -c ./src/scpacking32.c -Iinclude
+
 
 
 bitpacking32.o: ./src/bitpacking32.c $(HEADERS)

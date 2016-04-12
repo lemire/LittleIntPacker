@@ -58,7 +58,7 @@ void demo128() {
     uint32_t bit;
     printf("# --- %s\n", __func__);
     printf("# compressing %d integers\n",length);
-    printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n",length);
+    printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n");
     for(bit = 1; bit <= 32; ++bit) {
         uint32_t i;
         uint32_t * data = get_random_array_from_bit_width(length, bit);
@@ -103,7 +103,7 @@ void turbodemo128() {
     uint32_t bit;
     printf("# --- %s\n", __func__);
     printf("# compressing %d integers\n",length);
-    printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n",length);
+    printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n");
     for(bit = 1; bit <= 32; ++bit) {
         uint32_t i;
         uint32_t * data = get_random_array_from_bit_width(length, bit);

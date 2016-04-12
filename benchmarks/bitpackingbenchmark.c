@@ -56,8 +56,9 @@ uint32_t * get_random_array_from_bit_width_d1(uint32_t length, uint32_t bit) {
 void demo128() {
     const uint32_t length = 128;
     uint32_t bit;
-    printf("--- %s\n", __func__);
-    printf("compressing %d integers\n",length);
+    printf("# --- %s\n", __func__);
+    printf("# compressing %d integers\n",length);
+    printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n",length);
     for(bit = 1; bit <= 32; ++bit) {
         uint32_t i;
         uint32_t * data = get_random_array_from_bit_width(length, bit);
@@ -65,7 +66,7 @@ void demo128() {
         uint32_t * backdata = malloc(length * sizeof(uint32_t));
         uint32_t repeat = 500;
         uint64_t min_diff;
-        printf("bit=%d ",bit);
+        printf("%d\t",bit);
         min_diff = (uint64_t)-1;
         for (i = 0; i < repeat; i++) {
             uint64_t cycles_start, cycles_final, cycles_diff;
@@ -76,7 +77,7 @@ void demo128() {
             cycles_diff = (cycles_final - cycles_start);
             if (cycles_diff < min_diff) min_diff = cycles_diff;
         }
-        printf("pack=%.2f cycles/int ",min_diff*1.0/length);
+        printf("%.2f\t",min_diff*1.0/length);
         min_diff = (uint64_t)-1;
         for (i = 0; i < repeat; i++) {
             uint64_t cycles_start, cycles_final, cycles_diff;
@@ -87,20 +88,22 @@ void demo128() {
             cycles_diff = (cycles_final - cycles_start);
             if (cycles_diff < min_diff) min_diff = cycles_diff;
         }
-        printf("unpack=%.2f cycles/int ",min_diff*1.0/length);
+        printf("%.2f\t",min_diff*1.0/length);
 
         free(data);
         free(buffer);
         free(backdata);
         printf("\n");
     }
+    printf("\n\n"); /* two blank lines are required by gnuplot */
 }
 
 void turbodemo128() {
     const uint32_t length = 128;
     uint32_t bit;
-    printf("--- %s\n", __func__);
-    printf("compressing %d integers\n",length);
+    printf("# --- %s\n", __func__);
+    printf("# compressing %d integers\n",length);
+    printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n",length);
     for(bit = 1; bit <= 32; ++bit) {
         uint32_t i;
         uint32_t * data = get_random_array_from_bit_width(length, bit);
@@ -108,7 +111,7 @@ void turbodemo128() {
         uint32_t * backdata = malloc(length * sizeof(uint32_t));
         uint32_t repeat = 500;
         uint64_t min_diff;
-        printf("bit=%d ",bit);
+        printf("%d\t",bit);
         min_diff = (uint64_t)-1;
         for (i = 0; i < repeat; i++) {
             uint64_t cycles_start, cycles_final, cycles_diff;
@@ -119,7 +122,7 @@ void turbodemo128() {
             cycles_diff = (cycles_final - cycles_start);
             if (cycles_diff < min_diff) min_diff = cycles_diff;
         }
-        printf("pack=%.2f cycles/int ",min_diff*1.0/length);
+        printf("%.2f\t",min_diff*1.0/length);
         min_diff = (uint64_t)-1;
         for (i = 0; i < repeat; i++) {
             uint64_t cycles_start, cycles_final, cycles_diff;
@@ -130,13 +133,14 @@ void turbodemo128() {
             cycles_diff = (cycles_final - cycles_start);
             if (cycles_diff < min_diff) min_diff = cycles_diff;
         }
-        printf("unpack=%.2f cycles/int ",min_diff*1.0/length);
+        printf("%.2f\t",min_diff*1.0/length);
 
         free(data);
         free(buffer);
         free(backdata);
         printf("\n");
     }
+    printf("\n\n"); /* two blank lines are required by gnuplot */
 }
 
 int main() {

@@ -85,7 +85,7 @@ for bit in range(1,33):
     print("/* we packed {0} {1}-bit values, touching {2} 64-bit words, using {3} bytes */ ".format(howmany(bit),bit,howmanywords(bit),howmanybytes(bit)))
     print("static void unpackblock{0}(const uint8_t ** pw, uint32_t ** pout) {{".format(bit));
     print("  const uint64_t * pw64 = *(const uint64_t **) pw;");
-    print("  uint64_t * out = *pout;");
+    print("  uint64_t * out = (uint64_t *) *pout;");
     if(bit < 32): print("  const uint64_t mask = UINT64_C({0});".format((1<<bit)-1));
     maskstr = " & mask "
     if (bit == 32) : maskstr = "" # no need
@@ -111,7 +111,7 @@ for bit in range(1,33):
       if(j % 2 == 0):
           baseout = newval;
       else :
-          print("  out[{0}] = ( (uint32_t) {1} ) | ( {2} << 32 ); ".format((j-1)/2,baseout,newval))
+          print("  out[{0}] = ( {1} ) | ( {2} << 32 ); ".format((j-1)/2,baseout,newval))
     print("  *pout += {0}; /* we wrote {0} 32-bit integer{1} */ ".format(howmany(bit),plurial(howmany(bit))));
     print("}");
     print("")

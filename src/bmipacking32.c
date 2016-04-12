@@ -2130,6 +2130,9 @@ static void unpackblock0(const uint8_t ** pw, uint32_t ** pout) {
 }
 
 #include <x86intrin.h>
+
+
+
 /* we packed 32 1-bit values, touching 1 64-bit words, using 4 bytes */
 static void unpackblock1(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
@@ -2138,24 +2141,25 @@ static void unpackblock1(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w0 = pw64[0];
   *pw += 4; /* we used up 4 input bytes */
   __int64_t y;
-  __m128i x;
+  __m256i x;
+
   uint64_t mask = UINT64_C(0x0101010101010101);
   y = _pdep_u64(w0, mask);
-  x =  _mm_cvtepu8_epi32(
+  x =  _mm256_cvtepu8_epi32(
        _mm_loadl_epi64((const __m128i *) & y ) );
-  _mm_storeu_si128((__m128i*) out, x);
+  _mm256_storeu_si256((__m256i*) out, x);
   y = _pdep_u64(w0 >> 8, mask);
-  x =  _mm_cvtepu8_epi32(
+  x =  _mm256_cvtepu8_epi32(
        _mm_loadl_epi64((const __m128i *) & y ) );
-  _mm_storeu_si128((__m128i*) out + 1, x);
+  _mm256_storeu_si256((__m256i*) out + 1, x);
   y = _pdep_u64(w0 >> 16, mask);
-  x =  _mm_cvtepu8_epi32(
+  x =  _mm256_cvtepu8_epi32(
        _mm_loadl_epi64((const __m128i *) & y ) );
-  _mm_storeu_si128((__m128i*) out + 2, x);
+  _mm256_storeu_si256((__m256i*) out + 2, x);
   y = _pdep_u64(w0 >> 24, mask);
-  x =  _mm_cvtepu8_epi32(
+  x =  _mm256_cvtepu8_epi32(
        _mm_loadl_epi64((const __m128i *) & y ) );
-  _mm_storeu_si128((__m128i*) out + 3, x);
+  _mm256_storeu_si256((__m256i*) out + 3, x);
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2168,25 +2172,27 @@ static void unpackblock2(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w0 = pw64[0];
   *pw += 8; /* we used up 8 input bytes */
   __int64_t y;
-  __m128i x;
+  __m256i x;
+
   uint64_t mask = UINT64_C(0x0303030303030303);
   y = _pdep_u64(w0, mask);
-  x =  _mm_cvtepu8_epi32(
+  x =  _mm256_cvtepu8_epi32(
        _mm_loadl_epi64((const __m128i *) & y ) );
-  _mm_storeu_si128((__m128i*) out, x);
+  _mm256_storeu_si256((__m256i*) out, x);
   y = _pdep_u64(w0 >> 16, mask);
-  x =  _mm_cvtepu8_epi32(
+  x =  _mm256_cvtepu8_epi32(
        _mm_loadl_epi64((const __m128i *) & y ) );
-  _mm_storeu_si128((__m128i*) out + 1, x);
+  _mm256_storeu_si256((__m256i*) out + 1, x);
   y = _pdep_u64(w0 >> 32, mask);
-  x =  _mm_cvtepu8_epi32(
+  x =  _mm256_cvtepu8_epi32(
        _mm_loadl_epi64((const __m128i *) & y ) );
-  _mm_storeu_si128((__m128i*) out + 2, x);
+  _mm256_storeu_si256((__m256i*) out + 2, x);
   y = _pdep_u64(w0 >> 48, mask);
-  x =  _mm_cvtepu8_epi32(
+  x =  _mm256_cvtepu8_epi32(
        _mm_loadl_epi64((const __m128i *) & y ) );
-  _mm_storeu_si128((__m128i*) out + 3, x);
+  _mm256_storeu_si256((__m256i*) out + 3, x);
   *pout += 32; /* we wrote 32 32-bit integers */
+
 }
 
 

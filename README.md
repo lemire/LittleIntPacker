@@ -5,9 +5,8 @@ C library to pack and unpack short arrays of integers as fast as possible
 
 This is a bit packing library. Bit packing is the process by which you
 take arrays of (32-bit) integers that fit in [0,2^L) and you write them
-out using as close to L bits per integer as possible. By extension,
-we can apply the same idea to array of integers with the difference between
-successive integers fits in [0,2^L).
+out using as close to L bits per integer as possible. 
+
 
 
 ## Motivation
@@ -18,7 +17,6 @@ of 128 integers are packed and unpacked very fast.
 
 However, what happens if you have small blocks having variable lengths,
 and lengths that are typically much smaller than 128 integers?
-
 
 The work is motivated by the  engineering underlying TurboPFor
 https://github.com/powturbo/TurboPFor
@@ -49,6 +47,7 @@ pack32(data, l, b,buffer);
 // recovering data
 unpack32(buffer, l, b,backdata);
 ```
+
 
 ## Current status
 

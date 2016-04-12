@@ -10,18 +10,26 @@ endif # debug
 
 HEADERS=include/bitpacking.h  include/portability.h include/util.h
 
-OBJECTS= bitpacking.o util.o
+OBJECTS= bitpacking32.o util.o turbobitpacking32.o
 
-all: $(OBJECTS) unit
+all: $(OBJECTS) unit bitpackingbenchmark
 
 unit : ./tests/unit.c  $(HEADERS) $(OBJECTS)
 	$(CC) $(CFLAGS) -o unit ./tests/unit.c -Iinclude  $(OBJECTS)
 
-bitpacking.o: ./src/bitpacking.c $(HEADERS)
-	$(CC) $(CFLAGS) -c ./src/bitpacking.c -Iinclude  
+
+bitpackingbenchmark : ./benchmarks/bitpackingbenchmark.c  $(HEADERS) $(OBJECTS)
+	$(CC) $(CFLAGS) -o bitpackingbenchmark ./benchmarks/bitpackingbenchmark.c -Iinclude  $(OBJECTS)
+
+turbobitpacking32.o: ./src/turbobitpacking32.c $(HEADERS)
+	$(CC) $(CFLAGS) -c ./src/turbobitpacking32.c -Iinclude
+
+
+bitpacking32.o: ./src/bitpacking32.c $(HEADERS)
+	$(CC) $(CFLAGS) -c ./src/bitpacking32.c -Iinclude
 
 util.o: ./src/util.c $(HEADERS)
-	$(CC) $(CFLAGS) -c ./src/util.c -Iinclude  
+	$(CC) $(CFLAGS) -c ./src/util.c -Iinclude
 
-clean: 
-	rm -f $(OBJECTS) unit
+clean:
+	rm -f $(OBJECTS) unit bitpackingbenchmark

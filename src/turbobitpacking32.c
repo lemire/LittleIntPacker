@@ -3852,7 +3852,7 @@ static unpackblockfnc funcUnpackArr[] = {
 
 
 /* write number 32-bit values from in bit bits per value to out. */
-void pack32(const uint32_t *  in,  uint32_t number, const uint32_t bit, uint8_t *  out) {
+void turbopack32(const uint32_t *  in,  uint32_t number, const uint32_t bit, uint8_t *  out) {
   packblockfnc bitpack = funcPackArr[bit];
   for(uint32_t pos = 0; pos < number; pos += 32) {
 	  bitpack(&in, &out);
@@ -3860,7 +3860,7 @@ void pack32(const uint32_t *  in,  uint32_t number, const uint32_t bit, uint8_t 
 }
 
 /* reads  number 32-bit values from "in" as packed bit bits values, and write to "out" */
-void unpack32(const uint8_t * in, uint32_t number, const uint32_t bit, uint32_t *  out) {
+void turbounpack32(const uint8_t * in, uint32_t number, const uint32_t bit, uint32_t *  out) {
   unpackblockfnc bitunpack = funcUnpackArr[bit];
   for(uint32_t pos = 0; pos < number; pos += 32) {
 	  bitunpack(&in,&out);

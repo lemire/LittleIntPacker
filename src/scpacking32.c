@@ -2124,7 +2124,7 @@ static void unpackblock0(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 1-bit values, touching 1 64-bit words, using 4 bytes */
 static void unpackblock1(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(1);
   /* we are going to access  1 64-bit word */
   uint64_t w0 = pw64[0];
@@ -2152,7 +2152,7 @@ static void unpackblock1(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 2-bit values, touching 1 64-bit words, using 8 bytes */
 static void unpackblock2(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(3);
   /* we are going to access  1 64-bit word */
   uint64_t w0 = pw64[0];
@@ -2180,7 +2180,7 @@ static void unpackblock2(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 3-bit values, touching 2 64-bit words, using 12 bytes */
 static void unpackblock3(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(7);
   /* we are going to access  2 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2209,7 +2209,7 @@ static void unpackblock3(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 4-bit values, touching 2 64-bit words, using 16 bytes */
 static void unpackblock4(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(15);
   /* we are going to access  2 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2238,7 +2238,7 @@ static void unpackblock4(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 5-bit values, touching 3 64-bit words, using 20 bytes */
 static void unpackblock5(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(31);
   /* we are going to access  3 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2268,7 +2268,7 @@ static void unpackblock5(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 6-bit values, touching 3 64-bit words, using 24 bytes */
 static void unpackblock6(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(63);
   /* we are going to access  3 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2298,7 +2298,7 @@ static void unpackblock6(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 7-bit values, touching 4 64-bit words, using 28 bytes */
 static void unpackblock7(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(127);
   /* we are going to access  4 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2329,7 +2329,7 @@ static void unpackblock7(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 8-bit values, touching 4 64-bit words, using 32 bytes */
 static void unpackblock8(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(255);
   /* we are going to access  4 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2360,7 +2360,7 @@ static void unpackblock8(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 9-bit values, touching 5 64-bit words, using 36 bytes */
 static void unpackblock9(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(511);
   /* we are going to access  5 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2392,7 +2392,7 @@ static void unpackblock9(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 10-bit values, touching 5 64-bit words, using 40 bytes */
 static void unpackblock10(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(1023);
   /* we are going to access  5 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2424,7 +2424,7 @@ static void unpackblock10(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 11-bit values, touching 6 64-bit words, using 44 bytes */
 static void unpackblock11(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(2047);
   /* we are going to access  6 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2457,7 +2457,7 @@ static void unpackblock11(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 12-bit values, touching 6 64-bit words, using 48 bytes */
 static void unpackblock12(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(4095);
   /* we are going to access  6 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2490,7 +2490,7 @@ static void unpackblock12(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 13-bit values, touching 7 64-bit words, using 52 bytes */
 static void unpackblock13(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(8191);
   /* we are going to access  7 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2524,7 +2524,7 @@ static void unpackblock13(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 14-bit values, touching 7 64-bit words, using 56 bytes */
 static void unpackblock14(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(16383);
   /* we are going to access  7 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2558,7 +2558,7 @@ static void unpackblock14(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 15-bit values, touching 8 64-bit words, using 60 bytes */
 static void unpackblock15(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(32767);
   /* we are going to access  8 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2593,7 +2593,7 @@ static void unpackblock15(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 16-bit values, touching 8 64-bit words, using 64 bytes */
 static void unpackblock16(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(65535);
   /* we are going to access  8 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2628,7 +2628,7 @@ static void unpackblock16(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 17-bit values, touching 9 64-bit words, using 68 bytes */
 static void unpackblock17(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(131071);
   /* we are going to access  9 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2664,7 +2664,7 @@ static void unpackblock17(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 18-bit values, touching 9 64-bit words, using 72 bytes */
 static void unpackblock18(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(262143);
   /* we are going to access  9 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2700,7 +2700,7 @@ static void unpackblock18(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 19-bit values, touching 10 64-bit words, using 76 bytes */
 static void unpackblock19(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(524287);
   /* we are going to access  10 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2737,7 +2737,7 @@ static void unpackblock19(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 20-bit values, touching 10 64-bit words, using 80 bytes */
 static void unpackblock20(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(1048575);
   /* we are going to access  10 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2774,7 +2774,7 @@ static void unpackblock20(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 21-bit values, touching 11 64-bit words, using 84 bytes */
 static void unpackblock21(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(2097151);
   /* we are going to access  11 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2812,7 +2812,7 @@ static void unpackblock21(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 22-bit values, touching 11 64-bit words, using 88 bytes */
 static void unpackblock22(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(4194303);
   /* we are going to access  11 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2850,7 +2850,7 @@ static void unpackblock22(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 23-bit values, touching 12 64-bit words, using 92 bytes */
 static void unpackblock23(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(8388607);
   /* we are going to access  12 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2889,7 +2889,7 @@ static void unpackblock23(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 24-bit values, touching 12 64-bit words, using 96 bytes */
 static void unpackblock24(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(16777215);
   /* we are going to access  12 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2928,7 +2928,7 @@ static void unpackblock24(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 25-bit values, touching 13 64-bit words, using 100 bytes */
 static void unpackblock25(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(33554431);
   /* we are going to access  13 64-bit words */
   uint64_t w0 = pw64[0];
@@ -2968,7 +2968,7 @@ static void unpackblock25(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 26-bit values, touching 13 64-bit words, using 104 bytes */
 static void unpackblock26(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(67108863);
   /* we are going to access  13 64-bit words */
   uint64_t w0 = pw64[0];
@@ -3008,7 +3008,7 @@ static void unpackblock26(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 27-bit values, touching 14 64-bit words, using 108 bytes */
 static void unpackblock27(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(134217727);
   /* we are going to access  14 64-bit words */
   uint64_t w0 = pw64[0];
@@ -3049,7 +3049,7 @@ static void unpackblock27(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 28-bit values, touching 14 64-bit words, using 112 bytes */
 static void unpackblock28(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(268435455);
   /* we are going to access  14 64-bit words */
   uint64_t w0 = pw64[0];
@@ -3090,7 +3090,7 @@ static void unpackblock28(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 29-bit values, touching 15 64-bit words, using 116 bytes */
 static void unpackblock29(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(536870911);
   /* we are going to access  15 64-bit words */
   uint64_t w0 = pw64[0];
@@ -3132,7 +3132,7 @@ static void unpackblock29(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 30-bit values, touching 15 64-bit words, using 120 bytes */
 static void unpackblock30(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(1073741823);
   /* we are going to access  15 64-bit words */
   uint64_t w0 = pw64[0];
@@ -3174,7 +3174,7 @@ static void unpackblock30(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 31-bit values, touching 16 64-bit words, using 124 bytes */
 static void unpackblock31(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   const uint64_t mask = UINT64_C(2147483647);
   /* we are going to access  16 64-bit words */
   uint64_t w0 = pw64[0];
@@ -3217,7 +3217,7 @@ static void unpackblock31(const uint8_t ** pw, uint32_t ** pout) {
 /* we packed 32 32-bit values, touching 16 64-bit words, using 128 bytes */
 static void unpackblock32(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
-  uint64_t * out = *pout;
+  uint64_t * out = (uint64_t *) *pout;
   /* we are going to access  16 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];

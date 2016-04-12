@@ -1,35 +1,77 @@
-
 #include <stdio.h>
 
 #include "bitpacking.h"
 
+#define COMPILER_NOINLINE __attribute__ ((noinline))
 
-#define RDTSC_START(cycles)                                                   \
-    do {                                                                      \
-        register unsigned cyc_high, cyc_low;                                  \
-        __asm volatile(                                                       \
-            "cpuid\n\t"                                                       \
-            "rdtsc\n\t"                                                       \
-            "mov %%edx, %0\n\t"                                               \
-            "mov %%eax, %1\n\t"                                               \
-            : "=r"(cyc_high), "=r"(cyc_low)::"%rax", "%rbx", "%rcx", "%rdx"); \
-        (cycles) = ((uint64_t)cyc_high << 32) | cyc_low;                      \
+#define RDTSC_START(timestamp_ptr)                                      \
+    __asm volatile("cpuid\n"                                            \
+                   "rdtscp\n"                                           \
+                   "shl $32, %%rdx\n"                                   \
+                   "or %%rax, %%rdx\n"                                  \
+                   "mov %%rdx, (%0)" :                                  \
+                   /* no register writes */ :                           \
+                   /* writes memory*/ "r" (timestamp_ptr) :             \
+                   /* clobbers */ "memory", "%rax", "%rbx", "%rcx", "%rdx")
+
+
+#define RDTSC_STOP(timestamp_ptr)                                       \
+    __asm volatile("rdtscp\n"                                           \
+                   "shl $32, %%rdx\n"                                   \
+                   "or %%rax, %%rdx\n"                                  \
+                   "mov %%rdx, (%0)\n"                                  \
+                   "cpuid" :                                            \
+                   /* no register writes */ :                           \
+                   /* writes memory */ "r" (timestamp_ptr) :            \
+                   /* clobbers */ "memory", "%rax", "%rbx", "%rcx", "%rdx")
+
+
+COMPILER_NOINLINE uint64_t rdtsc_overhead_func(uint64_t dummy) {
+    __asm volatile("" : : : /* pretend to clobber */ "memory");
+    return dummy;
+}
+
+uint64_t global_rdtsc_overhead = (uint64_t) UINT64_MAX;
+
+#define RDTSC_SET_OVERHEAD(test)                                        \
+    do {                                                                \
+        uint64_t cycles_start, cycles_stop, cycles_diff;                \
+        uint64_t _min_diff = UINT64_MAX;                                 \
+        for (size_t _i = 0; _i < 1000; _i++) {                             \
+            RDTSC_START(&cycles_start);                                 \
+            test;                                                       \
+            RDTSC_STOP(&cycles_stop);                                   \
+            cycles_diff = (cycles_stop - cycles_start);                 \
+            if (cycles_diff < _min_diff) _min_diff = cycles_diff;         \
+        }                                                               \
+        global_rdtsc_overhead = _min_diff;                               \
+        printf("rdtsc_overhead set to %ld\n", (long int) global_rdtsc_overhead);   \
     } while (0)
 
-#define RDTSC_FINAL(cycles)                                                   \
-    do {                                                                      \
-        register unsigned cyc_high, cyc_low;                                  \
-        __asm volatile(                                                       \
-            "rdtscp\n\t"                                                      \
-            "mov %%edx, %0\n\t"                                               \
-            "mov %%eax, %1\n\t"                                               \
-            "cpuid\n\t"                                                       \
-            : "=r"(cyc_high), "=r"(cyc_low)::"%rax", "%rbx", "%rcx", "%rdx"); \
-        (cycles) = ((uint64_t)cyc_high << 32) | cyc_low;                      \
+
+#define RDTSC_TIME(test, cycles)                                \
+    do {                                                        \
+        if (global_rdtsc_overhead == UINT64_MAX) {              \
+            RDTSC_SET_OVERHEAD(rdtsc_overhead_func(1));         \
+        }                                                       \
+        uint64_t cycles_start, cycles_stop;                     \
+        RDTSC_START(&cycles_start);                             \
+        { test; }                                               \
+        RDTSC_STOP(&cycles_stop);                               \
+        cycles = (cycles_stop - cycles_start);                  \
+        if (cycles <= global_rdtsc_overhead) cycles = 0;        \
+        else cycles = cycles - global_rdtsc_overhead;           \
     } while (0)
 
-
-
+#define RDTSC_BEST(test, repeat, best)                          \
+    do {                                                        \
+        best = UINT64_MAX;                                      \
+        for (uint64_t i = 0; i < repeat; i++) {                 \
+            uint64_t cycles;                                    \
+            RDTSC_TIME(test, cycles);                           \
+            if (cycles < best) best = cycles;                   \
+        }                                                       \
+    } while (0)
 
 uint32_t * get_random_array_from_bit_width(uint32_t length, uint32_t bit) {
     uint32_t * answer = malloc(sizeof(uint32_t) * length);
@@ -52,7 +94,6 @@ uint32_t * get_random_array_from_bit_width_d1(uint32_t length, uint32_t bit) {
     return answer;
 }
 
-
 void demo128() {
     const uint32_t length = 128;
     uint32_t bit;
@@ -60,34 +101,15 @@ void demo128() {
     printf("# compressing %d integers\n",length);
     printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n");
     for(bit = 1; bit <= 32; ++bit) {
-        uint32_t i;
         uint32_t * data = get_random_array_from_bit_width(length, bit);
         uint8_t * buffer = malloc(length * sizeof(uint32_t));
         uint32_t * backdata = malloc(length * sizeof(uint32_t));
-        uint32_t repeat = 500;
+        uint32_t repeat = 50000;
         uint64_t min_diff;
         printf("%d\t",bit);
-        min_diff = (uint64_t)-1;
-        for (i = 0; i < repeat; i++) {
-            uint64_t cycles_start, cycles_final, cycles_diff;
-            __asm volatile("" ::: /* pretend to clobber */ "memory");
-            RDTSC_START(cycles_start);
-            pack32(data, length, bit, buffer);
-            RDTSC_FINAL(cycles_final);
-            cycles_diff = (cycles_final - cycles_start);
-            if (cycles_diff < min_diff) min_diff = cycles_diff;
-        }
+        RDTSC_BEST(pack32(data, length, bit, buffer), repeat, min_diff);
         printf("%.2f\t",min_diff*1.0/length);
-        min_diff = (uint64_t)-1;
-        for (i = 0; i < repeat; i++) {
-            uint64_t cycles_start, cycles_final, cycles_diff;
-            __asm volatile("" ::: /* pretend to clobber */ "memory");
-            RDTSC_START(cycles_start);
-            unpack32(buffer, length, bit, backdata);
-            RDTSC_FINAL(cycles_final);
-            cycles_diff = (cycles_final - cycles_start);
-            if (cycles_diff < min_diff) min_diff = cycles_diff;
-        }
+        RDTSC_BEST(unpack32(buffer, length, bit, backdata), repeat, min_diff);
         printf("%.2f\t",min_diff*1.0/length);
 
         free(data);
@@ -105,34 +127,15 @@ void turbodemo128() {
     printf("# compressing %d integers\n",length);
     printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n");
     for(bit = 1; bit <= 32; ++bit) {
-        uint32_t i;
         uint32_t * data = get_random_array_from_bit_width(length, bit);
         uint8_t * buffer = malloc(length * sizeof(uint32_t));
         uint32_t * backdata = malloc(length * sizeof(uint32_t));
-        uint32_t repeat = 500;
+        uint32_t repeat = 50000;
         uint64_t min_diff;
         printf("%d\t",bit);
-        min_diff = (uint64_t)-1;
-        for (i = 0; i < repeat; i++) {
-            uint64_t cycles_start, cycles_final, cycles_diff;
-            __asm volatile("" ::: /* pretend to clobber */ "memory");
-            RDTSC_START(cycles_start);
-            turbopack32(data, length, bit, buffer);
-            RDTSC_FINAL(cycles_final);
-            cycles_diff = (cycles_final - cycles_start);
-            if (cycles_diff < min_diff) min_diff = cycles_diff;
-        }
+        RDTSC_BEST(turbopack32(data, length, bit, buffer), repeat, min_diff);
         printf("%.2f\t",min_diff*1.0/length);
-        min_diff = (uint64_t)-1;
-        for (i = 0; i < repeat; i++) {
-            uint64_t cycles_start, cycles_final, cycles_diff;
-            __asm volatile("" ::: /* pretend to clobber */ "memory");
-            RDTSC_START(cycles_start);
-            turbounpack32(buffer, length, bit, backdata);
-            RDTSC_FINAL(cycles_final);
-            cycles_diff = (cycles_final - cycles_start);
-            if (cycles_diff < min_diff) min_diff = cycles_diff;
-        }
+        RDTSC_BEST(turbounpack32(buffer, length, bit, backdata), repeat, min_diff);
         printf("%.2f\t",min_diff*1.0/length);
 
         free(data);
@@ -150,34 +153,15 @@ void bmidemo128() {
     printf("# compressing %d integers\n",length);
     printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n");
     for(bit = 1; bit <= 32; ++bit) {
-        uint32_t i;
         uint32_t * data = get_random_array_from_bit_width(length, bit);
         uint8_t * buffer = malloc(length * sizeof(uint32_t));
         uint32_t * backdata = malloc(length * sizeof(uint32_t));
-        uint32_t repeat = 500;
+        uint32_t repeat = 50000;
         uint64_t min_diff;
         printf("%d\t",bit);
-        min_diff = (uint64_t)-1;
-        for (i = 0; i < repeat; i++) {
-            uint64_t cycles_start, cycles_final, cycles_diff;
-            __asm volatile("" ::: /* pretend to clobber */ "memory");
-            RDTSC_START(cycles_start);
-            bmipack32(data, length, bit, buffer);
-            RDTSC_FINAL(cycles_final);
-            cycles_diff = (cycles_final - cycles_start);
-            if (cycles_diff < min_diff) min_diff = cycles_diff;
-        }
+        RDTSC_BEST(bmipack32(data, length, bit, buffer), repeat, min_diff);
         printf("%.2f\t",min_diff*1.0/length);
-        min_diff = (uint64_t)-1;
-        for (i = 0; i < repeat; i++) {
-            uint64_t cycles_start, cycles_final, cycles_diff;
-            __asm volatile("" ::: /* pretend to clobber */ "memory");
-            RDTSC_START(cycles_start);
-            bmiunpack32(buffer, length, bit, backdata);
-            RDTSC_FINAL(cycles_final);
-            cycles_diff = (cycles_final - cycles_start);
-            if (cycles_diff < min_diff) min_diff = cycles_diff;
-        }
+        RDTSC_BEST(bmiunpack32(buffer, length, bit, backdata), repeat, min_diff);
         printf("%.2f\t",min_diff*1.0/length);
 
         free(data);
@@ -187,7 +171,6 @@ void bmidemo128() {
     }
     printf("\n\n"); /* two blank lines are required by gnuplot */
 }
-
 
 void scdemo128() {
     const uint32_t length = 128;
@@ -196,34 +179,15 @@ void scdemo128() {
     printf("# compressing %d integers\n",length);
     printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n");
     for(bit = 1; bit <= 32; ++bit) {
-        uint32_t i;
         uint32_t * data = get_random_array_from_bit_width(length, bit);
         uint8_t * buffer = malloc(length * sizeof(uint32_t));
         uint32_t * backdata = malloc(length * sizeof(uint32_t));
-        uint32_t repeat = 500;
+        uint32_t repeat = 50000;
         uint64_t min_diff;
         printf("%d\t",bit);
-        min_diff = (uint64_t)-1;
-        for (i = 0; i < repeat; i++) {
-            uint64_t cycles_start, cycles_final, cycles_diff;
-            __asm volatile("" ::: /* pretend to clobber */ "memory");
-            RDTSC_START(cycles_start);
-            scpack32(data, length, bit, buffer);
-            RDTSC_FINAL(cycles_final);
-            cycles_diff = (cycles_final - cycles_start);
-            if (cycles_diff < min_diff) min_diff = cycles_diff;
-        }
+        RDTSC_BEST(scpack32(data, length, bit, buffer), repeat, min_diff);
         printf("%.2f\t",min_diff*1.0/length);
-        min_diff = (uint64_t)-1;
-        for (i = 0; i < repeat; i++) {
-            uint64_t cycles_start, cycles_final, cycles_diff;
-            __asm volatile("" ::: /* pretend to clobber */ "memory");
-            RDTSC_START(cycles_start);
-            scunpack32(buffer, length, bit, backdata);
-            RDTSC_FINAL(cycles_final);
-            cycles_diff = (cycles_final - cycles_start);
-            if (cycles_diff < min_diff) min_diff = cycles_diff;
-        }
+        RDTSC_BEST(scunpack32(buffer, length, bit, backdata), repeat, min_diff);
         printf("%.2f\t",min_diff*1.0/length);
 
         free(data);
@@ -233,6 +197,8 @@ void scdemo128() {
     }
     printf("\n\n"); /* two blank lines are required by gnuplot */
 }
+
+
 
 
 int main() {

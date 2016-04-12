@@ -143,8 +143,56 @@ void turbodemo128() {
     printf("\n\n"); /* two blank lines are required by gnuplot */
 }
 
+void bmidemo128() {
+    const uint32_t length = 128;
+    uint32_t bit;
+    printf("# --- %s\n", __func__);
+    printf("# compressing %d integers\n",length);
+    printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n");
+    for(bit = 1; bit <= 32; ++bit) {
+        uint32_t i;
+        uint32_t * data = get_random_array_from_bit_width(length, bit);
+        uint8_t * buffer = malloc(length * sizeof(uint32_t));
+        uint32_t * backdata = malloc(length * sizeof(uint32_t));
+        uint32_t repeat = 500;
+        uint64_t min_diff;
+        printf("%d\t",bit);
+        min_diff = (uint64_t)-1;
+        for (i = 0; i < repeat; i++) {
+            uint64_t cycles_start, cycles_final, cycles_diff;
+            __asm volatile("" ::: /* pretend to clobber */ "memory");
+            RDTSC_START(cycles_start);
+            bmipack32(data, length, bit, buffer);
+            RDTSC_FINAL(cycles_final);
+            cycles_diff = (cycles_final - cycles_start);
+            if (cycles_diff < min_diff) min_diff = cycles_diff;
+        }
+        printf("%.2f\t",min_diff*1.0/length);
+        min_diff = (uint64_t)-1;
+        for (i = 0; i < repeat; i++) {
+            uint64_t cycles_start, cycles_final, cycles_diff;
+            __asm volatile("" ::: /* pretend to clobber */ "memory");
+            RDTSC_START(cycles_start);
+            bmiunpack32(buffer, length, bit, backdata);
+            RDTSC_FINAL(cycles_final);
+            cycles_diff = (cycles_final - cycles_start);
+            if (cycles_diff < min_diff) min_diff = cycles_diff;
+        }
+        printf("%.2f\t",min_diff*1.0/length);
+
+        free(data);
+        free(buffer);
+        free(backdata);
+        printf("\n");
+    }
+    printf("\n\n"); /* two blank lines are required by gnuplot */
+}
+
+
 int main() {
     demo128();
     turbodemo128();
+    bmidemo128();
+
     return 0;
 }

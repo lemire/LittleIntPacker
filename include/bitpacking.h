@@ -54,5 +54,16 @@ void pack32(const uint32_t *  in, uint32_t number, const uint32_t bit, uint8_t *
 void unpack32(const uint8_t *  in, uint32_t number, const uint32_t bit, uint32_t *  out);
 
 
+/* write number 32-bit values from in bit bits per value to out.
+ * Internally, it reads blocks of 32 integers. The integers should
+ * be in [0,2^bit).
+ * */
+void bmipack32(const uint32_t *  in, uint32_t number, const uint32_t bit, uint8_t *  out);
+
+/* reads  number 32-bit values from "in" as packed bit bits values, and write to "out"
+ * Internally, it writes blocks of 32 integers.
+ * */
+void bmiunpack32(const uint8_t *  in, uint32_t number, const uint32_t bit, uint32_t *  out);
+
 
 #endif //BITPACKING_H

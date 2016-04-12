@@ -43,9 +43,9 @@ make
 uint32_t c = byte_count(l, b);
 
 // packing an array of 32-bit unsigned ints from data to buffer
-pack32(data, l, b,buffer);
+turbopack32(data, l, b,buffer);
 // recovering data
-unpack32(buffer, l, b,backdata);
+turbounpack32(buffer, l, b,backdata);
 ```
 
 

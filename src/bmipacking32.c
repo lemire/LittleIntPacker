@@ -2200,44 +2200,32 @@ static void unpackblock2(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock3(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint32_t * out = *pout;
-  const uint64_t mask = UINT64_C(7);
   /* we are going to access  2 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
   *pw += 12; /* we used up 12 input bytes */
-  out[0] = (uint32_t)  ( ( w0 )  & mask  );
-  out[1] = (uint32_t)  ( ( w0 >> 3 )  & mask  );
-  out[2] = (uint32_t)  ( ( w0 >> 6 )  & mask  );
-  out[3] = (uint32_t)  ( ( w0 >> 9 )  & mask  );
-  out[4] = (uint32_t)  ( ( w0 >> 12 )  & mask  );
-  out[5] = (uint32_t)  ( ( w0 >> 15 )  & mask  );
-  out[6] = (uint32_t)  ( ( w0 >> 18 )  & mask  );
-  out[7] = (uint32_t)  ( ( w0 >> 21 )  & mask  );
-  out[8] = (uint32_t)  ( ( w0 >> 24 )  & mask  );
-  out[9] = (uint32_t)  ( ( w0 >> 27 )  & mask  );
-  out[10] = (uint32_t)  ( ( w0 >> 30 )  & mask  );
-  out[11] = (uint32_t)  ( ( w0 >> 33 )  & mask  );
-  out[12] = (uint32_t)  ( ( w0 >> 36 )  & mask  );
-  out[13] = (uint32_t)  ( ( w0 >> 39 )  & mask  );
-  out[14] = (uint32_t)  ( ( w0 >> 42 )  & mask  );
-  out[15] = (uint32_t)  ( ( w0 >> 45 )  & mask  );
-  out[16] = (uint32_t)  ( ( w0 >> 48 )  & mask  );
-  out[17] = (uint32_t)  ( ( w0 >> 51 )  & mask  );
-  out[18] = (uint32_t)  ( ( w0 >> 54 )  & mask  );
-  out[19] = (uint32_t)  ( ( w0 >> 57 )  & mask  );
-  out[20] = (uint32_t)  ( ( w0 >> 60 )  & mask  );
-  out[21] = (uint32_t)  ( ( ( w0 >> 63  ) | ( w1 << 1 ) )  & mask  );
-  out[22] = (uint32_t)  ( ( w1 >> 2 )  & mask  );
-  out[23] = (uint32_t)  ( ( w1 >> 5 )  & mask  );
-  out[24] = (uint32_t)  ( ( w1 >> 8 )  & mask  );
-  out[25] = (uint32_t)  ( ( w1 >> 11 )  & mask  );
-  out[26] = (uint32_t)  ( ( w1 >> 14 )  & mask  );
-  out[27] = (uint32_t)  ( ( w1 >> 17 )  & mask  );
-  out[28] = (uint32_t)  ( ( w1 >> 20 )  & mask  );
-  out[29] = (uint32_t)  ( ( w1 >> 23 )  & mask  );
-  out[30] = (uint32_t)  ( ( w1 >> 26 )  & mask  );
-  out[31] = (uint32_t)  ( ( w1 >> 29 )  & mask  );
+  __int64_t y;
+  __m256i x;
+
+  uint64_t mask = UINT64_C(0x0707070707070707);// uses 3 * 8 = 24 bits
+  y = _pdep_u64(w0, mask);
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out, x);
+  y = _pdep_u64(w0 >> 24, mask);// remains 64-28 = 40 bits
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out + 1, x);
+  y = _pdep_u64((w0 >> 48) | (w1<<16), mask); // 64-48, is 16 bits, consume 8 bits from rest
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out + 2, x);
+  y = _pdep_u64(w1 >> 8, mask);
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out + 3, x);
   *pout += 32; /* we wrote 32 32-bit integers */
+
 }
 
 
@@ -2245,43 +2233,30 @@ static void unpackblock3(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock4(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint32_t * out = *pout;
-  const uint64_t mask = UINT64_C(15);
   /* we are going to access  2 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
   *pw += 16; /* we used up 16 input bytes */
-  out[0] = (uint32_t)  ( ( w0 )  & mask  );
-  out[1] = (uint32_t)  ( ( w0 >> 4 )  & mask  );
-  out[2] = (uint32_t)  ( ( w0 >> 8 )  & mask  );
-  out[3] = (uint32_t)  ( ( w0 >> 12 )  & mask  );
-  out[4] = (uint32_t)  ( ( w0 >> 16 )  & mask  );
-  out[5] = (uint32_t)  ( ( w0 >> 20 )  & mask  );
-  out[6] = (uint32_t)  ( ( w0 >> 24 )  & mask  );
-  out[7] = (uint32_t)  ( ( w0 >> 28 )  & mask  );
-  out[8] = (uint32_t)  ( ( w0 >> 32 )  & mask  );
-  out[9] = (uint32_t)  ( ( w0 >> 36 )  & mask  );
-  out[10] = (uint32_t)  ( ( w0 >> 40 )  & mask  );
-  out[11] = (uint32_t)  ( ( w0 >> 44 )  & mask  );
-  out[12] = (uint32_t)  ( ( w0 >> 48 )  & mask  );
-  out[13] = (uint32_t)  ( ( w0 >> 52 )  & mask  );
-  out[14] = (uint32_t)  ( ( w0 >> 56 )  & mask  );
-  out[15] = (uint32_t) ( w0  >> 60  );
-  out[16] = (uint32_t)  ( ( w1 )  & mask  );
-  out[17] = (uint32_t)  ( ( w1 >> 4 )  & mask  );
-  out[18] = (uint32_t)  ( ( w1 >> 8 )  & mask  );
-  out[19] = (uint32_t)  ( ( w1 >> 12 )  & mask  );
-  out[20] = (uint32_t)  ( ( w1 >> 16 )  & mask  );
-  out[21] = (uint32_t)  ( ( w1 >> 20 )  & mask  );
-  out[22] = (uint32_t)  ( ( w1 >> 24 )  & mask  );
-  out[23] = (uint32_t)  ( ( w1 >> 28 )  & mask  );
-  out[24] = (uint32_t)  ( ( w1 >> 32 )  & mask  );
-  out[25] = (uint32_t)  ( ( w1 >> 36 )  & mask  );
-  out[26] = (uint32_t)  ( ( w1 >> 40 )  & mask  );
-  out[27] = (uint32_t)  ( ( w1 >> 44 )  & mask  );
-  out[28] = (uint32_t)  ( ( w1 >> 48 )  & mask  );
-  out[29] = (uint32_t)  ( ( w1 >> 52 )  & mask  );
-  out[30] = (uint32_t)  ( ( w1 >> 56 )  & mask  );
-  out[31] = (uint32_t) ( w1  >> 60  );
+  __int64_t y;
+  __m256i x;
+
+  uint64_t mask = UINT64_C(0x0F0F0F0F0F0F0F0F);
+  y = _pdep_u64(w0, mask);
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out, x);
+  y = _pdep_u64(w0 >> 32, mask);
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out + 1, x);
+  y = _pdep_u64(w1, mask);
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out + 2, x);
+  y = _pdep_u64(w1 >> 32, mask);
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out + 3, x);
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2290,44 +2265,31 @@ static void unpackblock4(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock5(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint32_t * out = *pout;
-  const uint64_t mask = UINT64_C(31);
   /* we are going to access  3 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
   uint64_t w2 = pw64[2];
   *pw += 20; /* we used up 20 input bytes */
-  out[0] = (uint32_t)  ( ( w0 )  & mask  );
-  out[1] = (uint32_t)  ( ( w0 >> 5 )  & mask  );
-  out[2] = (uint32_t)  ( ( w0 >> 10 )  & mask  );
-  out[3] = (uint32_t)  ( ( w0 >> 15 )  & mask  );
-  out[4] = (uint32_t)  ( ( w0 >> 20 )  & mask  );
-  out[5] = (uint32_t)  ( ( w0 >> 25 )  & mask  );
-  out[6] = (uint32_t)  ( ( w0 >> 30 )  & mask  );
-  out[7] = (uint32_t)  ( ( w0 >> 35 )  & mask  );
-  out[8] = (uint32_t)  ( ( w0 >> 40 )  & mask  );
-  out[9] = (uint32_t)  ( ( w0 >> 45 )  & mask  );
-  out[10] = (uint32_t)  ( ( w0 >> 50 )  & mask  );
-  out[11] = (uint32_t)  ( ( w0 >> 55 )  & mask  );
-  out[12] = (uint32_t)  ( ( ( w0 >> 60  ) | ( w1 << 4 ) )  & mask  );
-  out[13] = (uint32_t)  ( ( w1 >> 1 )  & mask  );
-  out[14] = (uint32_t)  ( ( w1 >> 6 )  & mask  );
-  out[15] = (uint32_t)  ( ( w1 >> 11 )  & mask  );
-  out[16] = (uint32_t)  ( ( w1 >> 16 )  & mask  );
-  out[17] = (uint32_t)  ( ( w1 >> 21 )  & mask  );
-  out[18] = (uint32_t)  ( ( w1 >> 26 )  & mask  );
-  out[19] = (uint32_t)  ( ( w1 >> 31 )  & mask  );
-  out[20] = (uint32_t)  ( ( w1 >> 36 )  & mask  );
-  out[21] = (uint32_t)  ( ( w1 >> 41 )  & mask  );
-  out[22] = (uint32_t)  ( ( w1 >> 46 )  & mask  );
-  out[23] = (uint32_t)  ( ( w1 >> 51 )  & mask  );
-  out[24] = (uint32_t)  ( ( w1 >> 56 )  & mask  );
-  out[25] = (uint32_t)  ( ( ( w1 >> 61  ) | ( w2 << 3 ) )  & mask  );
-  out[26] = (uint32_t)  ( ( w2 >> 2 )  & mask  );
-  out[27] = (uint32_t)  ( ( w2 >> 7 )  & mask  );
-  out[28] = (uint32_t)  ( ( w2 >> 12 )  & mask  );
-  out[29] = (uint32_t)  ( ( w2 >> 17 )  & mask  );
-  out[30] = (uint32_t)  ( ( w2 >> 22 )  & mask  );
-  out[31] = (uint32_t)  ( ( w2 >> 27 )  & mask  );
+  __int64_t y;
+  __m256i x;
+
+  uint64_t mask = UINT64_C(0x1F1F1F1F1F1F1F1F);// uses 5 * 8 = 40 bits
+  y = _pdep_u64(w0, mask);
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out, x);
+  y = _pdep_u64((w0 >> 40)|(w1 << 24), mask);
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out + 1, x);
+  y = _pdep_u64((w1>>16), mask); // 64-48, is 16 bits, consume 8 bits from rest
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out + 2, x);
+  y = _pdep_u64((w1 >> 56)|(w2<<8), mask);
+  x =  _mm256_cvtepu8_epi32(
+       _mm_loadl_epi64((const __m128i *) & y ) );
+  _mm256_storeu_si256((__m256i*) out + 3, x);
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 

@@ -86,14 +86,20 @@ for bit in range(1,33):
     print("static void unpackblock{0}(const uint8_t ** pw, uint32_t ** pout) {{".format(bit));
     print("  const uint64_t * pw64 = *(const uint64_t **) pw;");
     print("  uint64_t * out = (uint64_t *) *pout;");
-    if(bit < 32): print("  const uint64_t mask = UINT64_C({0});".format((1<<bit)-1));
-    maskstr = " & mask "
-    if (bit == 32) : maskstr = "" # no need
+    maskval = (1<<bit)-1
+    if(bit < 32): print("  const uint64_t masklow = UINT64_C({0});".format(hex(maskval)));
+    masklowstr = " & masklow "
+    if (bit == 32) : masklowstr = "" # no need
+    maskval = (maskval << 32)
+    if(bit < 32): print("  const uint64_t maskhigh = UINT64_C({0});".format(hex(maskval)));
+    maskhighstr = " & maskhigh "
+    if (bit == 32) : maskhighstr = "" # no need
     print("  /* we are going to access  {0} 64-bit word{1} */ ".format(howmanywords(bit),plurial(howmanywords(bit))));
     for k in range(howmanywords(bit)) :
       print("  uint64_t w{0} = pw64[{0}];".format(k))
     print("  *pw += {0}; /* we used up {0} input bytes */ ".format(howmanybytes(bit)));
-    for j in range(howmany(bit)):
+    for k in range(howmany(bit)/2):
+      j = 2*k
       firstword = j * bit / 64
       secondword = (j * bit + bit - 1)/64
       firstshift = (j*bit) % 64
@@ -101,17 +107,28 @@ for bit in range(1,33):
       if(firstshift == 0):
           firstshiftstr ="" # no need
       if( firstword == secondword):
-          if(firstshift + bit == 64):
-            newval = " ( w{1}  {2} ) ".format(j,firstword,firstshiftstr,firstshift)
-          else:
-            newval = "  ( ( w{1} {2}) {3} ) ".format(j,firstword,firstshiftstr,maskstr)
+          baseout = " ( w{0}  {1} ) ".format(firstword,firstshiftstr)
       else:
           secondshift = (64-firstshift)
-          newval = "   ( ( ( w{1} {2} ) | ( w{3} << {4} ) ) {5} ) ".format(j,firstword,firstshiftstr, firstword+1,secondshift,maskstr)
-      if(j % 2 == 0):
-          baseout = newval;
-      else :
-          print("  out[{0}] = ( {1} ) | ( {2} << 32 ); ".format((j-1)/2,baseout,newval))
+          baseout = "  ( ( w{0} {1} ) | ( w{2} << {3} ) ) ".format(firstword,firstshiftstr, firstword+1,secondshift)
+      baseout = "("+baseout + masklowstr+")"
+      j = 2*k +1
+      firstword = j * bit / 64
+      secondword = (j * bit + bit - 1)/64
+      firstshift = (j*bit) % 64
+      firstshiftstr = "<< {0} ".format(32-firstshift)
+      if(32-firstshift < 0):
+        firstshiftstr = ">> {0} ".format(firstshift-32)
+      if(32-firstshift == 0):
+        firstshiftstr = " "
+      if( firstword == secondword):
+          highout = " ( w{1}  {2} ) ".format(j,firstword,firstshiftstr,firstshift)
+      else:
+          secondshift = (64-firstshift)
+          secondshiftstr = " << {0} ".format(secondshift)
+          highout = "    ( ( w{1} {2} ) | ( w{3} << {4} ) ) ".format(j,firstword,firstshiftstr, firstword+1,secondshift+32)
+      highout = "("+highout + maskhighstr+")"
+      print("  out[{0}] =  {1}  |  {2}  ; ".format(k,baseout,highout))
     print("  *pout += {0}; /* we wrote {0} 32-bit integer{1} */ ".format(howmany(bit),plurial(howmany(bit))));
     print("}");
     print("")

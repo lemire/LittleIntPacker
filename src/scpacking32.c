@@ -2124,26 +2124,27 @@ static void unpackblock0(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock1(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(1);
+  const uint64_t masklow = UINT64_C(0x1);
+  const uint64_t maskhigh = UINT64_C(0x100000000);
   /* we are going to access  1 64-bit word */
   uint64_t w0 = pw64[0];
   *pw += 4; /* we used up 4 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 1 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 2 )  & mask  )  ) | (   ( ( w0 >> 3 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 4 )  & mask  )  ) | (   ( ( w0 >> 5 )  & mask  )  << 32 );
-  out[3] = (   ( ( w0 >> 6 )  & mask  )  ) | (   ( ( w0 >> 7 )  & mask  )  << 32 );
-  out[4] = (   ( ( w0 >> 8 )  & mask  )  ) | (   ( ( w0 >> 9 )  & mask  )  << 32 );
-  out[5] = (   ( ( w0 >> 10 )  & mask  )  ) | (   ( ( w0 >> 11 )  & mask  )  << 32 );
-  out[6] = (   ( ( w0 >> 12 )  & mask  )  ) | (   ( ( w0 >> 13 )  & mask  )  << 32 );
-  out[7] = (   ( ( w0 >> 14 )  & mask  )  ) | (   ( ( w0 >> 15 )  & mask  )  << 32 );
-  out[8] = (   ( ( w0 >> 16 )  & mask  )  ) | (   ( ( w0 >> 17 )  & mask  )  << 32 );
-  out[9] = (   ( ( w0 >> 18 )  & mask  )  ) | (   ( ( w0 >> 19 )  & mask  )  << 32 );
-  out[10] = (   ( ( w0 >> 20 )  & mask  )  ) | (   ( ( w0 >> 21 )  & mask  )  << 32 );
-  out[11] = (   ( ( w0 >> 22 )  & mask  )  ) | (   ( ( w0 >> 23 )  & mask  )  << 32 );
-  out[12] = (   ( ( w0 >> 24 )  & mask  )  ) | (   ( ( w0 >> 25 )  & mask  )  << 32 );
-  out[13] = (   ( ( w0 >> 26 )  & mask  )  ) | (   ( ( w0 >> 27 )  & mask  )  << 32 );
-  out[14] = (   ( ( w0 >> 28 )  & mask  )  ) | (   ( ( w0 >> 29 )  & mask  )  << 32 );
-  out[15] = (   ( ( w0 >> 30 )  & mask  )  ) | (   ( ( w0 >> 31 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 31  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 2  )  & masklow )  |  ( ( w0  << 29  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 4  )  & masklow )  |  ( ( w0  << 27  )  & maskhigh )  ;
+  out[3] =  ( ( w0  >> 6  )  & masklow )  |  ( ( w0  << 25  )  & maskhigh )  ;
+  out[4] =  ( ( w0  >> 8  )  & masklow )  |  ( ( w0  << 23  )  & maskhigh )  ;
+  out[5] =  ( ( w0  >> 10  )  & masklow )  |  ( ( w0  << 21  )  & maskhigh )  ;
+  out[6] =  ( ( w0  >> 12  )  & masklow )  |  ( ( w0  << 19  )  & maskhigh )  ;
+  out[7] =  ( ( w0  >> 14  )  & masklow )  |  ( ( w0  << 17  )  & maskhigh )  ;
+  out[8] =  ( ( w0  >> 16  )  & masklow )  |  ( ( w0  << 15  )  & maskhigh )  ;
+  out[9] =  ( ( w0  >> 18  )  & masklow )  |  ( ( w0  << 13  )  & maskhigh )  ;
+  out[10] =  ( ( w0  >> 20  )  & masklow )  |  ( ( w0  << 11  )  & maskhigh )  ;
+  out[11] =  ( ( w0  >> 22  )  & masklow )  |  ( ( w0  << 9  )  & maskhigh )  ;
+  out[12] =  ( ( w0  >> 24  )  & masklow )  |  ( ( w0  << 7  )  & maskhigh )  ;
+  out[13] =  ( ( w0  >> 26  )  & masklow )  |  ( ( w0  << 5  )  & maskhigh )  ;
+  out[14] =  ( ( w0  >> 28  )  & masklow )  |  ( ( w0  << 3  )  & maskhigh )  ;
+  out[15] =  ( ( w0  >> 30  )  & masklow )  |  ( ( w0  << 1  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2152,26 +2153,27 @@ static void unpackblock1(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock2(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(3);
+  const uint64_t masklow = UINT64_C(0x3);
+  const uint64_t maskhigh = UINT64_C(0x300000000);
   /* we are going to access  1 64-bit word */
   uint64_t w0 = pw64[0];
   *pw += 8; /* we used up 8 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 2 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 4 )  & mask  )  ) | (   ( ( w0 >> 6 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 8 )  & mask  )  ) | (   ( ( w0 >> 10 )  & mask  )  << 32 );
-  out[3] = (   ( ( w0 >> 12 )  & mask  )  ) | (   ( ( w0 >> 14 )  & mask  )  << 32 );
-  out[4] = (   ( ( w0 >> 16 )  & mask  )  ) | (   ( ( w0 >> 18 )  & mask  )  << 32 );
-  out[5] = (   ( ( w0 >> 20 )  & mask  )  ) | (   ( ( w0 >> 22 )  & mask  )  << 32 );
-  out[6] = (   ( ( w0 >> 24 )  & mask  )  ) | (   ( ( w0 >> 26 )  & mask  )  << 32 );
-  out[7] = (   ( ( w0 >> 28 )  & mask  )  ) | (   ( ( w0 >> 30 )  & mask  )  << 32 );
-  out[8] = (   ( ( w0 >> 32 )  & mask  )  ) | (   ( ( w0 >> 34 )  & mask  )  << 32 );
-  out[9] = (   ( ( w0 >> 36 )  & mask  )  ) | (   ( ( w0 >> 38 )  & mask  )  << 32 );
-  out[10] = (   ( ( w0 >> 40 )  & mask  )  ) | (   ( ( w0 >> 42 )  & mask  )  << 32 );
-  out[11] = (   ( ( w0 >> 44 )  & mask  )  ) | (   ( ( w0 >> 46 )  & mask  )  << 32 );
-  out[12] = (   ( ( w0 >> 48 )  & mask  )  ) | (   ( ( w0 >> 50 )  & mask  )  << 32 );
-  out[13] = (   ( ( w0 >> 52 )  & mask  )  ) | (   ( ( w0 >> 54 )  & mask  )  << 32 );
-  out[14] = (   ( ( w0 >> 56 )  & mask  )  ) | (   ( ( w0 >> 58 )  & mask  )  << 32 );
-  out[15] = (   ( ( w0 >> 60 )  & mask  )  ) | (  ( w0  >> 62  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 30  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 4  )  & masklow )  |  ( ( w0  << 26  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 8  )  & masklow )  |  ( ( w0  << 22  )  & maskhigh )  ;
+  out[3] =  ( ( w0  >> 12  )  & masklow )  |  ( ( w0  << 18  )  & maskhigh )  ;
+  out[4] =  ( ( w0  >> 16  )  & masklow )  |  ( ( w0  << 14  )  & maskhigh )  ;
+  out[5] =  ( ( w0  >> 20  )  & masklow )  |  ( ( w0  << 10  )  & maskhigh )  ;
+  out[6] =  ( ( w0  >> 24  )  & masklow )  |  ( ( w0  << 6  )  & maskhigh )  ;
+  out[7] =  ( ( w0  >> 28  )  & masklow )  |  ( ( w0  << 2  )  & maskhigh )  ;
+  out[8] =  ( ( w0  >> 32  )  & masklow )  |  ( ( w0  >> 2  )  & maskhigh )  ;
+  out[9] =  ( ( w0  >> 36  )  & masklow )  |  ( ( w0  >> 6  )  & maskhigh )  ;
+  out[10] =  ( ( w0  >> 40  )  & masklow )  |  ( ( w0  >> 10  )  & maskhigh )  ;
+  out[11] =  ( ( w0  >> 44  )  & masklow )  |  ( ( w0  >> 14  )  & maskhigh )  ;
+  out[12] =  ( ( w0  >> 48  )  & masklow )  |  ( ( w0  >> 18  )  & maskhigh )  ;
+  out[13] =  ( ( w0  >> 52  )  & masklow )  |  ( ( w0  >> 22  )  & maskhigh )  ;
+  out[14] =  ( ( w0  >> 56  )  & masklow )  |  ( ( w0  >> 26  )  & maskhigh )  ;
+  out[15] =  ( ( w0  >> 60  )  & masklow )  |  ( ( w0  >> 30  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2180,27 +2182,28 @@ static void unpackblock2(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock3(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(7);
+  const uint64_t masklow = UINT64_C(0x7);
+  const uint64_t maskhigh = UINT64_C(0x700000000);
   /* we are going to access  2 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
   *pw += 12; /* we used up 12 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 3 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 6 )  & mask  )  ) | (   ( ( w0 >> 9 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 12 )  & mask  )  ) | (   ( ( w0 >> 15 )  & mask  )  << 32 );
-  out[3] = (   ( ( w0 >> 18 )  & mask  )  ) | (   ( ( w0 >> 21 )  & mask  )  << 32 );
-  out[4] = (   ( ( w0 >> 24 )  & mask  )  ) | (   ( ( w0 >> 27 )  & mask  )  << 32 );
-  out[5] = (   ( ( w0 >> 30 )  & mask  )  ) | (   ( ( w0 >> 33 )  & mask  )  << 32 );
-  out[6] = (   ( ( w0 >> 36 )  & mask  )  ) | (   ( ( w0 >> 39 )  & mask  )  << 32 );
-  out[7] = (   ( ( w0 >> 42 )  & mask  )  ) | (   ( ( w0 >> 45 )  & mask  )  << 32 );
-  out[8] = (   ( ( w0 >> 48 )  & mask  )  ) | (   ( ( w0 >> 51 )  & mask  )  << 32 );
-  out[9] = (   ( ( w0 >> 54 )  & mask  )  ) | (   ( ( w0 >> 57 )  & mask  )  << 32 );
-  out[10] = (   ( ( w0 >> 60 )  & mask  )  ) | (    ( ( ( w0 >> 63  ) | ( w1 << 1 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w1 >> 2 )  & mask  )  ) | (   ( ( w1 >> 5 )  & mask  )  << 32 );
-  out[12] = (   ( ( w1 >> 8 )  & mask  )  ) | (   ( ( w1 >> 11 )  & mask  )  << 32 );
-  out[13] = (   ( ( w1 >> 14 )  & mask  )  ) | (   ( ( w1 >> 17 )  & mask  )  << 32 );
-  out[14] = (   ( ( w1 >> 20 )  & mask  )  ) | (   ( ( w1 >> 23 )  & mask  )  << 32 );
-  out[15] = (   ( ( w1 >> 26 )  & mask  )  ) | (   ( ( w1 >> 29 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 29  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 6  )  & masklow )  |  ( ( w0  << 23  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 12  )  & masklow )  |  ( ( w0  << 17  )  & maskhigh )  ;
+  out[3] =  ( ( w0  >> 18  )  & masklow )  |  ( ( w0  << 11  )  & maskhigh )  ;
+  out[4] =  ( ( w0  >> 24  )  & masklow )  |  ( ( w0  << 5  )  & maskhigh )  ;
+  out[5] =  ( ( w0  >> 30  )  & masklow )  |  ( ( w0  >> 1  )  & maskhigh )  ;
+  out[6] =  ( ( w0  >> 36  )  & masklow )  |  ( ( w0  >> 7  )  & maskhigh )  ;
+  out[7] =  ( ( w0  >> 42  )  & masklow )  |  ( ( w0  >> 13  )  & maskhigh )  ;
+  out[8] =  ( ( w0  >> 48  )  & masklow )  |  ( ( w0  >> 19  )  & maskhigh )  ;
+  out[9] =  ( ( w0  >> 54  )  & masklow )  |  ( ( w0  >> 25  )  & maskhigh )  ;
+  out[10] =  ( ( w0  >> 60  )  & masklow )  |  (    ( ( w0 >> 31  ) | ( w1 << 33 ) )  & maskhigh )  ;
+  out[11] =  ( ( w1  >> 2  )  & masklow )  |  ( ( w1  << 27  )  & maskhigh )  ;
+  out[12] =  ( ( w1  >> 8  )  & masklow )  |  ( ( w1  << 21  )  & maskhigh )  ;
+  out[13] =  ( ( w1  >> 14  )  & masklow )  |  ( ( w1  << 15  )  & maskhigh )  ;
+  out[14] =  ( ( w1  >> 20  )  & masklow )  |  ( ( w1  << 9  )  & maskhigh )  ;
+  out[15] =  ( ( w1  >> 26  )  & masklow )  |  ( ( w1  << 3  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2209,27 +2212,28 @@ static void unpackblock3(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock4(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(15);
+  const uint64_t masklow = UINT64_C(0xf);
+  const uint64_t maskhigh = UINT64_C(0xf00000000);
   /* we are going to access  2 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
   *pw += 16; /* we used up 16 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 4 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 8 )  & mask  )  ) | (   ( ( w0 >> 12 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 16 )  & mask  )  ) | (   ( ( w0 >> 20 )  & mask  )  << 32 );
-  out[3] = (   ( ( w0 >> 24 )  & mask  )  ) | (   ( ( w0 >> 28 )  & mask  )  << 32 );
-  out[4] = (   ( ( w0 >> 32 )  & mask  )  ) | (   ( ( w0 >> 36 )  & mask  )  << 32 );
-  out[5] = (   ( ( w0 >> 40 )  & mask  )  ) | (   ( ( w0 >> 44 )  & mask  )  << 32 );
-  out[6] = (   ( ( w0 >> 48 )  & mask  )  ) | (   ( ( w0 >> 52 )  & mask  )  << 32 );
-  out[7] = (   ( ( w0 >> 56 )  & mask  )  ) | (  ( w0  >> 60  )  << 32 );
-  out[8] = (   ( ( w1 )  & mask  )  ) | (   ( ( w1 >> 4 )  & mask  )  << 32 );
-  out[9] = (   ( ( w1 >> 8 )  & mask  )  ) | (   ( ( w1 >> 12 )  & mask  )  << 32 );
-  out[10] = (   ( ( w1 >> 16 )  & mask  )  ) | (   ( ( w1 >> 20 )  & mask  )  << 32 );
-  out[11] = (   ( ( w1 >> 24 )  & mask  )  ) | (   ( ( w1 >> 28 )  & mask  )  << 32 );
-  out[12] = (   ( ( w1 >> 32 )  & mask  )  ) | (   ( ( w1 >> 36 )  & mask  )  << 32 );
-  out[13] = (   ( ( w1 >> 40 )  & mask  )  ) | (   ( ( w1 >> 44 )  & mask  )  << 32 );
-  out[14] = (   ( ( w1 >> 48 )  & mask  )  ) | (   ( ( w1 >> 52 )  & mask  )  << 32 );
-  out[15] = (   ( ( w1 >> 56 )  & mask  )  ) | (  ( w1  >> 60  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 28  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 8  )  & masklow )  |  ( ( w0  << 20  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 16  )  & masklow )  |  ( ( w0  << 12  )  & maskhigh )  ;
+  out[3] =  ( ( w0  >> 24  )  & masklow )  |  ( ( w0  << 4  )  & maskhigh )  ;
+  out[4] =  ( ( w0  >> 32  )  & masklow )  |  ( ( w0  >> 4  )  & maskhigh )  ;
+  out[5] =  ( ( w0  >> 40  )  & masklow )  |  ( ( w0  >> 12  )  & maskhigh )  ;
+  out[6] =  ( ( w0  >> 48  )  & masklow )  |  ( ( w0  >> 20  )  & maskhigh )  ;
+  out[7] =  ( ( w0  >> 56  )  & masklow )  |  ( ( w0  >> 28  )  & maskhigh )  ;
+  out[8] =  ( ( w1   )  & masklow )  |  ( ( w1  << 28  )  & maskhigh )  ;
+  out[9] =  ( ( w1  >> 8  )  & masklow )  |  ( ( w1  << 20  )  & maskhigh )  ;
+  out[10] =  ( ( w1  >> 16  )  & masklow )  |  ( ( w1  << 12  )  & maskhigh )  ;
+  out[11] =  ( ( w1  >> 24  )  & masklow )  |  ( ( w1  << 4  )  & maskhigh )  ;
+  out[12] =  ( ( w1  >> 32  )  & masklow )  |  ( ( w1  >> 4  )  & maskhigh )  ;
+  out[13] =  ( ( w1  >> 40  )  & masklow )  |  ( ( w1  >> 12  )  & maskhigh )  ;
+  out[14] =  ( ( w1  >> 48  )  & masklow )  |  ( ( w1  >> 20  )  & maskhigh )  ;
+  out[15] =  ( ( w1  >> 56  )  & masklow )  |  ( ( w1  >> 28  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2238,28 +2242,29 @@ static void unpackblock4(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock5(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(31);
+  const uint64_t masklow = UINT64_C(0x1f);
+  const uint64_t maskhigh = UINT64_C(0x1f00000000);
   /* we are going to access  3 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
   uint64_t w2 = pw64[2];
   *pw += 20; /* we used up 20 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 5 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 10 )  & mask  )  ) | (   ( ( w0 >> 15 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 20 )  & mask  )  ) | (   ( ( w0 >> 25 )  & mask  )  << 32 );
-  out[3] = (   ( ( w0 >> 30 )  & mask  )  ) | (   ( ( w0 >> 35 )  & mask  )  << 32 );
-  out[4] = (   ( ( w0 >> 40 )  & mask  )  ) | (   ( ( w0 >> 45 )  & mask  )  << 32 );
-  out[5] = (   ( ( w0 >> 50 )  & mask  )  ) | (   ( ( w0 >> 55 )  & mask  )  << 32 );
-  out[6] = (    ( ( ( w0 >> 60  ) | ( w1 << 4 ) )  & mask  )  ) | (   ( ( w1 >> 1 )  & mask  )  << 32 );
-  out[7] = (   ( ( w1 >> 6 )  & mask  )  ) | (   ( ( w1 >> 11 )  & mask  )  << 32 );
-  out[8] = (   ( ( w1 >> 16 )  & mask  )  ) | (   ( ( w1 >> 21 )  & mask  )  << 32 );
-  out[9] = (   ( ( w1 >> 26 )  & mask  )  ) | (   ( ( w1 >> 31 )  & mask  )  << 32 );
-  out[10] = (   ( ( w1 >> 36 )  & mask  )  ) | (   ( ( w1 >> 41 )  & mask  )  << 32 );
-  out[11] = (   ( ( w1 >> 46 )  & mask  )  ) | (   ( ( w1 >> 51 )  & mask  )  << 32 );
-  out[12] = (   ( ( w1 >> 56 )  & mask  )  ) | (    ( ( ( w1 >> 61  ) | ( w2 << 3 ) )  & mask  )  << 32 );
-  out[13] = (   ( ( w2 >> 2 )  & mask  )  ) | (   ( ( w2 >> 7 )  & mask  )  << 32 );
-  out[14] = (   ( ( w2 >> 12 )  & mask  )  ) | (   ( ( w2 >> 17 )  & mask  )  << 32 );
-  out[15] = (   ( ( w2 >> 22 )  & mask  )  ) | (   ( ( w2 >> 27 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 27  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 10  )  & masklow )  |  ( ( w0  << 17  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 20  )  & masklow )  |  ( ( w0  << 7  )  & maskhigh )  ;
+  out[3] =  ( ( w0  >> 30  )  & masklow )  |  ( ( w0  >> 3  )  & maskhigh )  ;
+  out[4] =  ( ( w0  >> 40  )  & masklow )  |  ( ( w0  >> 13  )  & maskhigh )  ;
+  out[5] =  ( ( w0  >> 50  )  & masklow )  |  ( ( w0  >> 23  )  & maskhigh )  ;
+  out[6] =  (  ( ( w0 >> 60  ) | ( w1 << 4 ) )  & masklow )  |  ( ( w1  << 31  )  & maskhigh )  ;
+  out[7] =  ( ( w1  >> 6  )  & masklow )  |  ( ( w1  << 21  )  & maskhigh )  ;
+  out[8] =  ( ( w1  >> 16  )  & masklow )  |  ( ( w1  << 11  )  & maskhigh )  ;
+  out[9] =  ( ( w1  >> 26  )  & masklow )  |  ( ( w1  << 1  )  & maskhigh )  ;
+  out[10] =  ( ( w1  >> 36  )  & masklow )  |  ( ( w1  >> 9  )  & maskhigh )  ;
+  out[11] =  ( ( w1  >> 46  )  & masklow )  |  ( ( w1  >> 19  )  & maskhigh )  ;
+  out[12] =  ( ( w1  >> 56  )  & masklow )  |  (    ( ( w1 >> 29  ) | ( w2 << 35 ) )  & maskhigh )  ;
+  out[13] =  ( ( w2  >> 2  )  & masklow )  |  ( ( w2  << 25  )  & maskhigh )  ;
+  out[14] =  ( ( w2  >> 12  )  & masklow )  |  ( ( w2  << 15  )  & maskhigh )  ;
+  out[15] =  ( ( w2  >> 22  )  & masklow )  |  ( ( w2  << 5  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2268,28 +2273,29 @@ static void unpackblock5(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock6(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(63);
+  const uint64_t masklow = UINT64_C(0x3f);
+  const uint64_t maskhigh = UINT64_C(0x3f00000000);
   /* we are going to access  3 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
   uint64_t w2 = pw64[2];
   *pw += 24; /* we used up 24 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 6 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 12 )  & mask  )  ) | (   ( ( w0 >> 18 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 24 )  & mask  )  ) | (   ( ( w0 >> 30 )  & mask  )  << 32 );
-  out[3] = (   ( ( w0 >> 36 )  & mask  )  ) | (   ( ( w0 >> 42 )  & mask  )  << 32 );
-  out[4] = (   ( ( w0 >> 48 )  & mask  )  ) | (   ( ( w0 >> 54 )  & mask  )  << 32 );
-  out[5] = (    ( ( ( w0 >> 60  ) | ( w1 << 4 ) )  & mask  )  ) | (   ( ( w1 >> 2 )  & mask  )  << 32 );
-  out[6] = (   ( ( w1 >> 8 )  & mask  )  ) | (   ( ( w1 >> 14 )  & mask  )  << 32 );
-  out[7] = (   ( ( w1 >> 20 )  & mask  )  ) | (   ( ( w1 >> 26 )  & mask  )  << 32 );
-  out[8] = (   ( ( w1 >> 32 )  & mask  )  ) | (   ( ( w1 >> 38 )  & mask  )  << 32 );
-  out[9] = (   ( ( w1 >> 44 )  & mask  )  ) | (   ( ( w1 >> 50 )  & mask  )  << 32 );
-  out[10] = (   ( ( w1 >> 56 )  & mask  )  ) | (    ( ( ( w1 >> 62  ) | ( w2 << 2 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w2 >> 4 )  & mask  )  ) | (   ( ( w2 >> 10 )  & mask  )  << 32 );
-  out[12] = (   ( ( w2 >> 16 )  & mask  )  ) | (   ( ( w2 >> 22 )  & mask  )  << 32 );
-  out[13] = (   ( ( w2 >> 28 )  & mask  )  ) | (   ( ( w2 >> 34 )  & mask  )  << 32 );
-  out[14] = (   ( ( w2 >> 40 )  & mask  )  ) | (   ( ( w2 >> 46 )  & mask  )  << 32 );
-  out[15] = (   ( ( w2 >> 52 )  & mask  )  ) | (  ( w2  >> 58  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 26  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 12  )  & masklow )  |  ( ( w0  << 14  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 24  )  & masklow )  |  ( ( w0  << 2  )  & maskhigh )  ;
+  out[3] =  ( ( w0  >> 36  )  & masklow )  |  ( ( w0  >> 10  )  & maskhigh )  ;
+  out[4] =  ( ( w0  >> 48  )  & masklow )  |  ( ( w0  >> 22  )  & maskhigh )  ;
+  out[5] =  (  ( ( w0 >> 60  ) | ( w1 << 4 ) )  & masklow )  |  ( ( w1  << 30  )  & maskhigh )  ;
+  out[6] =  ( ( w1  >> 8  )  & masklow )  |  ( ( w1  << 18  )  & maskhigh )  ;
+  out[7] =  ( ( w1  >> 20  )  & masklow )  |  ( ( w1  << 6  )  & maskhigh )  ;
+  out[8] =  ( ( w1  >> 32  )  & masklow )  |  ( ( w1  >> 6  )  & maskhigh )  ;
+  out[9] =  ( ( w1  >> 44  )  & masklow )  |  ( ( w1  >> 18  )  & maskhigh )  ;
+  out[10] =  ( ( w1  >> 56  )  & masklow )  |  (    ( ( w1 >> 30  ) | ( w2 << 34 ) )  & maskhigh )  ;
+  out[11] =  ( ( w2  >> 4  )  & masklow )  |  ( ( w2  << 22  )  & maskhigh )  ;
+  out[12] =  ( ( w2  >> 16  )  & masklow )  |  ( ( w2  << 10  )  & maskhigh )  ;
+  out[13] =  ( ( w2  >> 28  )  & masklow )  |  ( ( w2  >> 2  )  & maskhigh )  ;
+  out[14] =  ( ( w2  >> 40  )  & masklow )  |  ( ( w2  >> 14  )  & maskhigh )  ;
+  out[15] =  ( ( w2  >> 52  )  & masklow )  |  ( ( w2  >> 26  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2298,29 +2304,30 @@ static void unpackblock6(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock7(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(127);
+  const uint64_t masklow = UINT64_C(0x7f);
+  const uint64_t maskhigh = UINT64_C(0x7f00000000);
   /* we are going to access  4 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
   uint64_t w2 = pw64[2];
   uint64_t w3 = pw64[3];
   *pw += 28; /* we used up 28 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 7 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 14 )  & mask  )  ) | (   ( ( w0 >> 21 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 28 )  & mask  )  ) | (   ( ( w0 >> 35 )  & mask  )  << 32 );
-  out[3] = (   ( ( w0 >> 42 )  & mask  )  ) | (   ( ( w0 >> 49 )  & mask  )  << 32 );
-  out[4] = (   ( ( w0 >> 56 )  & mask  )  ) | (    ( ( ( w0 >> 63  ) | ( w1 << 1 ) )  & mask  )  << 32 );
-  out[5] = (   ( ( w1 >> 6 )  & mask  )  ) | (   ( ( w1 >> 13 )  & mask  )  << 32 );
-  out[6] = (   ( ( w1 >> 20 )  & mask  )  ) | (   ( ( w1 >> 27 )  & mask  )  << 32 );
-  out[7] = (   ( ( w1 >> 34 )  & mask  )  ) | (   ( ( w1 >> 41 )  & mask  )  << 32 );
-  out[8] = (   ( ( w1 >> 48 )  & mask  )  ) | (   ( ( w1 >> 55 )  & mask  )  << 32 );
-  out[9] = (    ( ( ( w1 >> 62  ) | ( w2 << 2 ) )  & mask  )  ) | (   ( ( w2 >> 5 )  & mask  )  << 32 );
-  out[10] = (   ( ( w2 >> 12 )  & mask  )  ) | (   ( ( w2 >> 19 )  & mask  )  << 32 );
-  out[11] = (   ( ( w2 >> 26 )  & mask  )  ) | (   ( ( w2 >> 33 )  & mask  )  << 32 );
-  out[12] = (   ( ( w2 >> 40 )  & mask  )  ) | (   ( ( w2 >> 47 )  & mask  )  << 32 );
-  out[13] = (   ( ( w2 >> 54 )  & mask  )  ) | (    ( ( ( w2 >> 61  ) | ( w3 << 3 ) )  & mask  )  << 32 );
-  out[14] = (   ( ( w3 >> 4 )  & mask  )  ) | (   ( ( w3 >> 11 )  & mask  )  << 32 );
-  out[15] = (   ( ( w3 >> 18 )  & mask  )  ) | (   ( ( w3 >> 25 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 25  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 14  )  & masklow )  |  ( ( w0  << 11  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 28  )  & masklow )  |  ( ( w0  >> 3  )  & maskhigh )  ;
+  out[3] =  ( ( w0  >> 42  )  & masklow )  |  ( ( w0  >> 17  )  & maskhigh )  ;
+  out[4] =  ( ( w0  >> 56  )  & masklow )  |  (    ( ( w0 >> 31  ) | ( w1 << 33 ) )  & maskhigh )  ;
+  out[5] =  ( ( w1  >> 6  )  & masklow )  |  ( ( w1  << 19  )  & maskhigh )  ;
+  out[6] =  ( ( w1  >> 20  )  & masklow )  |  ( ( w1  << 5  )  & maskhigh )  ;
+  out[7] =  ( ( w1  >> 34  )  & masklow )  |  ( ( w1  >> 9  )  & maskhigh )  ;
+  out[8] =  ( ( w1  >> 48  )  & masklow )  |  ( ( w1  >> 23  )  & maskhigh )  ;
+  out[9] =  (  ( ( w1 >> 62  ) | ( w2 << 2 ) )  & masklow )  |  ( ( w2  << 27  )  & maskhigh )  ;
+  out[10] =  ( ( w2  >> 12  )  & masklow )  |  ( ( w2  << 13  )  & maskhigh )  ;
+  out[11] =  ( ( w2  >> 26  )  & masklow )  |  ( ( w2  >> 1  )  & maskhigh )  ;
+  out[12] =  ( ( w2  >> 40  )  & masklow )  |  ( ( w2  >> 15  )  & maskhigh )  ;
+  out[13] =  ( ( w2  >> 54  )  & masklow )  |  (    ( ( w2 >> 29  ) | ( w3 << 35 ) )  & maskhigh )  ;
+  out[14] =  ( ( w3  >> 4  )  & masklow )  |  ( ( w3  << 21  )  & maskhigh )  ;
+  out[15] =  ( ( w3  >> 18  )  & masklow )  |  ( ( w3  << 7  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2329,29 +2336,30 @@ static void unpackblock7(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock8(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(255);
+  const uint64_t masklow = UINT64_C(0xff);
+  const uint64_t maskhigh = UINT64_C(0xff00000000);
   /* we are going to access  4 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
   uint64_t w2 = pw64[2];
   uint64_t w3 = pw64[3];
   *pw += 32; /* we used up 32 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 8 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 16 )  & mask  )  ) | (   ( ( w0 >> 24 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 32 )  & mask  )  ) | (   ( ( w0 >> 40 )  & mask  )  << 32 );
-  out[3] = (   ( ( w0 >> 48 )  & mask  )  ) | (  ( w0  >> 56  )  << 32 );
-  out[4] = (   ( ( w1 )  & mask  )  ) | (   ( ( w1 >> 8 )  & mask  )  << 32 );
-  out[5] = (   ( ( w1 >> 16 )  & mask  )  ) | (   ( ( w1 >> 24 )  & mask  )  << 32 );
-  out[6] = (   ( ( w1 >> 32 )  & mask  )  ) | (   ( ( w1 >> 40 )  & mask  )  << 32 );
-  out[7] = (   ( ( w1 >> 48 )  & mask  )  ) | (  ( w1  >> 56  )  << 32 );
-  out[8] = (   ( ( w2 )  & mask  )  ) | (   ( ( w2 >> 8 )  & mask  )  << 32 );
-  out[9] = (   ( ( w2 >> 16 )  & mask  )  ) | (   ( ( w2 >> 24 )  & mask  )  << 32 );
-  out[10] = (   ( ( w2 >> 32 )  & mask  )  ) | (   ( ( w2 >> 40 )  & mask  )  << 32 );
-  out[11] = (   ( ( w2 >> 48 )  & mask  )  ) | (  ( w2  >> 56  )  << 32 );
-  out[12] = (   ( ( w3 )  & mask  )  ) | (   ( ( w3 >> 8 )  & mask  )  << 32 );
-  out[13] = (   ( ( w3 >> 16 )  & mask  )  ) | (   ( ( w3 >> 24 )  & mask  )  << 32 );
-  out[14] = (   ( ( w3 >> 32 )  & mask  )  ) | (   ( ( w3 >> 40 )  & mask  )  << 32 );
-  out[15] = (   ( ( w3 >> 48 )  & mask  )  ) | (  ( w3  >> 56  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 24  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 16  )  & masklow )  |  ( ( w0  << 8  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 32  )  & masklow )  |  ( ( w0  >> 8  )  & maskhigh )  ;
+  out[3] =  ( ( w0  >> 48  )  & masklow )  |  ( ( w0  >> 24  )  & maskhigh )  ;
+  out[4] =  ( ( w1   )  & masklow )  |  ( ( w1  << 24  )  & maskhigh )  ;
+  out[5] =  ( ( w1  >> 16  )  & masklow )  |  ( ( w1  << 8  )  & maskhigh )  ;
+  out[6] =  ( ( w1  >> 32  )  & masklow )  |  ( ( w1  >> 8  )  & maskhigh )  ;
+  out[7] =  ( ( w1  >> 48  )  & masklow )  |  ( ( w1  >> 24  )  & maskhigh )  ;
+  out[8] =  ( ( w2   )  & masklow )  |  ( ( w2  << 24  )  & maskhigh )  ;
+  out[9] =  ( ( w2  >> 16  )  & masklow )  |  ( ( w2  << 8  )  & maskhigh )  ;
+  out[10] =  ( ( w2  >> 32  )  & masklow )  |  ( ( w2  >> 8  )  & maskhigh )  ;
+  out[11] =  ( ( w2  >> 48  )  & masklow )  |  ( ( w2  >> 24  )  & maskhigh )  ;
+  out[12] =  ( ( w3   )  & masklow )  |  ( ( w3  << 24  )  & maskhigh )  ;
+  out[13] =  ( ( w3  >> 16  )  & masklow )  |  ( ( w3  << 8  )  & maskhigh )  ;
+  out[14] =  ( ( w3  >> 32  )  & masklow )  |  ( ( w3  >> 8  )  & maskhigh )  ;
+  out[15] =  ( ( w3  >> 48  )  & masklow )  |  ( ( w3  >> 24  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2360,7 +2368,8 @@ static void unpackblock8(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock9(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(511);
+  const uint64_t masklow = UINT64_C(0x1ff);
+  const uint64_t maskhigh = UINT64_C(0x1ff00000000);
   /* we are going to access  5 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2368,22 +2377,22 @@ static void unpackblock9(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w3 = pw64[3];
   uint64_t w4 = pw64[4];
   *pw += 36; /* we used up 36 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 9 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 18 )  & mask  )  ) | (   ( ( w0 >> 27 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 36 )  & mask  )  ) | (   ( ( w0 >> 45 )  & mask  )  << 32 );
-  out[3] = (   ( ( w0 >> 54 )  & mask  )  ) | (    ( ( ( w0 >> 63  ) | ( w1 << 1 ) )  & mask  )  << 32 );
-  out[4] = (   ( ( w1 >> 8 )  & mask  )  ) | (   ( ( w1 >> 17 )  & mask  )  << 32 );
-  out[5] = (   ( ( w1 >> 26 )  & mask  )  ) | (   ( ( w1 >> 35 )  & mask  )  << 32 );
-  out[6] = (   ( ( w1 >> 44 )  & mask  )  ) | (   ( ( w1 >> 53 )  & mask  )  << 32 );
-  out[7] = (    ( ( ( w1 >> 62  ) | ( w2 << 2 ) )  & mask  )  ) | (   ( ( w2 >> 7 )  & mask  )  << 32 );
-  out[8] = (   ( ( w2 >> 16 )  & mask  )  ) | (   ( ( w2 >> 25 )  & mask  )  << 32 );
-  out[9] = (   ( ( w2 >> 34 )  & mask  )  ) | (   ( ( w2 >> 43 )  & mask  )  << 32 );
-  out[10] = (   ( ( w2 >> 52 )  & mask  )  ) | (    ( ( ( w2 >> 61  ) | ( w3 << 3 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w3 >> 6 )  & mask  )  ) | (   ( ( w3 >> 15 )  & mask  )  << 32 );
-  out[12] = (   ( ( w3 >> 24 )  & mask  )  ) | (   ( ( w3 >> 33 )  & mask  )  << 32 );
-  out[13] = (   ( ( w3 >> 42 )  & mask  )  ) | (   ( ( w3 >> 51 )  & mask  )  << 32 );
-  out[14] = (    ( ( ( w3 >> 60  ) | ( w4 << 4 ) )  & mask  )  ) | (   ( ( w4 >> 5 )  & mask  )  << 32 );
-  out[15] = (   ( ( w4 >> 14 )  & mask  )  ) | (   ( ( w4 >> 23 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 23  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 18  )  & masklow )  |  ( ( w0  << 5  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 36  )  & masklow )  |  ( ( w0  >> 13  )  & maskhigh )  ;
+  out[3] =  ( ( w0  >> 54  )  & masklow )  |  (    ( ( w0 >> 31  ) | ( w1 << 33 ) )  & maskhigh )  ;
+  out[4] =  ( ( w1  >> 8  )  & masklow )  |  ( ( w1  << 15  )  & maskhigh )  ;
+  out[5] =  ( ( w1  >> 26  )  & masklow )  |  ( ( w1  >> 3  )  & maskhigh )  ;
+  out[6] =  ( ( w1  >> 44  )  & masklow )  |  ( ( w1  >> 21  )  & maskhigh )  ;
+  out[7] =  (  ( ( w1 >> 62  ) | ( w2 << 2 ) )  & masklow )  |  ( ( w2  << 25  )  & maskhigh )  ;
+  out[8] =  ( ( w2  >> 16  )  & masklow )  |  ( ( w2  << 7  )  & maskhigh )  ;
+  out[9] =  ( ( w2  >> 34  )  & masklow )  |  ( ( w2  >> 11  )  & maskhigh )  ;
+  out[10] =  ( ( w2  >> 52  )  & masklow )  |  (    ( ( w2 >> 29  ) | ( w3 << 35 ) )  & maskhigh )  ;
+  out[11] =  ( ( w3  >> 6  )  & masklow )  |  ( ( w3  << 17  )  & maskhigh )  ;
+  out[12] =  ( ( w3  >> 24  )  & masklow )  |  ( ( w3  >> 1  )  & maskhigh )  ;
+  out[13] =  ( ( w3  >> 42  )  & masklow )  |  ( ( w3  >> 19  )  & maskhigh )  ;
+  out[14] =  (  ( ( w3 >> 60  ) | ( w4 << 4 ) )  & masklow )  |  ( ( w4  << 27  )  & maskhigh )  ;
+  out[15] =  ( ( w4  >> 14  )  & masklow )  |  ( ( w4  << 9  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2392,7 +2401,8 @@ static void unpackblock9(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock10(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(1023);
+  const uint64_t masklow = UINT64_C(0x3ff);
+  const uint64_t maskhigh = UINT64_C(0x3ff00000000);
   /* we are going to access  5 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2400,22 +2410,22 @@ static void unpackblock10(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w3 = pw64[3];
   uint64_t w4 = pw64[4];
   *pw += 40; /* we used up 40 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 10 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 20 )  & mask  )  ) | (   ( ( w0 >> 30 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 40 )  & mask  )  ) | (   ( ( w0 >> 50 )  & mask  )  << 32 );
-  out[3] = (    ( ( ( w0 >> 60  ) | ( w1 << 4 ) )  & mask  )  ) | (   ( ( w1 >> 6 )  & mask  )  << 32 );
-  out[4] = (   ( ( w1 >> 16 )  & mask  )  ) | (   ( ( w1 >> 26 )  & mask  )  << 32 );
-  out[5] = (   ( ( w1 >> 36 )  & mask  )  ) | (   ( ( w1 >> 46 )  & mask  )  << 32 );
-  out[6] = (    ( ( ( w1 >> 56  ) | ( w2 << 8 ) )  & mask  )  ) | (   ( ( w2 >> 2 )  & mask  )  << 32 );
-  out[7] = (   ( ( w2 >> 12 )  & mask  )  ) | (   ( ( w2 >> 22 )  & mask  )  << 32 );
-  out[8] = (   ( ( w2 >> 32 )  & mask  )  ) | (   ( ( w2 >> 42 )  & mask  )  << 32 );
-  out[9] = (   ( ( w2 >> 52 )  & mask  )  ) | (    ( ( ( w2 >> 62  ) | ( w3 << 2 ) )  & mask  )  << 32 );
-  out[10] = (   ( ( w3 >> 8 )  & mask  )  ) | (   ( ( w3 >> 18 )  & mask  )  << 32 );
-  out[11] = (   ( ( w3 >> 28 )  & mask  )  ) | (   ( ( w3 >> 38 )  & mask  )  << 32 );
-  out[12] = (   ( ( w3 >> 48 )  & mask  )  ) | (    ( ( ( w3 >> 58  ) | ( w4 << 6 ) )  & mask  )  << 32 );
-  out[13] = (   ( ( w4 >> 4 )  & mask  )  ) | (   ( ( w4 >> 14 )  & mask  )  << 32 );
-  out[14] = (   ( ( w4 >> 24 )  & mask  )  ) | (   ( ( w4 >> 34 )  & mask  )  << 32 );
-  out[15] = (   ( ( w4 >> 44 )  & mask  )  ) | (  ( w4  >> 54  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 22  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 20  )  & masklow )  |  ( ( w0  << 2  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 40  )  & masklow )  |  ( ( w0  >> 18  )  & maskhigh )  ;
+  out[3] =  (  ( ( w0 >> 60  ) | ( w1 << 4 ) )  & masklow )  |  ( ( w1  << 26  )  & maskhigh )  ;
+  out[4] =  ( ( w1  >> 16  )  & masklow )  |  ( ( w1  << 6  )  & maskhigh )  ;
+  out[5] =  ( ( w1  >> 36  )  & masklow )  |  ( ( w1  >> 14  )  & maskhigh )  ;
+  out[6] =  (  ( ( w1 >> 56  ) | ( w2 << 8 ) )  & masklow )  |  ( ( w2  << 30  )  & maskhigh )  ;
+  out[7] =  ( ( w2  >> 12  )  & masklow )  |  ( ( w2  << 10  )  & maskhigh )  ;
+  out[8] =  ( ( w2  >> 32  )  & masklow )  |  ( ( w2  >> 10  )  & maskhigh )  ;
+  out[9] =  ( ( w2  >> 52  )  & masklow )  |  (    ( ( w2 >> 30  ) | ( w3 << 34 ) )  & maskhigh )  ;
+  out[10] =  ( ( w3  >> 8  )  & masklow )  |  ( ( w3  << 14  )  & maskhigh )  ;
+  out[11] =  ( ( w3  >> 28  )  & masklow )  |  ( ( w3  >> 6  )  & maskhigh )  ;
+  out[12] =  ( ( w3  >> 48  )  & masklow )  |  (    ( ( w3 >> 26  ) | ( w4 << 38 ) )  & maskhigh )  ;
+  out[13] =  ( ( w4  >> 4  )  & masklow )  |  ( ( w4  << 18  )  & maskhigh )  ;
+  out[14] =  ( ( w4  >> 24  )  & masklow )  |  ( ( w4  >> 2  )  & maskhigh )  ;
+  out[15] =  ( ( w4  >> 44  )  & masklow )  |  ( ( w4  >> 22  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2424,7 +2434,8 @@ static void unpackblock10(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock11(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(2047);
+  const uint64_t masklow = UINT64_C(0x7ff);
+  const uint64_t maskhigh = UINT64_C(0x7ff00000000);
   /* we are going to access  6 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2433,22 +2444,22 @@ static void unpackblock11(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w4 = pw64[4];
   uint64_t w5 = pw64[5];
   *pw += 44; /* we used up 44 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 11 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 22 )  & mask  )  ) | (   ( ( w0 >> 33 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 44 )  & mask  )  ) | (    ( ( ( w0 >> 55  ) | ( w1 << 9 ) )  & mask  )  << 32 );
-  out[3] = (   ( ( w1 >> 2 )  & mask  )  ) | (   ( ( w1 >> 13 )  & mask  )  << 32 );
-  out[4] = (   ( ( w1 >> 24 )  & mask  )  ) | (   ( ( w1 >> 35 )  & mask  )  << 32 );
-  out[5] = (   ( ( w1 >> 46 )  & mask  )  ) | (    ( ( ( w1 >> 57  ) | ( w2 << 7 ) )  & mask  )  << 32 );
-  out[6] = (   ( ( w2 >> 4 )  & mask  )  ) | (   ( ( w2 >> 15 )  & mask  )  << 32 );
-  out[7] = (   ( ( w2 >> 26 )  & mask  )  ) | (   ( ( w2 >> 37 )  & mask  )  << 32 );
-  out[8] = (   ( ( w2 >> 48 )  & mask  )  ) | (    ( ( ( w2 >> 59  ) | ( w3 << 5 ) )  & mask  )  << 32 );
-  out[9] = (   ( ( w3 >> 6 )  & mask  )  ) | (   ( ( w3 >> 17 )  & mask  )  << 32 );
-  out[10] = (   ( ( w3 >> 28 )  & mask  )  ) | (   ( ( w3 >> 39 )  & mask  )  << 32 );
-  out[11] = (   ( ( w3 >> 50 )  & mask  )  ) | (    ( ( ( w3 >> 61  ) | ( w4 << 3 ) )  & mask  )  << 32 );
-  out[12] = (   ( ( w4 >> 8 )  & mask  )  ) | (   ( ( w4 >> 19 )  & mask  )  << 32 );
-  out[13] = (   ( ( w4 >> 30 )  & mask  )  ) | (   ( ( w4 >> 41 )  & mask  )  << 32 );
-  out[14] = (   ( ( w4 >> 52 )  & mask  )  ) | (    ( ( ( w4 >> 63  ) | ( w5 << 1 ) )  & mask  )  << 32 );
-  out[15] = (   ( ( w5 >> 10 )  & mask  )  ) | (   ( ( w5 >> 21 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 21  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 22  )  & masklow )  |  ( ( w0  >> 1  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 44  )  & masklow )  |  (    ( ( w0 >> 23  ) | ( w1 << 41 ) )  & maskhigh )  ;
+  out[3] =  ( ( w1  >> 2  )  & masklow )  |  ( ( w1  << 19  )  & maskhigh )  ;
+  out[4] =  ( ( w1  >> 24  )  & masklow )  |  ( ( w1  >> 3  )  & maskhigh )  ;
+  out[5] =  ( ( w1  >> 46  )  & masklow )  |  (    ( ( w1 >> 25  ) | ( w2 << 39 ) )  & maskhigh )  ;
+  out[6] =  ( ( w2  >> 4  )  & masklow )  |  ( ( w2  << 17  )  & maskhigh )  ;
+  out[7] =  ( ( w2  >> 26  )  & masklow )  |  ( ( w2  >> 5  )  & maskhigh )  ;
+  out[8] =  ( ( w2  >> 48  )  & masklow )  |  (    ( ( w2 >> 27  ) | ( w3 << 37 ) )  & maskhigh )  ;
+  out[9] =  ( ( w3  >> 6  )  & masklow )  |  ( ( w3  << 15  )  & maskhigh )  ;
+  out[10] =  ( ( w3  >> 28  )  & masklow )  |  ( ( w3  >> 7  )  & maskhigh )  ;
+  out[11] =  ( ( w3  >> 50  )  & masklow )  |  (    ( ( w3 >> 29  ) | ( w4 << 35 ) )  & maskhigh )  ;
+  out[12] =  ( ( w4  >> 8  )  & masklow )  |  ( ( w4  << 13  )  & maskhigh )  ;
+  out[13] =  ( ( w4  >> 30  )  & masklow )  |  ( ( w4  >> 9  )  & maskhigh )  ;
+  out[14] =  ( ( w4  >> 52  )  & masklow )  |  (    ( ( w4 >> 31  ) | ( w5 << 33 ) )  & maskhigh )  ;
+  out[15] =  ( ( w5  >> 10  )  & masklow )  |  ( ( w5  << 11  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2457,7 +2468,8 @@ static void unpackblock11(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock12(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(4095);
+  const uint64_t masklow = UINT64_C(0xfff);
+  const uint64_t maskhigh = UINT64_C(0xfff00000000);
   /* we are going to access  6 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2466,22 +2478,22 @@ static void unpackblock12(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w4 = pw64[4];
   uint64_t w5 = pw64[5];
   *pw += 48; /* we used up 48 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 12 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 24 )  & mask  )  ) | (   ( ( w0 >> 36 )  & mask  )  << 32 );
-  out[2] = (   ( ( w0 >> 48 )  & mask  )  ) | (    ( ( ( w0 >> 60  ) | ( w1 << 4 ) )  & mask  )  << 32 );
-  out[3] = (   ( ( w1 >> 8 )  & mask  )  ) | (   ( ( w1 >> 20 )  & mask  )  << 32 );
-  out[4] = (   ( ( w1 >> 32 )  & mask  )  ) | (   ( ( w1 >> 44 )  & mask  )  << 32 );
-  out[5] = (    ( ( ( w1 >> 56  ) | ( w2 << 8 ) )  & mask  )  ) | (   ( ( w2 >> 4 )  & mask  )  << 32 );
-  out[6] = (   ( ( w2 >> 16 )  & mask  )  ) | (   ( ( w2 >> 28 )  & mask  )  << 32 );
-  out[7] = (   ( ( w2 >> 40 )  & mask  )  ) | (  ( w2  >> 52  )  << 32 );
-  out[8] = (   ( ( w3 )  & mask  )  ) | (   ( ( w3 >> 12 )  & mask  )  << 32 );
-  out[9] = (   ( ( w3 >> 24 )  & mask  )  ) | (   ( ( w3 >> 36 )  & mask  )  << 32 );
-  out[10] = (   ( ( w3 >> 48 )  & mask  )  ) | (    ( ( ( w3 >> 60  ) | ( w4 << 4 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w4 >> 8 )  & mask  )  ) | (   ( ( w4 >> 20 )  & mask  )  << 32 );
-  out[12] = (   ( ( w4 >> 32 )  & mask  )  ) | (   ( ( w4 >> 44 )  & mask  )  << 32 );
-  out[13] = (    ( ( ( w4 >> 56  ) | ( w5 << 8 ) )  & mask  )  ) | (   ( ( w5 >> 4 )  & mask  )  << 32 );
-  out[14] = (   ( ( w5 >> 16 )  & mask  )  ) | (   ( ( w5 >> 28 )  & mask  )  << 32 );
-  out[15] = (   ( ( w5 >> 40 )  & mask  )  ) | (  ( w5  >> 52  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 20  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 24  )  & masklow )  |  ( ( w0  >> 4  )  & maskhigh )  ;
+  out[2] =  ( ( w0  >> 48  )  & masklow )  |  (    ( ( w0 >> 28  ) | ( w1 << 36 ) )  & maskhigh )  ;
+  out[3] =  ( ( w1  >> 8  )  & masklow )  |  ( ( w1  << 12  )  & maskhigh )  ;
+  out[4] =  ( ( w1  >> 32  )  & masklow )  |  ( ( w1  >> 12  )  & maskhigh )  ;
+  out[5] =  (  ( ( w1 >> 56  ) | ( w2 << 8 ) )  & masklow )  |  ( ( w2  << 28  )  & maskhigh )  ;
+  out[6] =  ( ( w2  >> 16  )  & masklow )  |  ( ( w2  << 4  )  & maskhigh )  ;
+  out[7] =  ( ( w2  >> 40  )  & masklow )  |  ( ( w2  >> 20  )  & maskhigh )  ;
+  out[8] =  ( ( w3   )  & masklow )  |  ( ( w3  << 20  )  & maskhigh )  ;
+  out[9] =  ( ( w3  >> 24  )  & masklow )  |  ( ( w3  >> 4  )  & maskhigh )  ;
+  out[10] =  ( ( w3  >> 48  )  & masklow )  |  (    ( ( w3 >> 28  ) | ( w4 << 36 ) )  & maskhigh )  ;
+  out[11] =  ( ( w4  >> 8  )  & masklow )  |  ( ( w4  << 12  )  & maskhigh )  ;
+  out[12] =  ( ( w4  >> 32  )  & masklow )  |  ( ( w4  >> 12  )  & maskhigh )  ;
+  out[13] =  (  ( ( w4 >> 56  ) | ( w5 << 8 ) )  & masklow )  |  ( ( w5  << 28  )  & maskhigh )  ;
+  out[14] =  ( ( w5  >> 16  )  & masklow )  |  ( ( w5  << 4  )  & maskhigh )  ;
+  out[15] =  ( ( w5  >> 40  )  & masklow )  |  ( ( w5  >> 20  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2490,7 +2502,8 @@ static void unpackblock12(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock13(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(8191);
+  const uint64_t masklow = UINT64_C(0x1fff);
+  const uint64_t maskhigh = UINT64_C(0x1fff00000000);
   /* we are going to access  7 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2500,22 +2513,22 @@ static void unpackblock13(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w5 = pw64[5];
   uint64_t w6 = pw64[6];
   *pw += 52; /* we used up 52 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 13 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 26 )  & mask  )  ) | (   ( ( w0 >> 39 )  & mask  )  << 32 );
-  out[2] = (    ( ( ( w0 >> 52  ) | ( w1 << 12 ) )  & mask  )  ) | (   ( ( w1 >> 1 )  & mask  )  << 32 );
-  out[3] = (   ( ( w1 >> 14 )  & mask  )  ) | (   ( ( w1 >> 27 )  & mask  )  << 32 );
-  out[4] = (   ( ( w1 >> 40 )  & mask  )  ) | (    ( ( ( w1 >> 53  ) | ( w2 << 11 ) )  & mask  )  << 32 );
-  out[5] = (   ( ( w2 >> 2 )  & mask  )  ) | (   ( ( w2 >> 15 )  & mask  )  << 32 );
-  out[6] = (   ( ( w2 >> 28 )  & mask  )  ) | (   ( ( w2 >> 41 )  & mask  )  << 32 );
-  out[7] = (    ( ( ( w2 >> 54  ) | ( w3 << 10 ) )  & mask  )  ) | (   ( ( w3 >> 3 )  & mask  )  << 32 );
-  out[8] = (   ( ( w3 >> 16 )  & mask  )  ) | (   ( ( w3 >> 29 )  & mask  )  << 32 );
-  out[9] = (   ( ( w3 >> 42 )  & mask  )  ) | (    ( ( ( w3 >> 55  ) | ( w4 << 9 ) )  & mask  )  << 32 );
-  out[10] = (   ( ( w4 >> 4 )  & mask  )  ) | (   ( ( w4 >> 17 )  & mask  )  << 32 );
-  out[11] = (   ( ( w4 >> 30 )  & mask  )  ) | (   ( ( w4 >> 43 )  & mask  )  << 32 );
-  out[12] = (    ( ( ( w4 >> 56  ) | ( w5 << 8 ) )  & mask  )  ) | (   ( ( w5 >> 5 )  & mask  )  << 32 );
-  out[13] = (   ( ( w5 >> 18 )  & mask  )  ) | (   ( ( w5 >> 31 )  & mask  )  << 32 );
-  out[14] = (   ( ( w5 >> 44 )  & mask  )  ) | (    ( ( ( w5 >> 57  ) | ( w6 << 7 ) )  & mask  )  << 32 );
-  out[15] = (   ( ( w6 >> 6 )  & mask  )  ) | (   ( ( w6 >> 19 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 19  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 26  )  & masklow )  |  ( ( w0  >> 7  )  & maskhigh )  ;
+  out[2] =  (  ( ( w0 >> 52  ) | ( w1 << 12 ) )  & masklow )  |  ( ( w1  << 31  )  & maskhigh )  ;
+  out[3] =  ( ( w1  >> 14  )  & masklow )  |  ( ( w1  << 5  )  & maskhigh )  ;
+  out[4] =  ( ( w1  >> 40  )  & masklow )  |  (    ( ( w1 >> 21  ) | ( w2 << 43 ) )  & maskhigh )  ;
+  out[5] =  ( ( w2  >> 2  )  & masklow )  |  ( ( w2  << 17  )  & maskhigh )  ;
+  out[6] =  ( ( w2  >> 28  )  & masklow )  |  ( ( w2  >> 9  )  & maskhigh )  ;
+  out[7] =  (  ( ( w2 >> 54  ) | ( w3 << 10 ) )  & masklow )  |  ( ( w3  << 29  )  & maskhigh )  ;
+  out[8] =  ( ( w3  >> 16  )  & masklow )  |  ( ( w3  << 3  )  & maskhigh )  ;
+  out[9] =  ( ( w3  >> 42  )  & masklow )  |  (    ( ( w3 >> 23  ) | ( w4 << 41 ) )  & maskhigh )  ;
+  out[10] =  ( ( w4  >> 4  )  & masklow )  |  ( ( w4  << 15  )  & maskhigh )  ;
+  out[11] =  ( ( w4  >> 30  )  & masklow )  |  ( ( w4  >> 11  )  & maskhigh )  ;
+  out[12] =  (  ( ( w4 >> 56  ) | ( w5 << 8 ) )  & masklow )  |  ( ( w5  << 27  )  & maskhigh )  ;
+  out[13] =  ( ( w5  >> 18  )  & masklow )  |  ( ( w5  << 1  )  & maskhigh )  ;
+  out[14] =  ( ( w5  >> 44  )  & masklow )  |  (    ( ( w5 >> 25  ) | ( w6 << 39 ) )  & maskhigh )  ;
+  out[15] =  ( ( w6  >> 6  )  & masklow )  |  ( ( w6  << 13  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2524,7 +2537,8 @@ static void unpackblock13(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock14(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(16383);
+  const uint64_t masklow = UINT64_C(0x3fff);
+  const uint64_t maskhigh = UINT64_C(0x3fff00000000);
   /* we are going to access  7 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2534,22 +2548,22 @@ static void unpackblock14(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w5 = pw64[5];
   uint64_t w6 = pw64[6];
   *pw += 56; /* we used up 56 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 14 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 28 )  & mask  )  ) | (   ( ( w0 >> 42 )  & mask  )  << 32 );
-  out[2] = (    ( ( ( w0 >> 56  ) | ( w1 << 8 ) )  & mask  )  ) | (   ( ( w1 >> 6 )  & mask  )  << 32 );
-  out[3] = (   ( ( w1 >> 20 )  & mask  )  ) | (   ( ( w1 >> 34 )  & mask  )  << 32 );
-  out[4] = (   ( ( w1 >> 48 )  & mask  )  ) | (    ( ( ( w1 >> 62  ) | ( w2 << 2 ) )  & mask  )  << 32 );
-  out[5] = (   ( ( w2 >> 12 )  & mask  )  ) | (   ( ( w2 >> 26 )  & mask  )  << 32 );
-  out[6] = (   ( ( w2 >> 40 )  & mask  )  ) | (    ( ( ( w2 >> 54  ) | ( w3 << 10 ) )  & mask  )  << 32 );
-  out[7] = (   ( ( w3 >> 4 )  & mask  )  ) | (   ( ( w3 >> 18 )  & mask  )  << 32 );
-  out[8] = (   ( ( w3 >> 32 )  & mask  )  ) | (   ( ( w3 >> 46 )  & mask  )  << 32 );
-  out[9] = (    ( ( ( w3 >> 60  ) | ( w4 << 4 ) )  & mask  )  ) | (   ( ( w4 >> 10 )  & mask  )  << 32 );
-  out[10] = (   ( ( w4 >> 24 )  & mask  )  ) | (   ( ( w4 >> 38 )  & mask  )  << 32 );
-  out[11] = (    ( ( ( w4 >> 52  ) | ( w5 << 12 ) )  & mask  )  ) | (   ( ( w5 >> 2 )  & mask  )  << 32 );
-  out[12] = (   ( ( w5 >> 16 )  & mask  )  ) | (   ( ( w5 >> 30 )  & mask  )  << 32 );
-  out[13] = (   ( ( w5 >> 44 )  & mask  )  ) | (    ( ( ( w5 >> 58  ) | ( w6 << 6 ) )  & mask  )  << 32 );
-  out[14] = (   ( ( w6 >> 8 )  & mask  )  ) | (   ( ( w6 >> 22 )  & mask  )  << 32 );
-  out[15] = (   ( ( w6 >> 36 )  & mask  )  ) | (  ( w6  >> 50  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 18  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 28  )  & masklow )  |  ( ( w0  >> 10  )  & maskhigh )  ;
+  out[2] =  (  ( ( w0 >> 56  ) | ( w1 << 8 ) )  & masklow )  |  ( ( w1  << 26  )  & maskhigh )  ;
+  out[3] =  ( ( w1  >> 20  )  & masklow )  |  ( ( w1  >> 2  )  & maskhigh )  ;
+  out[4] =  ( ( w1  >> 48  )  & masklow )  |  (    ( ( w1 >> 30  ) | ( w2 << 34 ) )  & maskhigh )  ;
+  out[5] =  ( ( w2  >> 12  )  & masklow )  |  ( ( w2  << 6  )  & maskhigh )  ;
+  out[6] =  ( ( w2  >> 40  )  & masklow )  |  (    ( ( w2 >> 22  ) | ( w3 << 42 ) )  & maskhigh )  ;
+  out[7] =  ( ( w3  >> 4  )  & masklow )  |  ( ( w3  << 14  )  & maskhigh )  ;
+  out[8] =  ( ( w3  >> 32  )  & masklow )  |  ( ( w3  >> 14  )  & maskhigh )  ;
+  out[9] =  (  ( ( w3 >> 60  ) | ( w4 << 4 ) )  & masklow )  |  ( ( w4  << 22  )  & maskhigh )  ;
+  out[10] =  ( ( w4  >> 24  )  & masklow )  |  ( ( w4  >> 6  )  & maskhigh )  ;
+  out[11] =  (  ( ( w4 >> 52  ) | ( w5 << 12 ) )  & masklow )  |  ( ( w5  << 30  )  & maskhigh )  ;
+  out[12] =  ( ( w5  >> 16  )  & masklow )  |  ( ( w5  << 2  )  & maskhigh )  ;
+  out[13] =  ( ( w5  >> 44  )  & masklow )  |  (    ( ( w5 >> 26  ) | ( w6 << 38 ) )  & maskhigh )  ;
+  out[14] =  ( ( w6  >> 8  )  & masklow )  |  ( ( w6  << 10  )  & maskhigh )  ;
+  out[15] =  ( ( w6  >> 36  )  & masklow )  |  ( ( w6  >> 18  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2558,7 +2572,8 @@ static void unpackblock14(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock15(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(32767);
+  const uint64_t masklow = UINT64_C(0x7fff);
+  const uint64_t maskhigh = UINT64_C(0x7fff00000000);
   /* we are going to access  8 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2569,22 +2584,22 @@ static void unpackblock15(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w6 = pw64[6];
   uint64_t w7 = pw64[7];
   *pw += 60; /* we used up 60 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 15 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 30 )  & mask  )  ) | (   ( ( w0 >> 45 )  & mask  )  << 32 );
-  out[2] = (    ( ( ( w0 >> 60  ) | ( w1 << 4 ) )  & mask  )  ) | (   ( ( w1 >> 11 )  & mask  )  << 32 );
-  out[3] = (   ( ( w1 >> 26 )  & mask  )  ) | (   ( ( w1 >> 41 )  & mask  )  << 32 );
-  out[4] = (    ( ( ( w1 >> 56  ) | ( w2 << 8 ) )  & mask  )  ) | (   ( ( w2 >> 7 )  & mask  )  << 32 );
-  out[5] = (   ( ( w2 >> 22 )  & mask  )  ) | (   ( ( w2 >> 37 )  & mask  )  << 32 );
-  out[6] = (    ( ( ( w2 >> 52  ) | ( w3 << 12 ) )  & mask  )  ) | (   ( ( w3 >> 3 )  & mask  )  << 32 );
-  out[7] = (   ( ( w3 >> 18 )  & mask  )  ) | (   ( ( w3 >> 33 )  & mask  )  << 32 );
-  out[8] = (   ( ( w3 >> 48 )  & mask  )  ) | (    ( ( ( w3 >> 63  ) | ( w4 << 1 ) )  & mask  )  << 32 );
-  out[9] = (   ( ( w4 >> 14 )  & mask  )  ) | (   ( ( w4 >> 29 )  & mask  )  << 32 );
-  out[10] = (   ( ( w4 >> 44 )  & mask  )  ) | (    ( ( ( w4 >> 59  ) | ( w5 << 5 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w5 >> 10 )  & mask  )  ) | (   ( ( w5 >> 25 )  & mask  )  << 32 );
-  out[12] = (   ( ( w5 >> 40 )  & mask  )  ) | (    ( ( ( w5 >> 55  ) | ( w6 << 9 ) )  & mask  )  << 32 );
-  out[13] = (   ( ( w6 >> 6 )  & mask  )  ) | (   ( ( w6 >> 21 )  & mask  )  << 32 );
-  out[14] = (   ( ( w6 >> 36 )  & mask  )  ) | (    ( ( ( w6 >> 51  ) | ( w7 << 13 ) )  & mask  )  << 32 );
-  out[15] = (   ( ( w7 >> 2 )  & mask  )  ) | (   ( ( w7 >> 17 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 17  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 30  )  & masklow )  |  ( ( w0  >> 13  )  & maskhigh )  ;
+  out[2] =  (  ( ( w0 >> 60  ) | ( w1 << 4 ) )  & masklow )  |  ( ( w1  << 21  )  & maskhigh )  ;
+  out[3] =  ( ( w1  >> 26  )  & masklow )  |  ( ( w1  >> 9  )  & maskhigh )  ;
+  out[4] =  (  ( ( w1 >> 56  ) | ( w2 << 8 ) )  & masklow )  |  ( ( w2  << 25  )  & maskhigh )  ;
+  out[5] =  ( ( w2  >> 22  )  & masklow )  |  ( ( w2  >> 5  )  & maskhigh )  ;
+  out[6] =  (  ( ( w2 >> 52  ) | ( w3 << 12 ) )  & masklow )  |  ( ( w3  << 29  )  & maskhigh )  ;
+  out[7] =  ( ( w3  >> 18  )  & masklow )  |  ( ( w3  >> 1  )  & maskhigh )  ;
+  out[8] =  ( ( w3  >> 48  )  & masklow )  |  (    ( ( w3 >> 31  ) | ( w4 << 33 ) )  & maskhigh )  ;
+  out[9] =  ( ( w4  >> 14  )  & masklow )  |  ( ( w4  << 3  )  & maskhigh )  ;
+  out[10] =  ( ( w4  >> 44  )  & masklow )  |  (    ( ( w4 >> 27  ) | ( w5 << 37 ) )  & maskhigh )  ;
+  out[11] =  ( ( w5  >> 10  )  & masklow )  |  ( ( w5  << 7  )  & maskhigh )  ;
+  out[12] =  ( ( w5  >> 40  )  & masklow )  |  (    ( ( w5 >> 23  ) | ( w6 << 41 ) )  & maskhigh )  ;
+  out[13] =  ( ( w6  >> 6  )  & masklow )  |  ( ( w6  << 11  )  & maskhigh )  ;
+  out[14] =  ( ( w6  >> 36  )  & masklow )  |  (    ( ( w6 >> 19  ) | ( w7 << 45 ) )  & maskhigh )  ;
+  out[15] =  ( ( w7  >> 2  )  & masklow )  |  ( ( w7  << 15  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2593,7 +2608,8 @@ static void unpackblock15(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock16(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(65535);
+  const uint64_t masklow = UINT64_C(0xffff);
+  const uint64_t maskhigh = UINT64_C(0xffff00000000);
   /* we are going to access  8 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2604,22 +2620,22 @@ static void unpackblock16(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w6 = pw64[6];
   uint64_t w7 = pw64[7];
   *pw += 64; /* we used up 64 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 16 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 32 )  & mask  )  ) | (  ( w0  >> 48  )  << 32 );
-  out[2] = (   ( ( w1 )  & mask  )  ) | (   ( ( w1 >> 16 )  & mask  )  << 32 );
-  out[3] = (   ( ( w1 >> 32 )  & mask  )  ) | (  ( w1  >> 48  )  << 32 );
-  out[4] = (   ( ( w2 )  & mask  )  ) | (   ( ( w2 >> 16 )  & mask  )  << 32 );
-  out[5] = (   ( ( w2 >> 32 )  & mask  )  ) | (  ( w2  >> 48  )  << 32 );
-  out[6] = (   ( ( w3 )  & mask  )  ) | (   ( ( w3 >> 16 )  & mask  )  << 32 );
-  out[7] = (   ( ( w3 >> 32 )  & mask  )  ) | (  ( w3  >> 48  )  << 32 );
-  out[8] = (   ( ( w4 )  & mask  )  ) | (   ( ( w4 >> 16 )  & mask  )  << 32 );
-  out[9] = (   ( ( w4 >> 32 )  & mask  )  ) | (  ( w4  >> 48  )  << 32 );
-  out[10] = (   ( ( w5 )  & mask  )  ) | (   ( ( w5 >> 16 )  & mask  )  << 32 );
-  out[11] = (   ( ( w5 >> 32 )  & mask  )  ) | (  ( w5  >> 48  )  << 32 );
-  out[12] = (   ( ( w6 )  & mask  )  ) | (   ( ( w6 >> 16 )  & mask  )  << 32 );
-  out[13] = (   ( ( w6 >> 32 )  & mask  )  ) | (  ( w6  >> 48  )  << 32 );
-  out[14] = (   ( ( w7 )  & mask  )  ) | (   ( ( w7 >> 16 )  & mask  )  << 32 );
-  out[15] = (   ( ( w7 >> 32 )  & mask  )  ) | (  ( w7  >> 48  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 16  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 32  )  & masklow )  |  ( ( w0  >> 16  )  & maskhigh )  ;
+  out[2] =  ( ( w1   )  & masklow )  |  ( ( w1  << 16  )  & maskhigh )  ;
+  out[3] =  ( ( w1  >> 32  )  & masklow )  |  ( ( w1  >> 16  )  & maskhigh )  ;
+  out[4] =  ( ( w2   )  & masklow )  |  ( ( w2  << 16  )  & maskhigh )  ;
+  out[5] =  ( ( w2  >> 32  )  & masklow )  |  ( ( w2  >> 16  )  & maskhigh )  ;
+  out[6] =  ( ( w3   )  & masklow )  |  ( ( w3  << 16  )  & maskhigh )  ;
+  out[7] =  ( ( w3  >> 32  )  & masklow )  |  ( ( w3  >> 16  )  & maskhigh )  ;
+  out[8] =  ( ( w4   )  & masklow )  |  ( ( w4  << 16  )  & maskhigh )  ;
+  out[9] =  ( ( w4  >> 32  )  & masklow )  |  ( ( w4  >> 16  )  & maskhigh )  ;
+  out[10] =  ( ( w5   )  & masklow )  |  ( ( w5  << 16  )  & maskhigh )  ;
+  out[11] =  ( ( w5  >> 32  )  & masklow )  |  ( ( w5  >> 16  )  & maskhigh )  ;
+  out[12] =  ( ( w6   )  & masklow )  |  ( ( w6  << 16  )  & maskhigh )  ;
+  out[13] =  ( ( w6  >> 32  )  & masklow )  |  ( ( w6  >> 16  )  & maskhigh )  ;
+  out[14] =  ( ( w7   )  & masklow )  |  ( ( w7  << 16  )  & maskhigh )  ;
+  out[15] =  ( ( w7  >> 32  )  & masklow )  |  ( ( w7  >> 16  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2628,7 +2644,8 @@ static void unpackblock16(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock17(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(131071);
+  const uint64_t masklow = UINT64_C(0x1ffff);
+  const uint64_t maskhigh = UINT64_C(0x1ffff00000000);
   /* we are going to access  9 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2640,22 +2657,22 @@ static void unpackblock17(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w7 = pw64[7];
   uint64_t w8 = pw64[8];
   *pw += 68; /* we used up 68 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 17 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 34 )  & mask  )  ) | (    ( ( ( w0 >> 51  ) | ( w1 << 13 ) )  & mask  )  << 32 );
-  out[2] = (   ( ( w1 >> 4 )  & mask  )  ) | (   ( ( w1 >> 21 )  & mask  )  << 32 );
-  out[3] = (   ( ( w1 >> 38 )  & mask  )  ) | (    ( ( ( w1 >> 55  ) | ( w2 << 9 ) )  & mask  )  << 32 );
-  out[4] = (   ( ( w2 >> 8 )  & mask  )  ) | (   ( ( w2 >> 25 )  & mask  )  << 32 );
-  out[5] = (   ( ( w2 >> 42 )  & mask  )  ) | (    ( ( ( w2 >> 59  ) | ( w3 << 5 ) )  & mask  )  << 32 );
-  out[6] = (   ( ( w3 >> 12 )  & mask  )  ) | (   ( ( w3 >> 29 )  & mask  )  << 32 );
-  out[7] = (   ( ( w3 >> 46 )  & mask  )  ) | (    ( ( ( w3 >> 63  ) | ( w4 << 1 ) )  & mask  )  << 32 );
-  out[8] = (   ( ( w4 >> 16 )  & mask  )  ) | (   ( ( w4 >> 33 )  & mask  )  << 32 );
-  out[9] = (    ( ( ( w4 >> 50  ) | ( w5 << 14 ) )  & mask  )  ) | (   ( ( w5 >> 3 )  & mask  )  << 32 );
-  out[10] = (   ( ( w5 >> 20 )  & mask  )  ) | (   ( ( w5 >> 37 )  & mask  )  << 32 );
-  out[11] = (    ( ( ( w5 >> 54  ) | ( w6 << 10 ) )  & mask  )  ) | (   ( ( w6 >> 7 )  & mask  )  << 32 );
-  out[12] = (   ( ( w6 >> 24 )  & mask  )  ) | (   ( ( w6 >> 41 )  & mask  )  << 32 );
-  out[13] = (    ( ( ( w6 >> 58  ) | ( w7 << 6 ) )  & mask  )  ) | (   ( ( w7 >> 11 )  & mask  )  << 32 );
-  out[14] = (   ( ( w7 >> 28 )  & mask  )  ) | (   ( ( w7 >> 45 )  & mask  )  << 32 );
-  out[15] = (    ( ( ( w7 >> 62  ) | ( w8 << 2 ) )  & mask  )  ) | (   ( ( w8 >> 15 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 15  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 34  )  & masklow )  |  (    ( ( w0 >> 19  ) | ( w1 << 45 ) )  & maskhigh )  ;
+  out[2] =  ( ( w1  >> 4  )  & masklow )  |  ( ( w1  << 11  )  & maskhigh )  ;
+  out[3] =  ( ( w1  >> 38  )  & masklow )  |  (    ( ( w1 >> 23  ) | ( w2 << 41 ) )  & maskhigh )  ;
+  out[4] =  ( ( w2  >> 8  )  & masklow )  |  ( ( w2  << 7  )  & maskhigh )  ;
+  out[5] =  ( ( w2  >> 42  )  & masklow )  |  (    ( ( w2 >> 27  ) | ( w3 << 37 ) )  & maskhigh )  ;
+  out[6] =  ( ( w3  >> 12  )  & masklow )  |  ( ( w3  << 3  )  & maskhigh )  ;
+  out[7] =  ( ( w3  >> 46  )  & masklow )  |  (    ( ( w3 >> 31  ) | ( w4 << 33 ) )  & maskhigh )  ;
+  out[8] =  ( ( w4  >> 16  )  & masklow )  |  ( ( w4  >> 1  )  & maskhigh )  ;
+  out[9] =  (  ( ( w4 >> 50  ) | ( w5 << 14 ) )  & masklow )  |  ( ( w5  << 29  )  & maskhigh )  ;
+  out[10] =  ( ( w5  >> 20  )  & masklow )  |  ( ( w5  >> 5  )  & maskhigh )  ;
+  out[11] =  (  ( ( w5 >> 54  ) | ( w6 << 10 ) )  & masklow )  |  ( ( w6  << 25  )  & maskhigh )  ;
+  out[12] =  ( ( w6  >> 24  )  & masklow )  |  ( ( w6  >> 9  )  & maskhigh )  ;
+  out[13] =  (  ( ( w6 >> 58  ) | ( w7 << 6 ) )  & masklow )  |  ( ( w7  << 21  )  & maskhigh )  ;
+  out[14] =  ( ( w7  >> 28  )  & masklow )  |  ( ( w7  >> 13  )  & maskhigh )  ;
+  out[15] =  (  ( ( w7 >> 62  ) | ( w8 << 2 ) )  & masklow )  |  ( ( w8  << 17  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2664,7 +2681,8 @@ static void unpackblock17(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock18(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(262143);
+  const uint64_t masklow = UINT64_C(0x3ffff);
+  const uint64_t maskhigh = UINT64_C(0x3ffff00000000);
   /* we are going to access  9 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2676,22 +2694,22 @@ static void unpackblock18(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w7 = pw64[7];
   uint64_t w8 = pw64[8];
   *pw += 72; /* we used up 72 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 18 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 36 )  & mask  )  ) | (    ( ( ( w0 >> 54  ) | ( w1 << 10 ) )  & mask  )  << 32 );
-  out[2] = (   ( ( w1 >> 8 )  & mask  )  ) | (   ( ( w1 >> 26 )  & mask  )  << 32 );
-  out[3] = (   ( ( w1 >> 44 )  & mask  )  ) | (    ( ( ( w1 >> 62  ) | ( w2 << 2 ) )  & mask  )  << 32 );
-  out[4] = (   ( ( w2 >> 16 )  & mask  )  ) | (   ( ( w2 >> 34 )  & mask  )  << 32 );
-  out[5] = (    ( ( ( w2 >> 52  ) | ( w3 << 12 ) )  & mask  )  ) | (   ( ( w3 >> 6 )  & mask  )  << 32 );
-  out[6] = (   ( ( w3 >> 24 )  & mask  )  ) | (   ( ( w3 >> 42 )  & mask  )  << 32 );
-  out[7] = (    ( ( ( w3 >> 60  ) | ( w4 << 4 ) )  & mask  )  ) | (   ( ( w4 >> 14 )  & mask  )  << 32 );
-  out[8] = (   ( ( w4 >> 32 )  & mask  )  ) | (    ( ( ( w4 >> 50  ) | ( w5 << 14 ) )  & mask  )  << 32 );
-  out[9] = (   ( ( w5 >> 4 )  & mask  )  ) | (   ( ( w5 >> 22 )  & mask  )  << 32 );
-  out[10] = (   ( ( w5 >> 40 )  & mask  )  ) | (    ( ( ( w5 >> 58  ) | ( w6 << 6 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w6 >> 12 )  & mask  )  ) | (   ( ( w6 >> 30 )  & mask  )  << 32 );
-  out[12] = (    ( ( ( w6 >> 48  ) | ( w7 << 16 ) )  & mask  )  ) | (   ( ( w7 >> 2 )  & mask  )  << 32 );
-  out[13] = (   ( ( w7 >> 20 )  & mask  )  ) | (   ( ( w7 >> 38 )  & mask  )  << 32 );
-  out[14] = (    ( ( ( w7 >> 56  ) | ( w8 << 8 ) )  & mask  )  ) | (   ( ( w8 >> 10 )  & mask  )  << 32 );
-  out[15] = (   ( ( w8 >> 28 )  & mask  )  ) | (  ( w8  >> 46  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 14  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 36  )  & masklow )  |  (    ( ( w0 >> 22  ) | ( w1 << 42 ) )  & maskhigh )  ;
+  out[2] =  ( ( w1  >> 8  )  & masklow )  |  ( ( w1  << 6  )  & maskhigh )  ;
+  out[3] =  ( ( w1  >> 44  )  & masklow )  |  (    ( ( w1 >> 30  ) | ( w2 << 34 ) )  & maskhigh )  ;
+  out[4] =  ( ( w2  >> 16  )  & masklow )  |  ( ( w2  >> 2  )  & maskhigh )  ;
+  out[5] =  (  ( ( w2 >> 52  ) | ( w3 << 12 ) )  & masklow )  |  ( ( w3  << 26  )  & maskhigh )  ;
+  out[6] =  ( ( w3  >> 24  )  & masklow )  |  ( ( w3  >> 10  )  & maskhigh )  ;
+  out[7] =  (  ( ( w3 >> 60  ) | ( w4 << 4 ) )  & masklow )  |  ( ( w4  << 18  )  & maskhigh )  ;
+  out[8] =  ( ( w4  >> 32  )  & masklow )  |  (    ( ( w4 >> 18  ) | ( w5 << 46 ) )  & maskhigh )  ;
+  out[9] =  ( ( w5  >> 4  )  & masklow )  |  ( ( w5  << 10  )  & maskhigh )  ;
+  out[10] =  ( ( w5  >> 40  )  & masklow )  |  (    ( ( w5 >> 26  ) | ( w6 << 38 ) )  & maskhigh )  ;
+  out[11] =  ( ( w6  >> 12  )  & masklow )  |  ( ( w6  << 2  )  & maskhigh )  ;
+  out[12] =  (  ( ( w6 >> 48  ) | ( w7 << 16 ) )  & masklow )  |  ( ( w7  << 30  )  & maskhigh )  ;
+  out[13] =  ( ( w7  >> 20  )  & masklow )  |  ( ( w7  >> 6  )  & maskhigh )  ;
+  out[14] =  (  ( ( w7 >> 56  ) | ( w8 << 8 ) )  & masklow )  |  ( ( w8  << 22  )  & maskhigh )  ;
+  out[15] =  ( ( w8  >> 28  )  & masklow )  |  ( ( w8  >> 14  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2700,7 +2718,8 @@ static void unpackblock18(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock19(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(524287);
+  const uint64_t masklow = UINT64_C(0x7ffff);
+  const uint64_t maskhigh = UINT64_C(0x7ffff00000000);
   /* we are going to access  10 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2713,22 +2732,22 @@ static void unpackblock19(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w8 = pw64[8];
   uint64_t w9 = pw64[9];
   *pw += 76; /* we used up 76 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 19 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 38 )  & mask  )  ) | (    ( ( ( w0 >> 57  ) | ( w1 << 7 ) )  & mask  )  << 32 );
-  out[2] = (   ( ( w1 >> 12 )  & mask  )  ) | (   ( ( w1 >> 31 )  & mask  )  << 32 );
-  out[3] = (    ( ( ( w1 >> 50  ) | ( w2 << 14 ) )  & mask  )  ) | (   ( ( w2 >> 5 )  & mask  )  << 32 );
-  out[4] = (   ( ( w2 >> 24 )  & mask  )  ) | (   ( ( w2 >> 43 )  & mask  )  << 32 );
-  out[5] = (    ( ( ( w2 >> 62  ) | ( w3 << 2 ) )  & mask  )  ) | (   ( ( w3 >> 17 )  & mask  )  << 32 );
-  out[6] = (   ( ( w3 >> 36 )  & mask  )  ) | (    ( ( ( w3 >> 55  ) | ( w4 << 9 ) )  & mask  )  << 32 );
-  out[7] = (   ( ( w4 >> 10 )  & mask  )  ) | (   ( ( w4 >> 29 )  & mask  )  << 32 );
-  out[8] = (    ( ( ( w4 >> 48  ) | ( w5 << 16 ) )  & mask  )  ) | (   ( ( w5 >> 3 )  & mask  )  << 32 );
-  out[9] = (   ( ( w5 >> 22 )  & mask  )  ) | (   ( ( w5 >> 41 )  & mask  )  << 32 );
-  out[10] = (    ( ( ( w5 >> 60  ) | ( w6 << 4 ) )  & mask  )  ) | (   ( ( w6 >> 15 )  & mask  )  << 32 );
-  out[11] = (   ( ( w6 >> 34 )  & mask  )  ) | (    ( ( ( w6 >> 53  ) | ( w7 << 11 ) )  & mask  )  << 32 );
-  out[12] = (   ( ( w7 >> 8 )  & mask  )  ) | (   ( ( w7 >> 27 )  & mask  )  << 32 );
-  out[13] = (    ( ( ( w7 >> 46  ) | ( w8 << 18 ) )  & mask  )  ) | (   ( ( w8 >> 1 )  & mask  )  << 32 );
-  out[14] = (   ( ( w8 >> 20 )  & mask  )  ) | (   ( ( w8 >> 39 )  & mask  )  << 32 );
-  out[15] = (    ( ( ( w8 >> 58  ) | ( w9 << 6 ) )  & mask  )  ) | (   ( ( w9 >> 13 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 13  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 38  )  & masklow )  |  (    ( ( w0 >> 25  ) | ( w1 << 39 ) )  & maskhigh )  ;
+  out[2] =  ( ( w1  >> 12  )  & masklow )  |  ( ( w1  << 1  )  & maskhigh )  ;
+  out[3] =  (  ( ( w1 >> 50  ) | ( w2 << 14 ) )  & masklow )  |  ( ( w2  << 27  )  & maskhigh )  ;
+  out[4] =  ( ( w2  >> 24  )  & masklow )  |  ( ( w2  >> 11  )  & maskhigh )  ;
+  out[5] =  (  ( ( w2 >> 62  ) | ( w3 << 2 ) )  & masklow )  |  ( ( w3  << 15  )  & maskhigh )  ;
+  out[6] =  ( ( w3  >> 36  )  & masklow )  |  (    ( ( w3 >> 23  ) | ( w4 << 41 ) )  & maskhigh )  ;
+  out[7] =  ( ( w4  >> 10  )  & masklow )  |  ( ( w4  << 3  )  & maskhigh )  ;
+  out[8] =  (  ( ( w4 >> 48  ) | ( w5 << 16 ) )  & masklow )  |  ( ( w5  << 29  )  & maskhigh )  ;
+  out[9] =  ( ( w5  >> 22  )  & masklow )  |  ( ( w5  >> 9  )  & maskhigh )  ;
+  out[10] =  (  ( ( w5 >> 60  ) | ( w6 << 4 ) )  & masklow )  |  ( ( w6  << 17  )  & maskhigh )  ;
+  out[11] =  ( ( w6  >> 34  )  & masklow )  |  (    ( ( w6 >> 21  ) | ( w7 << 43 ) )  & maskhigh )  ;
+  out[12] =  ( ( w7  >> 8  )  & masklow )  |  ( ( w7  << 5  )  & maskhigh )  ;
+  out[13] =  (  ( ( w7 >> 46  ) | ( w8 << 18 ) )  & masklow )  |  ( ( w8  << 31  )  & maskhigh )  ;
+  out[14] =  ( ( w8  >> 20  )  & masklow )  |  ( ( w8  >> 7  )  & maskhigh )  ;
+  out[15] =  (  ( ( w8 >> 58  ) | ( w9 << 6 ) )  & masklow )  |  ( ( w9  << 19  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2737,7 +2756,8 @@ static void unpackblock19(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock20(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(1048575);
+  const uint64_t masklow = UINT64_C(0xfffff);
+  const uint64_t maskhigh = UINT64_C(0xfffff00000000);
   /* we are going to access  10 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2750,22 +2770,22 @@ static void unpackblock20(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w8 = pw64[8];
   uint64_t w9 = pw64[9];
   *pw += 80; /* we used up 80 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 20 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 40 )  & mask  )  ) | (    ( ( ( w0 >> 60  ) | ( w1 << 4 ) )  & mask  )  << 32 );
-  out[2] = (   ( ( w1 >> 16 )  & mask  )  ) | (   ( ( w1 >> 36 )  & mask  )  << 32 );
-  out[3] = (    ( ( ( w1 >> 56  ) | ( w2 << 8 ) )  & mask  )  ) | (   ( ( w2 >> 12 )  & mask  )  << 32 );
-  out[4] = (   ( ( w2 >> 32 )  & mask  )  ) | (    ( ( ( w2 >> 52  ) | ( w3 << 12 ) )  & mask  )  << 32 );
-  out[5] = (   ( ( w3 >> 8 )  & mask  )  ) | (   ( ( w3 >> 28 )  & mask  )  << 32 );
-  out[6] = (    ( ( ( w3 >> 48  ) | ( w4 << 16 ) )  & mask  )  ) | (   ( ( w4 >> 4 )  & mask  )  << 32 );
-  out[7] = (   ( ( w4 >> 24 )  & mask  )  ) | (  ( w4  >> 44  )  << 32 );
-  out[8] = (   ( ( w5 )  & mask  )  ) | (   ( ( w5 >> 20 )  & mask  )  << 32 );
-  out[9] = (   ( ( w5 >> 40 )  & mask  )  ) | (    ( ( ( w5 >> 60  ) | ( w6 << 4 ) )  & mask  )  << 32 );
-  out[10] = (   ( ( w6 >> 16 )  & mask  )  ) | (   ( ( w6 >> 36 )  & mask  )  << 32 );
-  out[11] = (    ( ( ( w6 >> 56  ) | ( w7 << 8 ) )  & mask  )  ) | (   ( ( w7 >> 12 )  & mask  )  << 32 );
-  out[12] = (   ( ( w7 >> 32 )  & mask  )  ) | (    ( ( ( w7 >> 52  ) | ( w8 << 12 ) )  & mask  )  << 32 );
-  out[13] = (   ( ( w8 >> 8 )  & mask  )  ) | (   ( ( w8 >> 28 )  & mask  )  << 32 );
-  out[14] = (    ( ( ( w8 >> 48  ) | ( w9 << 16 ) )  & mask  )  ) | (   ( ( w9 >> 4 )  & mask  )  << 32 );
-  out[15] = (   ( ( w9 >> 24 )  & mask  )  ) | (  ( w9  >> 44  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 12  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 40  )  & masklow )  |  (    ( ( w0 >> 28  ) | ( w1 << 36 ) )  & maskhigh )  ;
+  out[2] =  ( ( w1  >> 16  )  & masklow )  |  ( ( w1  >> 4  )  & maskhigh )  ;
+  out[3] =  (  ( ( w1 >> 56  ) | ( w2 << 8 ) )  & masklow )  |  ( ( w2  << 20  )  & maskhigh )  ;
+  out[4] =  ( ( w2  >> 32  )  & masklow )  |  (    ( ( w2 >> 20  ) | ( w3 << 44 ) )  & maskhigh )  ;
+  out[5] =  ( ( w3  >> 8  )  & masklow )  |  ( ( w3  << 4  )  & maskhigh )  ;
+  out[6] =  (  ( ( w3 >> 48  ) | ( w4 << 16 ) )  & masklow )  |  ( ( w4  << 28  )  & maskhigh )  ;
+  out[7] =  ( ( w4  >> 24  )  & masklow )  |  ( ( w4  >> 12  )  & maskhigh )  ;
+  out[8] =  ( ( w5   )  & masklow )  |  ( ( w5  << 12  )  & maskhigh )  ;
+  out[9] =  ( ( w5  >> 40  )  & masklow )  |  (    ( ( w5 >> 28  ) | ( w6 << 36 ) )  & maskhigh )  ;
+  out[10] =  ( ( w6  >> 16  )  & masklow )  |  ( ( w6  >> 4  )  & maskhigh )  ;
+  out[11] =  (  ( ( w6 >> 56  ) | ( w7 << 8 ) )  & masklow )  |  ( ( w7  << 20  )  & maskhigh )  ;
+  out[12] =  ( ( w7  >> 32  )  & masklow )  |  (    ( ( w7 >> 20  ) | ( w8 << 44 ) )  & maskhigh )  ;
+  out[13] =  ( ( w8  >> 8  )  & masklow )  |  ( ( w8  << 4  )  & maskhigh )  ;
+  out[14] =  (  ( ( w8 >> 48  ) | ( w9 << 16 ) )  & masklow )  |  ( ( w9  << 28  )  & maskhigh )  ;
+  out[15] =  ( ( w9  >> 24  )  & masklow )  |  ( ( w9  >> 12  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2774,7 +2794,8 @@ static void unpackblock20(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock21(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(2097151);
+  const uint64_t masklow = UINT64_C(0x1fffff);
+  const uint64_t maskhigh = UINT64_C(0x1fffff00000000);
   /* we are going to access  11 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2788,22 +2809,22 @@ static void unpackblock21(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w9 = pw64[9];
   uint64_t w10 = pw64[10];
   *pw += 84; /* we used up 84 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 21 )  & mask  )  << 32 );
-  out[1] = (   ( ( w0 >> 42 )  & mask  )  ) | (    ( ( ( w0 >> 63  ) | ( w1 << 1 ) )  & mask  )  << 32 );
-  out[2] = (   ( ( w1 >> 20 )  & mask  )  ) | (   ( ( w1 >> 41 )  & mask  )  << 32 );
-  out[3] = (    ( ( ( w1 >> 62  ) | ( w2 << 2 ) )  & mask  )  ) | (   ( ( w2 >> 19 )  & mask  )  << 32 );
-  out[4] = (   ( ( w2 >> 40 )  & mask  )  ) | (    ( ( ( w2 >> 61  ) | ( w3 << 3 ) )  & mask  )  << 32 );
-  out[5] = (   ( ( w3 >> 18 )  & mask  )  ) | (   ( ( w3 >> 39 )  & mask  )  << 32 );
-  out[6] = (    ( ( ( w3 >> 60  ) | ( w4 << 4 ) )  & mask  )  ) | (   ( ( w4 >> 17 )  & mask  )  << 32 );
-  out[7] = (   ( ( w4 >> 38 )  & mask  )  ) | (    ( ( ( w4 >> 59  ) | ( w5 << 5 ) )  & mask  )  << 32 );
-  out[8] = (   ( ( w5 >> 16 )  & mask  )  ) | (   ( ( w5 >> 37 )  & mask  )  << 32 );
-  out[9] = (    ( ( ( w5 >> 58  ) | ( w6 << 6 ) )  & mask  )  ) | (   ( ( w6 >> 15 )  & mask  )  << 32 );
-  out[10] = (   ( ( w6 >> 36 )  & mask  )  ) | (    ( ( ( w6 >> 57  ) | ( w7 << 7 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w7 >> 14 )  & mask  )  ) | (   ( ( w7 >> 35 )  & mask  )  << 32 );
-  out[12] = (    ( ( ( w7 >> 56  ) | ( w8 << 8 ) )  & mask  )  ) | (   ( ( w8 >> 13 )  & mask  )  << 32 );
-  out[13] = (   ( ( w8 >> 34 )  & mask  )  ) | (    ( ( ( w8 >> 55  ) | ( w9 << 9 ) )  & mask  )  << 32 );
-  out[14] = (   ( ( w9 >> 12 )  & mask  )  ) | (   ( ( w9 >> 33 )  & mask  )  << 32 );
-  out[15] = (    ( ( ( w9 >> 54  ) | ( w10 << 10 ) )  & mask  )  ) | (   ( ( w10 >> 11 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 11  )  & maskhigh )  ;
+  out[1] =  ( ( w0  >> 42  )  & masklow )  |  (    ( ( w0 >> 31  ) | ( w1 << 33 ) )  & maskhigh )  ;
+  out[2] =  ( ( w1  >> 20  )  & masklow )  |  ( ( w1  >> 9  )  & maskhigh )  ;
+  out[3] =  (  ( ( w1 >> 62  ) | ( w2 << 2 ) )  & masklow )  |  ( ( w2  << 13  )  & maskhigh )  ;
+  out[4] =  ( ( w2  >> 40  )  & masklow )  |  (    ( ( w2 >> 29  ) | ( w3 << 35 ) )  & maskhigh )  ;
+  out[5] =  ( ( w3  >> 18  )  & masklow )  |  ( ( w3  >> 7  )  & maskhigh )  ;
+  out[6] =  (  ( ( w3 >> 60  ) | ( w4 << 4 ) )  & masklow )  |  ( ( w4  << 15  )  & maskhigh )  ;
+  out[7] =  ( ( w4  >> 38  )  & masklow )  |  (    ( ( w4 >> 27  ) | ( w5 << 37 ) )  & maskhigh )  ;
+  out[8] =  ( ( w5  >> 16  )  & masklow )  |  ( ( w5  >> 5  )  & maskhigh )  ;
+  out[9] =  (  ( ( w5 >> 58  ) | ( w6 << 6 ) )  & masklow )  |  ( ( w6  << 17  )  & maskhigh )  ;
+  out[10] =  ( ( w6  >> 36  )  & masklow )  |  (    ( ( w6 >> 25  ) | ( w7 << 39 ) )  & maskhigh )  ;
+  out[11] =  ( ( w7  >> 14  )  & masklow )  |  ( ( w7  >> 3  )  & maskhigh )  ;
+  out[12] =  (  ( ( w7 >> 56  ) | ( w8 << 8 ) )  & masklow )  |  ( ( w8  << 19  )  & maskhigh )  ;
+  out[13] =  ( ( w8  >> 34  )  & masklow )  |  (    ( ( w8 >> 23  ) | ( w9 << 41 ) )  & maskhigh )  ;
+  out[14] =  ( ( w9  >> 12  )  & masklow )  |  ( ( w9  >> 1  )  & maskhigh )  ;
+  out[15] =  (  ( ( w9 >> 54  ) | ( w10 << 10 ) )  & masklow )  |  ( ( w10  << 21  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2812,7 +2833,8 @@ static void unpackblock21(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock22(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(4194303);
+  const uint64_t masklow = UINT64_C(0x3fffff);
+  const uint64_t maskhigh = UINT64_C(0x3fffff00000000);
   /* we are going to access  11 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2826,22 +2848,22 @@ static void unpackblock22(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w9 = pw64[9];
   uint64_t w10 = pw64[10];
   *pw += 88; /* we used up 88 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 22 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 44  ) | ( w1 << 20 ) )  & mask  )  ) | (   ( ( w1 >> 2 )  & mask  )  << 32 );
-  out[2] = (   ( ( w1 >> 24 )  & mask  )  ) | (    ( ( ( w1 >> 46  ) | ( w2 << 18 ) )  & mask  )  << 32 );
-  out[3] = (   ( ( w2 >> 4 )  & mask  )  ) | (   ( ( w2 >> 26 )  & mask  )  << 32 );
-  out[4] = (    ( ( ( w2 >> 48  ) | ( w3 << 16 ) )  & mask  )  ) | (   ( ( w3 >> 6 )  & mask  )  << 32 );
-  out[5] = (   ( ( w3 >> 28 )  & mask  )  ) | (    ( ( ( w3 >> 50  ) | ( w4 << 14 ) )  & mask  )  << 32 );
-  out[6] = (   ( ( w4 >> 8 )  & mask  )  ) | (   ( ( w4 >> 30 )  & mask  )  << 32 );
-  out[7] = (    ( ( ( w4 >> 52  ) | ( w5 << 12 ) )  & mask  )  ) | (   ( ( w5 >> 10 )  & mask  )  << 32 );
-  out[8] = (   ( ( w5 >> 32 )  & mask  )  ) | (    ( ( ( w5 >> 54  ) | ( w6 << 10 ) )  & mask  )  << 32 );
-  out[9] = (   ( ( w6 >> 12 )  & mask  )  ) | (   ( ( w6 >> 34 )  & mask  )  << 32 );
-  out[10] = (    ( ( ( w6 >> 56  ) | ( w7 << 8 ) )  & mask  )  ) | (   ( ( w7 >> 14 )  & mask  )  << 32 );
-  out[11] = (   ( ( w7 >> 36 )  & mask  )  ) | (    ( ( ( w7 >> 58  ) | ( w8 << 6 ) )  & mask  )  << 32 );
-  out[12] = (   ( ( w8 >> 16 )  & mask  )  ) | (   ( ( w8 >> 38 )  & mask  )  << 32 );
-  out[13] = (    ( ( ( w8 >> 60  ) | ( w9 << 4 ) )  & mask  )  ) | (   ( ( w9 >> 18 )  & mask  )  << 32 );
-  out[14] = (   ( ( w9 >> 40 )  & mask  )  ) | (    ( ( ( w9 >> 62  ) | ( w10 << 2 ) )  & mask  )  << 32 );
-  out[15] = (   ( ( w10 >> 20 )  & mask  )  ) | (  ( w10  >> 42  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 10  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 44  ) | ( w1 << 20 ) )  & masklow )  |  ( ( w1  << 30  )  & maskhigh )  ;
+  out[2] =  ( ( w1  >> 24  )  & masklow )  |  (    ( ( w1 >> 14  ) | ( w2 << 50 ) )  & maskhigh )  ;
+  out[3] =  ( ( w2  >> 4  )  & masklow )  |  ( ( w2  << 6  )  & maskhigh )  ;
+  out[4] =  (  ( ( w2 >> 48  ) | ( w3 << 16 ) )  & masklow )  |  ( ( w3  << 26  )  & maskhigh )  ;
+  out[5] =  ( ( w3  >> 28  )  & masklow )  |  (    ( ( w3 >> 18  ) | ( w4 << 46 ) )  & maskhigh )  ;
+  out[6] =  ( ( w4  >> 8  )  & masklow )  |  ( ( w4  << 2  )  & maskhigh )  ;
+  out[7] =  (  ( ( w4 >> 52  ) | ( w5 << 12 ) )  & masklow )  |  ( ( w5  << 22  )  & maskhigh )  ;
+  out[8] =  ( ( w5  >> 32  )  & masklow )  |  (    ( ( w5 >> 22  ) | ( w6 << 42 ) )  & maskhigh )  ;
+  out[9] =  ( ( w6  >> 12  )  & masklow )  |  ( ( w6  >> 2  )  & maskhigh )  ;
+  out[10] =  (  ( ( w6 >> 56  ) | ( w7 << 8 ) )  & masklow )  |  ( ( w7  << 18  )  & maskhigh )  ;
+  out[11] =  ( ( w7  >> 36  )  & masklow )  |  (    ( ( w7 >> 26  ) | ( w8 << 38 ) )  & maskhigh )  ;
+  out[12] =  ( ( w8  >> 16  )  & masklow )  |  ( ( w8  >> 6  )  & maskhigh )  ;
+  out[13] =  (  ( ( w8 >> 60  ) | ( w9 << 4 ) )  & masklow )  |  ( ( w9  << 14  )  & maskhigh )  ;
+  out[14] =  ( ( w9  >> 40  )  & masklow )  |  (    ( ( w9 >> 30  ) | ( w10 << 34 ) )  & maskhigh )  ;
+  out[15] =  ( ( w10  >> 20  )  & masklow )  |  ( ( w10  >> 10  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2850,7 +2872,8 @@ static void unpackblock22(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock23(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(8388607);
+  const uint64_t masklow = UINT64_C(0x7fffff);
+  const uint64_t maskhigh = UINT64_C(0x7fffff00000000);
   /* we are going to access  12 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2865,22 +2888,22 @@ static void unpackblock23(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w10 = pw64[10];
   uint64_t w11 = pw64[11];
   *pw += 92; /* we used up 92 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 23 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 46  ) | ( w1 << 18 ) )  & mask  )  ) | (   ( ( w1 >> 5 )  & mask  )  << 32 );
-  out[2] = (   ( ( w1 >> 28 )  & mask  )  ) | (    ( ( ( w1 >> 51  ) | ( w2 << 13 ) )  & mask  )  << 32 );
-  out[3] = (   ( ( w2 >> 10 )  & mask  )  ) | (   ( ( w2 >> 33 )  & mask  )  << 32 );
-  out[4] = (    ( ( ( w2 >> 56  ) | ( w3 << 8 ) )  & mask  )  ) | (   ( ( w3 >> 15 )  & mask  )  << 32 );
-  out[5] = (   ( ( w3 >> 38 )  & mask  )  ) | (    ( ( ( w3 >> 61  ) | ( w4 << 3 ) )  & mask  )  << 32 );
-  out[6] = (   ( ( w4 >> 20 )  & mask  )  ) | (    ( ( ( w4 >> 43  ) | ( w5 << 21 ) )  & mask  )  << 32 );
-  out[7] = (   ( ( w5 >> 2 )  & mask  )  ) | (   ( ( w5 >> 25 )  & mask  )  << 32 );
-  out[8] = (    ( ( ( w5 >> 48  ) | ( w6 << 16 ) )  & mask  )  ) | (   ( ( w6 >> 7 )  & mask  )  << 32 );
-  out[9] = (   ( ( w6 >> 30 )  & mask  )  ) | (    ( ( ( w6 >> 53  ) | ( w7 << 11 ) )  & mask  )  << 32 );
-  out[10] = (   ( ( w7 >> 12 )  & mask  )  ) | (   ( ( w7 >> 35 )  & mask  )  << 32 );
-  out[11] = (    ( ( ( w7 >> 58  ) | ( w8 << 6 ) )  & mask  )  ) | (   ( ( w8 >> 17 )  & mask  )  << 32 );
-  out[12] = (   ( ( w8 >> 40 )  & mask  )  ) | (    ( ( ( w8 >> 63  ) | ( w9 << 1 ) )  & mask  )  << 32 );
-  out[13] = (   ( ( w9 >> 22 )  & mask  )  ) | (    ( ( ( w9 >> 45  ) | ( w10 << 19 ) )  & mask  )  << 32 );
-  out[14] = (   ( ( w10 >> 4 )  & mask  )  ) | (   ( ( w10 >> 27 )  & mask  )  << 32 );
-  out[15] = (    ( ( ( w10 >> 50  ) | ( w11 << 14 ) )  & mask  )  ) | (   ( ( w11 >> 9 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 9  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 46  ) | ( w1 << 18 ) )  & masklow )  |  ( ( w1  << 27  )  & maskhigh )  ;
+  out[2] =  ( ( w1  >> 28  )  & masklow )  |  (    ( ( w1 >> 19  ) | ( w2 << 45 ) )  & maskhigh )  ;
+  out[3] =  ( ( w2  >> 10  )  & masklow )  |  ( ( w2  >> 1  )  & maskhigh )  ;
+  out[4] =  (  ( ( w2 >> 56  ) | ( w3 << 8 ) )  & masklow )  |  ( ( w3  << 17  )  & maskhigh )  ;
+  out[5] =  ( ( w3  >> 38  )  & masklow )  |  (    ( ( w3 >> 29  ) | ( w4 << 35 ) )  & maskhigh )  ;
+  out[6] =  ( ( w4  >> 20  )  & masklow )  |  (    ( ( w4 >> 11  ) | ( w5 << 53 ) )  & maskhigh )  ;
+  out[7] =  ( ( w5  >> 2  )  & masklow )  |  ( ( w5  << 7  )  & maskhigh )  ;
+  out[8] =  (  ( ( w5 >> 48  ) | ( w6 << 16 ) )  & masklow )  |  ( ( w6  << 25  )  & maskhigh )  ;
+  out[9] =  ( ( w6  >> 30  )  & masklow )  |  (    ( ( w6 >> 21  ) | ( w7 << 43 ) )  & maskhigh )  ;
+  out[10] =  ( ( w7  >> 12  )  & masklow )  |  ( ( w7  >> 3  )  & maskhigh )  ;
+  out[11] =  (  ( ( w7 >> 58  ) | ( w8 << 6 ) )  & masklow )  |  ( ( w8  << 15  )  & maskhigh )  ;
+  out[12] =  ( ( w8  >> 40  )  & masklow )  |  (    ( ( w8 >> 31  ) | ( w9 << 33 ) )  & maskhigh )  ;
+  out[13] =  ( ( w9  >> 22  )  & masklow )  |  (    ( ( w9 >> 13  ) | ( w10 << 51 ) )  & maskhigh )  ;
+  out[14] =  ( ( w10  >> 4  )  & masklow )  |  ( ( w10  << 5  )  & maskhigh )  ;
+  out[15] =  (  ( ( w10 >> 50  ) | ( w11 << 14 ) )  & masklow )  |  ( ( w11  << 23  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2889,7 +2912,8 @@ static void unpackblock23(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock24(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(16777215);
+  const uint64_t masklow = UINT64_C(0xffffff);
+  const uint64_t maskhigh = UINT64_C(0xffffff00000000);
   /* we are going to access  12 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2904,22 +2928,22 @@ static void unpackblock24(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w10 = pw64[10];
   uint64_t w11 = pw64[11];
   *pw += 96; /* we used up 96 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 24 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 48  ) | ( w1 << 16 ) )  & mask  )  ) | (   ( ( w1 >> 8 )  & mask  )  << 32 );
-  out[2] = (   ( ( w1 >> 32 )  & mask  )  ) | (    ( ( ( w1 >> 56  ) | ( w2 << 8 ) )  & mask  )  << 32 );
-  out[3] = (   ( ( w2 >> 16 )  & mask  )  ) | (  ( w2  >> 40  )  << 32 );
-  out[4] = (   ( ( w3 )  & mask  )  ) | (   ( ( w3 >> 24 )  & mask  )  << 32 );
-  out[5] = (    ( ( ( w3 >> 48  ) | ( w4 << 16 ) )  & mask  )  ) | (   ( ( w4 >> 8 )  & mask  )  << 32 );
-  out[6] = (   ( ( w4 >> 32 )  & mask  )  ) | (    ( ( ( w4 >> 56  ) | ( w5 << 8 ) )  & mask  )  << 32 );
-  out[7] = (   ( ( w5 >> 16 )  & mask  )  ) | (  ( w5  >> 40  )  << 32 );
-  out[8] = (   ( ( w6 )  & mask  )  ) | (   ( ( w6 >> 24 )  & mask  )  << 32 );
-  out[9] = (    ( ( ( w6 >> 48  ) | ( w7 << 16 ) )  & mask  )  ) | (   ( ( w7 >> 8 )  & mask  )  << 32 );
-  out[10] = (   ( ( w7 >> 32 )  & mask  )  ) | (    ( ( ( w7 >> 56  ) | ( w8 << 8 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w8 >> 16 )  & mask  )  ) | (  ( w8  >> 40  )  << 32 );
-  out[12] = (   ( ( w9 )  & mask  )  ) | (   ( ( w9 >> 24 )  & mask  )  << 32 );
-  out[13] = (    ( ( ( w9 >> 48  ) | ( w10 << 16 ) )  & mask  )  ) | (   ( ( w10 >> 8 )  & mask  )  << 32 );
-  out[14] = (   ( ( w10 >> 32 )  & mask  )  ) | (    ( ( ( w10 >> 56  ) | ( w11 << 8 ) )  & mask  )  << 32 );
-  out[15] = (   ( ( w11 >> 16 )  & mask  )  ) | (  ( w11  >> 40  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 8  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 48  ) | ( w1 << 16 ) )  & masklow )  |  ( ( w1  << 24  )  & maskhigh )  ;
+  out[2] =  ( ( w1  >> 32  )  & masklow )  |  (    ( ( w1 >> 24  ) | ( w2 << 40 ) )  & maskhigh )  ;
+  out[3] =  ( ( w2  >> 16  )  & masklow )  |  ( ( w2  >> 8  )  & maskhigh )  ;
+  out[4] =  ( ( w3   )  & masklow )  |  ( ( w3  << 8  )  & maskhigh )  ;
+  out[5] =  (  ( ( w3 >> 48  ) | ( w4 << 16 ) )  & masklow )  |  ( ( w4  << 24  )  & maskhigh )  ;
+  out[6] =  ( ( w4  >> 32  )  & masklow )  |  (    ( ( w4 >> 24  ) | ( w5 << 40 ) )  & maskhigh )  ;
+  out[7] =  ( ( w5  >> 16  )  & masklow )  |  ( ( w5  >> 8  )  & maskhigh )  ;
+  out[8] =  ( ( w6   )  & masklow )  |  ( ( w6  << 8  )  & maskhigh )  ;
+  out[9] =  (  ( ( w6 >> 48  ) | ( w7 << 16 ) )  & masklow )  |  ( ( w7  << 24  )  & maskhigh )  ;
+  out[10] =  ( ( w7  >> 32  )  & masklow )  |  (    ( ( w7 >> 24  ) | ( w8 << 40 ) )  & maskhigh )  ;
+  out[11] =  ( ( w8  >> 16  )  & masklow )  |  ( ( w8  >> 8  )  & maskhigh )  ;
+  out[12] =  ( ( w9   )  & masklow )  |  ( ( w9  << 8  )  & maskhigh )  ;
+  out[13] =  (  ( ( w9 >> 48  ) | ( w10 << 16 ) )  & masklow )  |  ( ( w10  << 24  )  & maskhigh )  ;
+  out[14] =  ( ( w10  >> 32  )  & masklow )  |  (    ( ( w10 >> 24  ) | ( w11 << 40 ) )  & maskhigh )  ;
+  out[15] =  ( ( w11  >> 16  )  & masklow )  |  ( ( w11  >> 8  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2928,7 +2952,8 @@ static void unpackblock24(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock25(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(33554431);
+  const uint64_t masklow = UINT64_C(0x1ffffff);
+  const uint64_t maskhigh = UINT64_C(0x1ffffff00000000);
   /* we are going to access  13 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2944,22 +2969,22 @@ static void unpackblock25(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w11 = pw64[11];
   uint64_t w12 = pw64[12];
   *pw += 100; /* we used up 100 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 25 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 50  ) | ( w1 << 14 ) )  & mask  )  ) | (   ( ( w1 >> 11 )  & mask  )  << 32 );
-  out[2] = (   ( ( w1 >> 36 )  & mask  )  ) | (    ( ( ( w1 >> 61  ) | ( w2 << 3 ) )  & mask  )  << 32 );
-  out[3] = (   ( ( w2 >> 22 )  & mask  )  ) | (    ( ( ( w2 >> 47  ) | ( w3 << 17 ) )  & mask  )  << 32 );
-  out[4] = (   ( ( w3 >> 8 )  & mask  )  ) | (   ( ( w3 >> 33 )  & mask  )  << 32 );
-  out[5] = (    ( ( ( w3 >> 58  ) | ( w4 << 6 ) )  & mask  )  ) | (   ( ( w4 >> 19 )  & mask  )  << 32 );
-  out[6] = (    ( ( ( w4 >> 44  ) | ( w5 << 20 ) )  & mask  )  ) | (   ( ( w5 >> 5 )  & mask  )  << 32 );
-  out[7] = (   ( ( w5 >> 30 )  & mask  )  ) | (    ( ( ( w5 >> 55  ) | ( w6 << 9 ) )  & mask  )  << 32 );
-  out[8] = (   ( ( w6 >> 16 )  & mask  )  ) | (    ( ( ( w6 >> 41  ) | ( w7 << 23 ) )  & mask  )  << 32 );
-  out[9] = (   ( ( w7 >> 2 )  & mask  )  ) | (   ( ( w7 >> 27 )  & mask  )  << 32 );
-  out[10] = (    ( ( ( w7 >> 52  ) | ( w8 << 12 ) )  & mask  )  ) | (   ( ( w8 >> 13 )  & mask  )  << 32 );
-  out[11] = (   ( ( w8 >> 38 )  & mask  )  ) | (    ( ( ( w8 >> 63  ) | ( w9 << 1 ) )  & mask  )  << 32 );
-  out[12] = (   ( ( w9 >> 24 )  & mask  )  ) | (    ( ( ( w9 >> 49  ) | ( w10 << 15 ) )  & mask  )  << 32 );
-  out[13] = (   ( ( w10 >> 10 )  & mask  )  ) | (   ( ( w10 >> 35 )  & mask  )  << 32 );
-  out[14] = (    ( ( ( w10 >> 60  ) | ( w11 << 4 ) )  & mask  )  ) | (   ( ( w11 >> 21 )  & mask  )  << 32 );
-  out[15] = (    ( ( ( w11 >> 46  ) | ( w12 << 18 ) )  & mask  )  ) | (   ( ( w12 >> 7 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 7  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 50  ) | ( w1 << 14 ) )  & masklow )  |  ( ( w1  << 21  )  & maskhigh )  ;
+  out[2] =  ( ( w1  >> 36  )  & masklow )  |  (    ( ( w1 >> 29  ) | ( w2 << 35 ) )  & maskhigh )  ;
+  out[3] =  ( ( w2  >> 22  )  & masklow )  |  (    ( ( w2 >> 15  ) | ( w3 << 49 ) )  & maskhigh )  ;
+  out[4] =  ( ( w3  >> 8  )  & masklow )  |  ( ( w3  >> 1  )  & maskhigh )  ;
+  out[5] =  (  ( ( w3 >> 58  ) | ( w4 << 6 ) )  & masklow )  |  ( ( w4  << 13  )  & maskhigh )  ;
+  out[6] =  (  ( ( w4 >> 44  ) | ( w5 << 20 ) )  & masklow )  |  ( ( w5  << 27  )  & maskhigh )  ;
+  out[7] =  ( ( w5  >> 30  )  & masklow )  |  (    ( ( w5 >> 23  ) | ( w6 << 41 ) )  & maskhigh )  ;
+  out[8] =  ( ( w6  >> 16  )  & masklow )  |  (    ( ( w6 >> 9  ) | ( w7 << 55 ) )  & maskhigh )  ;
+  out[9] =  ( ( w7  >> 2  )  & masklow )  |  ( ( w7  << 5  )  & maskhigh )  ;
+  out[10] =  (  ( ( w7 >> 52  ) | ( w8 << 12 ) )  & masklow )  |  ( ( w8  << 19  )  & maskhigh )  ;
+  out[11] =  ( ( w8  >> 38  )  & masklow )  |  (    ( ( w8 >> 31  ) | ( w9 << 33 ) )  & maskhigh )  ;
+  out[12] =  ( ( w9  >> 24  )  & masklow )  |  (    ( ( w9 >> 17  ) | ( w10 << 47 ) )  & maskhigh )  ;
+  out[13] =  ( ( w10  >> 10  )  & masklow )  |  ( ( w10  >> 3  )  & maskhigh )  ;
+  out[14] =  (  ( ( w10 >> 60  ) | ( w11 << 4 ) )  & masklow )  |  ( ( w11  << 11  )  & maskhigh )  ;
+  out[15] =  (  ( ( w11 >> 46  ) | ( w12 << 18 ) )  & masklow )  |  ( ( w12  << 25  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -2968,7 +2993,8 @@ static void unpackblock25(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock26(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(67108863);
+  const uint64_t masklow = UINT64_C(0x3ffffff);
+  const uint64_t maskhigh = UINT64_C(0x3ffffff00000000);
   /* we are going to access  13 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -2984,22 +3010,22 @@ static void unpackblock26(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w11 = pw64[11];
   uint64_t w12 = pw64[12];
   *pw += 104; /* we used up 104 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 26 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 52  ) | ( w1 << 12 ) )  & mask  )  ) | (   ( ( w1 >> 14 )  & mask  )  << 32 );
-  out[2] = (    ( ( ( w1 >> 40  ) | ( w2 << 24 ) )  & mask  )  ) | (   ( ( w2 >> 2 )  & mask  )  << 32 );
-  out[3] = (   ( ( w2 >> 28 )  & mask  )  ) | (    ( ( ( w2 >> 54  ) | ( w3 << 10 ) )  & mask  )  << 32 );
-  out[4] = (   ( ( w3 >> 16 )  & mask  )  ) | (    ( ( ( w3 >> 42  ) | ( w4 << 22 ) )  & mask  )  << 32 );
-  out[5] = (   ( ( w4 >> 4 )  & mask  )  ) | (   ( ( w4 >> 30 )  & mask  )  << 32 );
-  out[6] = (    ( ( ( w4 >> 56  ) | ( w5 << 8 ) )  & mask  )  ) | (   ( ( w5 >> 18 )  & mask  )  << 32 );
-  out[7] = (    ( ( ( w5 >> 44  ) | ( w6 << 20 ) )  & mask  )  ) | (   ( ( w6 >> 6 )  & mask  )  << 32 );
-  out[8] = (   ( ( w6 >> 32 )  & mask  )  ) | (    ( ( ( w6 >> 58  ) | ( w7 << 6 ) )  & mask  )  << 32 );
-  out[9] = (   ( ( w7 >> 20 )  & mask  )  ) | (    ( ( ( w7 >> 46  ) | ( w8 << 18 ) )  & mask  )  << 32 );
-  out[10] = (   ( ( w8 >> 8 )  & mask  )  ) | (   ( ( w8 >> 34 )  & mask  )  << 32 );
-  out[11] = (    ( ( ( w8 >> 60  ) | ( w9 << 4 ) )  & mask  )  ) | (   ( ( w9 >> 22 )  & mask  )  << 32 );
-  out[12] = (    ( ( ( w9 >> 48  ) | ( w10 << 16 ) )  & mask  )  ) | (   ( ( w10 >> 10 )  & mask  )  << 32 );
-  out[13] = (   ( ( w10 >> 36 )  & mask  )  ) | (    ( ( ( w10 >> 62  ) | ( w11 << 2 ) )  & mask  )  << 32 );
-  out[14] = (   ( ( w11 >> 24 )  & mask  )  ) | (    ( ( ( w11 >> 50  ) | ( w12 << 14 ) )  & mask  )  << 32 );
-  out[15] = (   ( ( w12 >> 12 )  & mask  )  ) | (  ( w12  >> 38  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 6  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 52  ) | ( w1 << 12 ) )  & masklow )  |  ( ( w1  << 18  )  & maskhigh )  ;
+  out[2] =  (  ( ( w1 >> 40  ) | ( w2 << 24 ) )  & masklow )  |  ( ( w2  << 30  )  & maskhigh )  ;
+  out[3] =  ( ( w2  >> 28  )  & masklow )  |  (    ( ( w2 >> 22  ) | ( w3 << 42 ) )  & maskhigh )  ;
+  out[4] =  ( ( w3  >> 16  )  & masklow )  |  (    ( ( w3 >> 10  ) | ( w4 << 54 ) )  & maskhigh )  ;
+  out[5] =  ( ( w4  >> 4  )  & masklow )  |  ( ( w4  << 2  )  & maskhigh )  ;
+  out[6] =  (  ( ( w4 >> 56  ) | ( w5 << 8 ) )  & masklow )  |  ( ( w5  << 14  )  & maskhigh )  ;
+  out[7] =  (  ( ( w5 >> 44  ) | ( w6 << 20 ) )  & masklow )  |  ( ( w6  << 26  )  & maskhigh )  ;
+  out[8] =  ( ( w6  >> 32  )  & masklow )  |  (    ( ( w6 >> 26  ) | ( w7 << 38 ) )  & maskhigh )  ;
+  out[9] =  ( ( w7  >> 20  )  & masklow )  |  (    ( ( w7 >> 14  ) | ( w8 << 50 ) )  & maskhigh )  ;
+  out[10] =  ( ( w8  >> 8  )  & masklow )  |  ( ( w8  >> 2  )  & maskhigh )  ;
+  out[11] =  (  ( ( w8 >> 60  ) | ( w9 << 4 ) )  & masklow )  |  ( ( w9  << 10  )  & maskhigh )  ;
+  out[12] =  (  ( ( w9 >> 48  ) | ( w10 << 16 ) )  & masklow )  |  ( ( w10  << 22  )  & maskhigh )  ;
+  out[13] =  ( ( w10  >> 36  )  & masklow )  |  (    ( ( w10 >> 30  ) | ( w11 << 34 ) )  & maskhigh )  ;
+  out[14] =  ( ( w11  >> 24  )  & masklow )  |  (    ( ( w11 >> 18  ) | ( w12 << 46 ) )  & maskhigh )  ;
+  out[15] =  ( ( w12  >> 12  )  & masklow )  |  ( ( w12  >> 6  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -3008,7 +3034,8 @@ static void unpackblock26(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock27(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(134217727);
+  const uint64_t masklow = UINT64_C(0x7ffffff);
+  const uint64_t maskhigh = UINT64_C(0x7ffffff00000000);
   /* we are going to access  14 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -3025,22 +3052,22 @@ static void unpackblock27(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w12 = pw64[12];
   uint64_t w13 = pw64[13];
   *pw += 108; /* we used up 108 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 27 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 54  ) | ( w1 << 10 ) )  & mask  )  ) | (   ( ( w1 >> 17 )  & mask  )  << 32 );
-  out[2] = (    ( ( ( w1 >> 44  ) | ( w2 << 20 ) )  & mask  )  ) | (   ( ( w2 >> 7 )  & mask  )  << 32 );
-  out[3] = (   ( ( w2 >> 34 )  & mask  )  ) | (    ( ( ( w2 >> 61  ) | ( w3 << 3 ) )  & mask  )  << 32 );
-  out[4] = (   ( ( w3 >> 24 )  & mask  )  ) | (    ( ( ( w3 >> 51  ) | ( w4 << 13 ) )  & mask  )  << 32 );
-  out[5] = (   ( ( w4 >> 14 )  & mask  )  ) | (    ( ( ( w4 >> 41  ) | ( w5 << 23 ) )  & mask  )  << 32 );
-  out[6] = (   ( ( w5 >> 4 )  & mask  )  ) | (   ( ( w5 >> 31 )  & mask  )  << 32 );
-  out[7] = (    ( ( ( w5 >> 58  ) | ( w6 << 6 ) )  & mask  )  ) | (   ( ( w6 >> 21 )  & mask  )  << 32 );
-  out[8] = (    ( ( ( w6 >> 48  ) | ( w7 << 16 ) )  & mask  )  ) | (   ( ( w7 >> 11 )  & mask  )  << 32 );
-  out[9] = (    ( ( ( w7 >> 38  ) | ( w8 << 26 ) )  & mask  )  ) | (   ( ( w8 >> 1 )  & mask  )  << 32 );
-  out[10] = (   ( ( w8 >> 28 )  & mask  )  ) | (    ( ( ( w8 >> 55  ) | ( w9 << 9 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w9 >> 18 )  & mask  )  ) | (    ( ( ( w9 >> 45  ) | ( w10 << 19 ) )  & mask  )  << 32 );
-  out[12] = (   ( ( w10 >> 8 )  & mask  )  ) | (   ( ( w10 >> 35 )  & mask  )  << 32 );
-  out[13] = (    ( ( ( w10 >> 62  ) | ( w11 << 2 ) )  & mask  )  ) | (   ( ( w11 >> 25 )  & mask  )  << 32 );
-  out[14] = (    ( ( ( w11 >> 52  ) | ( w12 << 12 ) )  & mask  )  ) | (   ( ( w12 >> 15 )  & mask  )  << 32 );
-  out[15] = (    ( ( ( w12 >> 42  ) | ( w13 << 22 ) )  & mask  )  ) | (   ( ( w13 >> 5 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 5  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 54  ) | ( w1 << 10 ) )  & masklow )  |  ( ( w1  << 15  )  & maskhigh )  ;
+  out[2] =  (  ( ( w1 >> 44  ) | ( w2 << 20 ) )  & masklow )  |  ( ( w2  << 25  )  & maskhigh )  ;
+  out[3] =  ( ( w2  >> 34  )  & masklow )  |  (    ( ( w2 >> 29  ) | ( w3 << 35 ) )  & maskhigh )  ;
+  out[4] =  ( ( w3  >> 24  )  & masklow )  |  (    ( ( w3 >> 19  ) | ( w4 << 45 ) )  & maskhigh )  ;
+  out[5] =  ( ( w4  >> 14  )  & masklow )  |  (    ( ( w4 >> 9  ) | ( w5 << 55 ) )  & maskhigh )  ;
+  out[6] =  ( ( w5  >> 4  )  & masklow )  |  ( ( w5  << 1  )  & maskhigh )  ;
+  out[7] =  (  ( ( w5 >> 58  ) | ( w6 << 6 ) )  & masklow )  |  ( ( w6  << 11  )  & maskhigh )  ;
+  out[8] =  (  ( ( w6 >> 48  ) | ( w7 << 16 ) )  & masklow )  |  ( ( w7  << 21  )  & maskhigh )  ;
+  out[9] =  (  ( ( w7 >> 38  ) | ( w8 << 26 ) )  & masklow )  |  ( ( w8  << 31  )  & maskhigh )  ;
+  out[10] =  ( ( w8  >> 28  )  & masklow )  |  (    ( ( w8 >> 23  ) | ( w9 << 41 ) )  & maskhigh )  ;
+  out[11] =  ( ( w9  >> 18  )  & masklow )  |  (    ( ( w9 >> 13  ) | ( w10 << 51 ) )  & maskhigh )  ;
+  out[12] =  ( ( w10  >> 8  )  & masklow )  |  ( ( w10  >> 3  )  & maskhigh )  ;
+  out[13] =  (  ( ( w10 >> 62  ) | ( w11 << 2 ) )  & masklow )  |  ( ( w11  << 7  )  & maskhigh )  ;
+  out[14] =  (  ( ( w11 >> 52  ) | ( w12 << 12 ) )  & masklow )  |  ( ( w12  << 17  )  & maskhigh )  ;
+  out[15] =  (  ( ( w12 >> 42  ) | ( w13 << 22 ) )  & masklow )  |  ( ( w13  << 27  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -3049,7 +3076,8 @@ static void unpackblock27(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock28(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(268435455);
+  const uint64_t masklow = UINT64_C(0xfffffff);
+  const uint64_t maskhigh = UINT64_C(0xfffffff00000000);
   /* we are going to access  14 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -3066,22 +3094,22 @@ static void unpackblock28(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w12 = pw64[12];
   uint64_t w13 = pw64[13];
   *pw += 112; /* we used up 112 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 28 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 56  ) | ( w1 << 8 ) )  & mask  )  ) | (   ( ( w1 >> 20 )  & mask  )  << 32 );
-  out[2] = (    ( ( ( w1 >> 48  ) | ( w2 << 16 ) )  & mask  )  ) | (   ( ( w2 >> 12 )  & mask  )  << 32 );
-  out[3] = (    ( ( ( w2 >> 40  ) | ( w3 << 24 ) )  & mask  )  ) | (   ( ( w3 >> 4 )  & mask  )  << 32 );
-  out[4] = (   ( ( w3 >> 32 )  & mask  )  ) | (    ( ( ( w3 >> 60  ) | ( w4 << 4 ) )  & mask  )  << 32 );
-  out[5] = (   ( ( w4 >> 24 )  & mask  )  ) | (    ( ( ( w4 >> 52  ) | ( w5 << 12 ) )  & mask  )  << 32 );
-  out[6] = (   ( ( w5 >> 16 )  & mask  )  ) | (    ( ( ( w5 >> 44  ) | ( w6 << 20 ) )  & mask  )  << 32 );
-  out[7] = (   ( ( w6 >> 8 )  & mask  )  ) | (  ( w6  >> 36  )  << 32 );
-  out[8] = (   ( ( w7 )  & mask  )  ) | (   ( ( w7 >> 28 )  & mask  )  << 32 );
-  out[9] = (    ( ( ( w7 >> 56  ) | ( w8 << 8 ) )  & mask  )  ) | (   ( ( w8 >> 20 )  & mask  )  << 32 );
-  out[10] = (    ( ( ( w8 >> 48  ) | ( w9 << 16 ) )  & mask  )  ) | (   ( ( w9 >> 12 )  & mask  )  << 32 );
-  out[11] = (    ( ( ( w9 >> 40  ) | ( w10 << 24 ) )  & mask  )  ) | (   ( ( w10 >> 4 )  & mask  )  << 32 );
-  out[12] = (   ( ( w10 >> 32 )  & mask  )  ) | (    ( ( ( w10 >> 60  ) | ( w11 << 4 ) )  & mask  )  << 32 );
-  out[13] = (   ( ( w11 >> 24 )  & mask  )  ) | (    ( ( ( w11 >> 52  ) | ( w12 << 12 ) )  & mask  )  << 32 );
-  out[14] = (   ( ( w12 >> 16 )  & mask  )  ) | (    ( ( ( w12 >> 44  ) | ( w13 << 20 ) )  & mask  )  << 32 );
-  out[15] = (   ( ( w13 >> 8 )  & mask  )  ) | (  ( w13  >> 36  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 4  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 56  ) | ( w1 << 8 ) )  & masklow )  |  ( ( w1  << 12  )  & maskhigh )  ;
+  out[2] =  (  ( ( w1 >> 48  ) | ( w2 << 16 ) )  & masklow )  |  ( ( w2  << 20  )  & maskhigh )  ;
+  out[3] =  (  ( ( w2 >> 40  ) | ( w3 << 24 ) )  & masklow )  |  ( ( w3  << 28  )  & maskhigh )  ;
+  out[4] =  ( ( w3  >> 32  )  & masklow )  |  (    ( ( w3 >> 28  ) | ( w4 << 36 ) )  & maskhigh )  ;
+  out[5] =  ( ( w4  >> 24  )  & masklow )  |  (    ( ( w4 >> 20  ) | ( w5 << 44 ) )  & maskhigh )  ;
+  out[6] =  ( ( w5  >> 16  )  & masklow )  |  (    ( ( w5 >> 12  ) | ( w6 << 52 ) )  & maskhigh )  ;
+  out[7] =  ( ( w6  >> 8  )  & masklow )  |  ( ( w6  >> 4  )  & maskhigh )  ;
+  out[8] =  ( ( w7   )  & masklow )  |  ( ( w7  << 4  )  & maskhigh )  ;
+  out[9] =  (  ( ( w7 >> 56  ) | ( w8 << 8 ) )  & masklow )  |  ( ( w8  << 12  )  & maskhigh )  ;
+  out[10] =  (  ( ( w8 >> 48  ) | ( w9 << 16 ) )  & masklow )  |  ( ( w9  << 20  )  & maskhigh )  ;
+  out[11] =  (  ( ( w9 >> 40  ) | ( w10 << 24 ) )  & masklow )  |  ( ( w10  << 28  )  & maskhigh )  ;
+  out[12] =  ( ( w10  >> 32  )  & masklow )  |  (    ( ( w10 >> 28  ) | ( w11 << 36 ) )  & maskhigh )  ;
+  out[13] =  ( ( w11  >> 24  )  & masklow )  |  (    ( ( w11 >> 20  ) | ( w12 << 44 ) )  & maskhigh )  ;
+  out[14] =  ( ( w12  >> 16  )  & masklow )  |  (    ( ( w12 >> 12  ) | ( w13 << 52 ) )  & maskhigh )  ;
+  out[15] =  ( ( w13  >> 8  )  & masklow )  |  ( ( w13  >> 4  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -3090,7 +3118,8 @@ static void unpackblock28(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock29(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(536870911);
+  const uint64_t masklow = UINT64_C(0x1fffffff);
+  const uint64_t maskhigh = UINT64_C(0x1fffffff00000000);
   /* we are going to access  15 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -3108,22 +3137,22 @@ static void unpackblock29(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w13 = pw64[13];
   uint64_t w14 = pw64[14];
   *pw += 116; /* we used up 116 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 29 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 58  ) | ( w1 << 6 ) )  & mask  )  ) | (   ( ( w1 >> 23 )  & mask  )  << 32 );
-  out[2] = (    ( ( ( w1 >> 52  ) | ( w2 << 12 ) )  & mask  )  ) | (   ( ( w2 >> 17 )  & mask  )  << 32 );
-  out[3] = (    ( ( ( w2 >> 46  ) | ( w3 << 18 ) )  & mask  )  ) | (   ( ( w3 >> 11 )  & mask  )  << 32 );
-  out[4] = (    ( ( ( w3 >> 40  ) | ( w4 << 24 ) )  & mask  )  ) | (   ( ( w4 >> 5 )  & mask  )  << 32 );
-  out[5] = (   ( ( w4 >> 34 )  & mask  )  ) | (    ( ( ( w4 >> 63  ) | ( w5 << 1 ) )  & mask  )  << 32 );
-  out[6] = (   ( ( w5 >> 28 )  & mask  )  ) | (    ( ( ( w5 >> 57  ) | ( w6 << 7 ) )  & mask  )  << 32 );
-  out[7] = (   ( ( w6 >> 22 )  & mask  )  ) | (    ( ( ( w6 >> 51  ) | ( w7 << 13 ) )  & mask  )  << 32 );
-  out[8] = (   ( ( w7 >> 16 )  & mask  )  ) | (    ( ( ( w7 >> 45  ) | ( w8 << 19 ) )  & mask  )  << 32 );
-  out[9] = (   ( ( w8 >> 10 )  & mask  )  ) | (    ( ( ( w8 >> 39  ) | ( w9 << 25 ) )  & mask  )  << 32 );
-  out[10] = (   ( ( w9 >> 4 )  & mask  )  ) | (   ( ( w9 >> 33 )  & mask  )  << 32 );
-  out[11] = (    ( ( ( w9 >> 62  ) | ( w10 << 2 ) )  & mask  )  ) | (   ( ( w10 >> 27 )  & mask  )  << 32 );
-  out[12] = (    ( ( ( w10 >> 56  ) | ( w11 << 8 ) )  & mask  )  ) | (   ( ( w11 >> 21 )  & mask  )  << 32 );
-  out[13] = (    ( ( ( w11 >> 50  ) | ( w12 << 14 ) )  & mask  )  ) | (   ( ( w12 >> 15 )  & mask  )  << 32 );
-  out[14] = (    ( ( ( w12 >> 44  ) | ( w13 << 20 ) )  & mask  )  ) | (   ( ( w13 >> 9 )  & mask  )  << 32 );
-  out[15] = (    ( ( ( w13 >> 38  ) | ( w14 << 26 ) )  & mask  )  ) | (   ( ( w14 >> 3 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 3  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 58  ) | ( w1 << 6 ) )  & masklow )  |  ( ( w1  << 9  )  & maskhigh )  ;
+  out[2] =  (  ( ( w1 >> 52  ) | ( w2 << 12 ) )  & masklow )  |  ( ( w2  << 15  )  & maskhigh )  ;
+  out[3] =  (  ( ( w2 >> 46  ) | ( w3 << 18 ) )  & masklow )  |  ( ( w3  << 21  )  & maskhigh )  ;
+  out[4] =  (  ( ( w3 >> 40  ) | ( w4 << 24 ) )  & masklow )  |  ( ( w4  << 27  )  & maskhigh )  ;
+  out[5] =  ( ( w4  >> 34  )  & masklow )  |  (    ( ( w4 >> 31  ) | ( w5 << 33 ) )  & maskhigh )  ;
+  out[6] =  ( ( w5  >> 28  )  & masklow )  |  (    ( ( w5 >> 25  ) | ( w6 << 39 ) )  & maskhigh )  ;
+  out[7] =  ( ( w6  >> 22  )  & masklow )  |  (    ( ( w6 >> 19  ) | ( w7 << 45 ) )  & maskhigh )  ;
+  out[8] =  ( ( w7  >> 16  )  & masklow )  |  (    ( ( w7 >> 13  ) | ( w8 << 51 ) )  & maskhigh )  ;
+  out[9] =  ( ( w8  >> 10  )  & masklow )  |  (    ( ( w8 >> 7  ) | ( w9 << 57 ) )  & maskhigh )  ;
+  out[10] =  ( ( w9  >> 4  )  & masklow )  |  ( ( w9  >> 1  )  & maskhigh )  ;
+  out[11] =  (  ( ( w9 >> 62  ) | ( w10 << 2 ) )  & masklow )  |  ( ( w10  << 5  )  & maskhigh )  ;
+  out[12] =  (  ( ( w10 >> 56  ) | ( w11 << 8 ) )  & masklow )  |  ( ( w11  << 11  )  & maskhigh )  ;
+  out[13] =  (  ( ( w11 >> 50  ) | ( w12 << 14 ) )  & masklow )  |  ( ( w12  << 17  )  & maskhigh )  ;
+  out[14] =  (  ( ( w12 >> 44  ) | ( w13 << 20 ) )  & masklow )  |  ( ( w13  << 23  )  & maskhigh )  ;
+  out[15] =  (  ( ( w13 >> 38  ) | ( w14 << 26 ) )  & masklow )  |  ( ( w14  << 29  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -3132,7 +3161,8 @@ static void unpackblock29(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock30(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(1073741823);
+  const uint64_t masklow = UINT64_C(0x3fffffff);
+  const uint64_t maskhigh = UINT64_C(0x3fffffff00000000);
   /* we are going to access  15 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -3150,22 +3180,22 @@ static void unpackblock30(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w13 = pw64[13];
   uint64_t w14 = pw64[14];
   *pw += 120; /* we used up 120 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 30 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 60  ) | ( w1 << 4 ) )  & mask  )  ) | (   ( ( w1 >> 26 )  & mask  )  << 32 );
-  out[2] = (    ( ( ( w1 >> 56  ) | ( w2 << 8 ) )  & mask  )  ) | (   ( ( w2 >> 22 )  & mask  )  << 32 );
-  out[3] = (    ( ( ( w2 >> 52  ) | ( w3 << 12 ) )  & mask  )  ) | (   ( ( w3 >> 18 )  & mask  )  << 32 );
-  out[4] = (    ( ( ( w3 >> 48  ) | ( w4 << 16 ) )  & mask  )  ) | (   ( ( w4 >> 14 )  & mask  )  << 32 );
-  out[5] = (    ( ( ( w4 >> 44  ) | ( w5 << 20 ) )  & mask  )  ) | (   ( ( w5 >> 10 )  & mask  )  << 32 );
-  out[6] = (    ( ( ( w5 >> 40  ) | ( w6 << 24 ) )  & mask  )  ) | (   ( ( w6 >> 6 )  & mask  )  << 32 );
-  out[7] = (    ( ( ( w6 >> 36  ) | ( w7 << 28 ) )  & mask  )  ) | (   ( ( w7 >> 2 )  & mask  )  << 32 );
-  out[8] = (   ( ( w7 >> 32 )  & mask  )  ) | (    ( ( ( w7 >> 62  ) | ( w8 << 2 ) )  & mask  )  << 32 );
-  out[9] = (   ( ( w8 >> 28 )  & mask  )  ) | (    ( ( ( w8 >> 58  ) | ( w9 << 6 ) )  & mask  )  << 32 );
-  out[10] = (   ( ( w9 >> 24 )  & mask  )  ) | (    ( ( ( w9 >> 54  ) | ( w10 << 10 ) )  & mask  )  << 32 );
-  out[11] = (   ( ( w10 >> 20 )  & mask  )  ) | (    ( ( ( w10 >> 50  ) | ( w11 << 14 ) )  & mask  )  << 32 );
-  out[12] = (   ( ( w11 >> 16 )  & mask  )  ) | (    ( ( ( w11 >> 46  ) | ( w12 << 18 ) )  & mask  )  << 32 );
-  out[13] = (   ( ( w12 >> 12 )  & mask  )  ) | (    ( ( ( w12 >> 42  ) | ( w13 << 22 ) )  & mask  )  << 32 );
-  out[14] = (   ( ( w13 >> 8 )  & mask  )  ) | (    ( ( ( w13 >> 38  ) | ( w14 << 26 ) )  & mask  )  << 32 );
-  out[15] = (   ( ( w14 >> 4 )  & mask  )  ) | (  ( w14  >> 34  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 2  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 60  ) | ( w1 << 4 ) )  & masklow )  |  ( ( w1  << 6  )  & maskhigh )  ;
+  out[2] =  (  ( ( w1 >> 56  ) | ( w2 << 8 ) )  & masklow )  |  ( ( w2  << 10  )  & maskhigh )  ;
+  out[3] =  (  ( ( w2 >> 52  ) | ( w3 << 12 ) )  & masklow )  |  ( ( w3  << 14  )  & maskhigh )  ;
+  out[4] =  (  ( ( w3 >> 48  ) | ( w4 << 16 ) )  & masklow )  |  ( ( w4  << 18  )  & maskhigh )  ;
+  out[5] =  (  ( ( w4 >> 44  ) | ( w5 << 20 ) )  & masklow )  |  ( ( w5  << 22  )  & maskhigh )  ;
+  out[6] =  (  ( ( w5 >> 40  ) | ( w6 << 24 ) )  & masklow )  |  ( ( w6  << 26  )  & maskhigh )  ;
+  out[7] =  (  ( ( w6 >> 36  ) | ( w7 << 28 ) )  & masklow )  |  ( ( w7  << 30  )  & maskhigh )  ;
+  out[8] =  ( ( w7  >> 32  )  & masklow )  |  (    ( ( w7 >> 30  ) | ( w8 << 34 ) )  & maskhigh )  ;
+  out[9] =  ( ( w8  >> 28  )  & masklow )  |  (    ( ( w8 >> 26  ) | ( w9 << 38 ) )  & maskhigh )  ;
+  out[10] =  ( ( w9  >> 24  )  & masklow )  |  (    ( ( w9 >> 22  ) | ( w10 << 42 ) )  & maskhigh )  ;
+  out[11] =  ( ( w10  >> 20  )  & masklow )  |  (    ( ( w10 >> 18  ) | ( w11 << 46 ) )  & maskhigh )  ;
+  out[12] =  ( ( w11  >> 16  )  & masklow )  |  (    ( ( w11 >> 14  ) | ( w12 << 50 ) )  & maskhigh )  ;
+  out[13] =  ( ( w12  >> 12  )  & masklow )  |  (    ( ( w12 >> 10  ) | ( w13 << 54 ) )  & maskhigh )  ;
+  out[14] =  ( ( w13  >> 8  )  & masklow )  |  (    ( ( w13 >> 6  ) | ( w14 << 58 ) )  & maskhigh )  ;
+  out[15] =  ( ( w14  >> 4  )  & masklow )  |  ( ( w14  >> 2  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -3174,7 +3204,8 @@ static void unpackblock30(const uint8_t ** pw, uint32_t ** pout) {
 static void unpackblock31(const uint8_t ** pw, uint32_t ** pout) {
   const uint64_t * pw64 = *(const uint64_t **) pw;
   uint64_t * out = (uint64_t *) *pout;
-  const uint64_t mask = UINT64_C(2147483647);
+  const uint64_t masklow = UINT64_C(0x7fffffff);
+  const uint64_t maskhigh = UINT64_C(0x7fffffff00000000);
   /* we are going to access  16 64-bit words */
   uint64_t w0 = pw64[0];
   uint64_t w1 = pw64[1];
@@ -3193,22 +3224,22 @@ static void unpackblock31(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w14 = pw64[14];
   uint64_t w15 = pw64[15];
   *pw += 124; /* we used up 124 input bytes */
-  out[0] = (   ( ( w0 )  & mask  )  ) | (   ( ( w0 >> 31 )  & mask  )  << 32 );
-  out[1] = (    ( ( ( w0 >> 62  ) | ( w1 << 2 ) )  & mask  )  ) | (   ( ( w1 >> 29 )  & mask  )  << 32 );
-  out[2] = (    ( ( ( w1 >> 60  ) | ( w2 << 4 ) )  & mask  )  ) | (   ( ( w2 >> 27 )  & mask  )  << 32 );
-  out[3] = (    ( ( ( w2 >> 58  ) | ( w3 << 6 ) )  & mask  )  ) | (   ( ( w3 >> 25 )  & mask  )  << 32 );
-  out[4] = (    ( ( ( w3 >> 56  ) | ( w4 << 8 ) )  & mask  )  ) | (   ( ( w4 >> 23 )  & mask  )  << 32 );
-  out[5] = (    ( ( ( w4 >> 54  ) | ( w5 << 10 ) )  & mask  )  ) | (   ( ( w5 >> 21 )  & mask  )  << 32 );
-  out[6] = (    ( ( ( w5 >> 52  ) | ( w6 << 12 ) )  & mask  )  ) | (   ( ( w6 >> 19 )  & mask  )  << 32 );
-  out[7] = (    ( ( ( w6 >> 50  ) | ( w7 << 14 ) )  & mask  )  ) | (   ( ( w7 >> 17 )  & mask  )  << 32 );
-  out[8] = (    ( ( ( w7 >> 48  ) | ( w8 << 16 ) )  & mask  )  ) | (   ( ( w8 >> 15 )  & mask  )  << 32 );
-  out[9] = (    ( ( ( w8 >> 46  ) | ( w9 << 18 ) )  & mask  )  ) | (   ( ( w9 >> 13 )  & mask  )  << 32 );
-  out[10] = (    ( ( ( w9 >> 44  ) | ( w10 << 20 ) )  & mask  )  ) | (   ( ( w10 >> 11 )  & mask  )  << 32 );
-  out[11] = (    ( ( ( w10 >> 42  ) | ( w11 << 22 ) )  & mask  )  ) | (   ( ( w11 >> 9 )  & mask  )  << 32 );
-  out[12] = (    ( ( ( w11 >> 40  ) | ( w12 << 24 ) )  & mask  )  ) | (   ( ( w12 >> 7 )  & mask  )  << 32 );
-  out[13] = (    ( ( ( w12 >> 38  ) | ( w13 << 26 ) )  & mask  )  ) | (   ( ( w13 >> 5 )  & mask  )  << 32 );
-  out[14] = (    ( ( ( w13 >> 36  ) | ( w14 << 28 ) )  & mask  )  ) | (   ( ( w14 >> 3 )  & mask  )  << 32 );
-  out[15] = (    ( ( ( w14 >> 34  ) | ( w15 << 30 ) )  & mask  )  ) | (   ( ( w15 >> 1 )  & mask  )  << 32 );
+  out[0] =  ( ( w0   )  & masklow )  |  ( ( w0  << 1  )  & maskhigh )  ;
+  out[1] =  (  ( ( w0 >> 62  ) | ( w1 << 2 ) )  & masklow )  |  ( ( w1  << 3  )  & maskhigh )  ;
+  out[2] =  (  ( ( w1 >> 60  ) | ( w2 << 4 ) )  & masklow )  |  ( ( w2  << 5  )  & maskhigh )  ;
+  out[3] =  (  ( ( w2 >> 58  ) | ( w3 << 6 ) )  & masklow )  |  ( ( w3  << 7  )  & maskhigh )  ;
+  out[4] =  (  ( ( w3 >> 56  ) | ( w4 << 8 ) )  & masklow )  |  ( ( w4  << 9  )  & maskhigh )  ;
+  out[5] =  (  ( ( w4 >> 54  ) | ( w5 << 10 ) )  & masklow )  |  ( ( w5  << 11  )  & maskhigh )  ;
+  out[6] =  (  ( ( w5 >> 52  ) | ( w6 << 12 ) )  & masklow )  |  ( ( w6  << 13  )  & maskhigh )  ;
+  out[7] =  (  ( ( w6 >> 50  ) | ( w7 << 14 ) )  & masklow )  |  ( ( w7  << 15  )  & maskhigh )  ;
+  out[8] =  (  ( ( w7 >> 48  ) | ( w8 << 16 ) )  & masklow )  |  ( ( w8  << 17  )  & maskhigh )  ;
+  out[9] =  (  ( ( w8 >> 46  ) | ( w9 << 18 ) )  & masklow )  |  ( ( w9  << 19  )  & maskhigh )  ;
+  out[10] =  (  ( ( w9 >> 44  ) | ( w10 << 20 ) )  & masklow )  |  ( ( w10  << 21  )  & maskhigh )  ;
+  out[11] =  (  ( ( w10 >> 42  ) | ( w11 << 22 ) )  & masklow )  |  ( ( w11  << 23  )  & maskhigh )  ;
+  out[12] =  (  ( ( w11 >> 40  ) | ( w12 << 24 ) )  & masklow )  |  ( ( w12  << 25  )  & maskhigh )  ;
+  out[13] =  (  ( ( w12 >> 38  ) | ( w13 << 26 ) )  & masklow )  |  ( ( w13  << 27  )  & maskhigh )  ;
+  out[14] =  (  ( ( w13 >> 36  ) | ( w14 << 28 ) )  & masklow )  |  ( ( w14  << 29  )  & maskhigh )  ;
+  out[15] =  (  ( ( w14 >> 34  ) | ( w15 << 30 ) )  & masklow )  |  ( ( w15  << 31  )  & maskhigh )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -3235,22 +3266,22 @@ static void unpackblock32(const uint8_t ** pw, uint32_t ** pout) {
   uint64_t w14 = pw64[14];
   uint64_t w15 = pw64[15];
   *pw += 128; /* we used up 128 input bytes */
-  out[0] = (   ( ( w0 )  )  ) | (  ( w0  >> 32  )  << 32 );
-  out[1] = (   ( ( w1 )  )  ) | (  ( w1  >> 32  )  << 32 );
-  out[2] = (   ( ( w2 )  )  ) | (  ( w2  >> 32  )  << 32 );
-  out[3] = (   ( ( w3 )  )  ) | (  ( w3  >> 32  )  << 32 );
-  out[4] = (   ( ( w4 )  )  ) | (  ( w4  >> 32  )  << 32 );
-  out[5] = (   ( ( w5 )  )  ) | (  ( w5  >> 32  )  << 32 );
-  out[6] = (   ( ( w6 )  )  ) | (  ( w6  >> 32  )  << 32 );
-  out[7] = (   ( ( w7 )  )  ) | (  ( w7  >> 32  )  << 32 );
-  out[8] = (   ( ( w8 )  )  ) | (  ( w8  >> 32  )  << 32 );
-  out[9] = (   ( ( w9 )  )  ) | (  ( w9  >> 32  )  << 32 );
-  out[10] = (   ( ( w10 )  )  ) | (  ( w10  >> 32  )  << 32 );
-  out[11] = (   ( ( w11 )  )  ) | (  ( w11  >> 32  )  << 32 );
-  out[12] = (   ( ( w12 )  )  ) | (  ( w12  >> 32  )  << 32 );
-  out[13] = (   ( ( w13 )  )  ) | (  ( w13  >> 32  )  << 32 );
-  out[14] = (   ( ( w14 )  )  ) | (  ( w14  >> 32  )  << 32 );
-  out[15] = (   ( ( w15 )  )  ) | (  ( w15  >> 32  )  << 32 );
+  out[0] =  ( ( w0   ) )  |  ( ( w0    ) )  ;
+  out[1] =  ( ( w1   ) )  |  ( ( w1    ) )  ;
+  out[2] =  ( ( w2   ) )  |  ( ( w2    ) )  ;
+  out[3] =  ( ( w3   ) )  |  ( ( w3    ) )  ;
+  out[4] =  ( ( w4   ) )  |  ( ( w4    ) )  ;
+  out[5] =  ( ( w5   ) )  |  ( ( w5    ) )  ;
+  out[6] =  ( ( w6   ) )  |  ( ( w6    ) )  ;
+  out[7] =  ( ( w7   ) )  |  ( ( w7    ) )  ;
+  out[8] =  ( ( w8   ) )  |  ( ( w8    ) )  ;
+  out[9] =  ( ( w9   ) )  |  ( ( w9    ) )  ;
+  out[10] =  ( ( w10   ) )  |  ( ( w10    ) )  ;
+  out[11] =  ( ( w11   ) )  |  ( ( w11    ) )  ;
+  out[12] =  ( ( w12   ) )  |  ( ( w12    ) )  ;
+  out[13] =  ( ( w13   ) )  |  ( ( w13    ) )  ;
+  out[14] =  ( ( w14   ) )  |  ( ( w14    ) )  ;
+  out[15] =  ( ( w15   ) )  |  ( ( w15    ) )  ;
   *pout += 32; /* we wrote 32 32-bit integers */
 }
 
@@ -3325,6 +3356,7 @@ static unpackblockfnc funcUnpackArr[] = {
 &unpackblock32
 };
 /** code generated by superchargedpacking32.py ends here **/
+
 
 
 

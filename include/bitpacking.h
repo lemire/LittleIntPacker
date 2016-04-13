@@ -77,4 +77,8 @@ void scpack32(const uint32_t *  in,  uint32_t number, const uint32_t bit, uint8_
 void scunpack32(const uint8_t * in, uint32_t number, const uint32_t bit, uint32_t *  out);
 
 
+/* reads  number 32-bit values from "in" as packed bit bits values, and write to "out"
+ * Uses SIMD.*/
+void horizontalunpack32(const uint8_t * in, uint32_t number, const uint32_t bit, uint32_t *  out);
+
 #endif //BITPACKING_H

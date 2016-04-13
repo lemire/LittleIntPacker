@@ -172,6 +172,32 @@ void bmidemo128() {
     printf("\n\n"); /* two blank lines are required by gnuplot */
 }
 
+void horizontaldemo128() {
+    const uint32_t length = 128;
+    uint32_t bit;
+    printf("# --- %s\n", __func__);
+    printf("# compressing %d integers\n",length);
+    printf("# format: bit width, pack in cycles per int, unpack in cycles per int\n");
+    for(bit = 1; bit <= 32; ++bit) {
+        uint32_t * data = get_random_array_from_bit_width(length, bit);
+        uint8_t * buffer = malloc(length * sizeof(uint32_t));
+        uint32_t * backdata = malloc(length * sizeof(uint32_t));
+        uint32_t repeat = 50000;
+        uint64_t min_diff;
+        printf("%d\t",bit);
+        RDTSC_BEST(pack32(data, length, bit, buffer), repeat, min_diff);
+        printf("%.2f\t",min_diff*1.0/length);
+        RDTSC_BEST(horizontalunpack32(buffer, length, bit, backdata), repeat, min_diff);
+        printf("%.2f\t",min_diff*1.0/length);
+
+        free(data);
+        free(buffer);
+        free(backdata);
+        printf("\n");
+    }
+    printf("\n\n"); /* two blank lines are required by gnuplot */
+}
+
 void scdemo128() {
     const uint32_t length = 128;
     uint32_t bit;
@@ -205,6 +231,7 @@ int main() {
     demo128();
     turbodemo128();
     bmidemo128();
+    horizontaldemo128();
     scdemo128();
 
     return 0;
